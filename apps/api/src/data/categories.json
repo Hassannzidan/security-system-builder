@@ -1,0 +1,37 @@
+[
+  {
+    "id": "cat_camera",
+    "slug": "camera",
+    "name": "Cameras",
+    "description": "Indoor and outdoor surveillance cameras.",
+    "productCount": 1
+  },
+  {
+    "id": "cat_sensor",
+    "slug": "sensor",
+    "name": "Sensors",
+    "description": "Motion, door and window detection sensors.",
+    "productCount": 1
+  },
+  {
+    "id": "cat_alarm",
+    "slug": "alarm",
+    "name": "Alarms",
+    "description": "Sirens and audible/visual alarm devices.",
+    "productCount": 1
+  },
+  {
+    "id": "cat_controller",
+    "slug": "controller",
+    "name": "Controllers",
+    "description": "Hubs and controllers that tie the system together.",
+    "productCount": 1
+  },
+  {
+    "id": "cat_accessory",
+    "slug": "accessory",
+    "name": "Accessories",
+    "description": "Keypads, remotes and other add-ons.",
+    "productCount": 1
+  }
+]

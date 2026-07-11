@@ -1,0 +1,62 @@
+[
+  {
+    "id": "prd_camera_dome_01",
+    "name": "Dome Camera 4K",
+    "description": "Vandal-resistant 4K dome camera with night vision and wide dynamic range.",
+    "category": "camera",
+    "status": "active",
+    "price": 189.99,
+    "currency": "USD",
+    "imageUrl": "https://placehold.co/600x400?text=Dome+Camera",
+    "createdAt": "2026-01-10T09:00:00.000Z",
+    "updatedAt": "2026-01-10T09:00:00.000Z"
+  },
+  {
+    "id": "prd_sensor_motion_01",
+    "name": "PIR Motion Sensor",
+    "description": "Passive infrared motion sensor with pet-immune detection up to 12 meters.",
+    "category": "sensor",
+    "status": "active",
+    "price": 34.5,
+    "currency": "USD",
+    "imageUrl": "https://placehold.co/600x400?text=Motion+Sensor",
+    "createdAt": "2026-01-11T09:00:00.000Z",
+    "updatedAt": "2026-01-11T09:00:00.000Z"
+  },
+  {
+    "id": "prd_alarm_siren_01",
+    "name": "Outdoor Siren 110dB",
+    "description": "Weatherproof outdoor siren with strobe light and tamper protection.",
+    "category": "alarm",
+    "status": "active",
+    "price": 79.0,
+    "currency": "USD",
+    "imageUrl": "https://placehold.co/600x400?text=Siren",
+    "createdAt": "2026-01-12T09:00:00.000Z",
+    "updatedAt": "2026-01-12T09:00:00.000Z"
+  },
+  {
+    "id": "prd_controller_hub_01",
+    "name": "Smart Security Hub",
+    "description": "Central controller supporting Zigbee, Z-Wave and Wi-Fi devices.",
+    "category": "controller",
+    "status": "active",
+    "price": 149.99,
+    "currency": "USD",
+    "imageUrl": "https://placehold.co/600x400?text=Hub",
+    "createdAt": "2026-01-13T09:00:00.000Z",
+    "updatedAt": "2026-01-13T09:00:00.000Z"
+  },
+  {
+    "id": "prd_accessory_keypad_01",
+    "name": "Wireless Keypad",
+    "description": "Backlit wireless keypad for arming and disarming the system.",
+    "category": "accessory",
+    "status": "draft",
+    "price": 44.99,
+    "currency": "USD",
+    "imageUrl": "https://placehold.co/600x400?text=Keypad",
+    "createdAt": "2026-01-14T09:00:00.000Z",
+    "updatedAt": "2026-01-14T09:00:00.000Z"
+  }
+]
