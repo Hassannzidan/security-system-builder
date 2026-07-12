@@ -89,14 +89,17 @@ export function ProductCard({
     onVariantChange?.(variantId);
   };
 
+  const commitSelected = (next: boolean) => {
+    if (selected === undefined) setInternalSelected(next);
+    onSelectedChange?.(next);
+  };
+
   const toggleSelected = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.target as HTMLElement;
     // Ignore clicks on interactive children so links / steppers / pills keep working.
     if (target.closest('a, button, input, textarea, select')) return;
 
-    const next = !isSelected;
-    if (selected === undefined) setInternalSelected(next);
-    onSelectedChange?.(next);
+    commitSelected(!isSelected);
   };
 
   const hasVariants = Boolean(variants && variants.length > 0);
@@ -190,9 +193,7 @@ export function ProductCard({
       onKeyDown={(event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          const next = !isSelected;
-          if (selected === undefined) setInternalSelected(next);
-          onSelectedChange?.(next);
+          commitSelected(!isSelected);
         }
       }}
       className={cn(

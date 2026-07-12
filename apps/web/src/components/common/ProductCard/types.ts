@@ -49,5 +49,3 @@ export interface ProductCardProps {
   onSelectedChange?: (selected: boolean) => void;
   className?: string;
 }
-
-export const BRAND = '#4E2FD2';
