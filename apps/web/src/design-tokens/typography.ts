@@ -38,6 +38,8 @@ export const fontSize = {
   '16': '16px',
   /** Title — product card (vertical) */
   '18': '18px',
+  /** Step title — accordion */
+  '28': '28px',
 } as const;
 
 /**
