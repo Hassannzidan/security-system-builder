@@ -9,6 +9,7 @@ import { colors } from './colors';
 
 export const borderWidth = {
   none: '0px',
+  sm: '1px',
   DEFAULT: '2px',
 } as const;
 
@@ -16,6 +17,7 @@ export const borderColor = {
   DEFAULT: colors.border.default, // gray.400
   muted: colors.border.muted,
   strong: colors.border.strong,
+  black: colors.border.black,
   /** Focus ring / outline — see colors.border.focus TODO */
   focus: colors.border.focus,
 } as const;

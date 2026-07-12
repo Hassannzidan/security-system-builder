@@ -1,0 +1,60 @@
+import { opacity, radius } from '@/design-tokens';
+import { cn } from '@/lib/utils';
+
+import type { ProductVariant } from './types';
+
+const UNSELECTED_BORDER = '#CCCCCC';
+const SELECTED_BORDER = '#0AA288';
+const SELECTED_FILL = `rgba(29, 240, 187, ${opacity[4]})`; // #1DF0BB @ 4%
+
+export function VariantPill({
+  variant,
+  selected,
+  onSelect,
+}: {
+  variant: ProductVariant;
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-pressed={selected}
+      className={cn(
+        'grid shrink-0 grid-cols-2 overflow-hidden',
+        'box-border font-["Gilroy"] text-[10px] font-medium leading-none transition-colors',
+        selected ? 'text-[#0B0D10]' : 'text-[#525963]',
+      )}
+      style={{
+        width: 65,
+        height: 26,
+        borderRadius: radius.xs,
+        borderStyle: 'solid',
+        borderWidth: 0.5,
+        borderColor: selected ? SELECTED_BORDER : UNSELECTED_BORDER,
+        backgroundColor: selected ? SELECTED_FILL : 'transparent',
+      }}
+    >
+      <span className="flex h-full w-full items-center justify-center overflow-hidden">
+        {variant.thumbnailUrl ? (
+          <img
+            src={variant.thumbnailUrl}
+            alt=""
+            aria-hidden
+            className="h-full w-full object-contain"
+          />
+        ) : variant.swatch ? (
+          <span
+            aria-hidden
+            className="h-3 w-3 shrink-0 rounded-full border border-black/10"
+            style={{ backgroundColor: variant.swatch }}
+          />
+        ) : null}
+      </span>
+      <span className="flex h-full w-full items-center justify-center overflow-hidden px-0.5">
+        <span className="truncate">{variant.label}</span>
+      </span>
+    </button>
+  );
+}

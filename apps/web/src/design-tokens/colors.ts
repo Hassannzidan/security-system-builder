@@ -43,6 +43,8 @@ const primary = {
 const base = {
   white: '#FFFFFF',
   black: '#1F1F1F',
+  /** Absolute black — hairline borders, high-contrast strokes */
+  absoluteBlack: '#000000',
 } as const;
 
 /** Mint aligns with success — used for subtle tint overlays. */
@@ -134,6 +136,7 @@ export const colors = {
     default: gray[400],
     muted: gray[300],
     strong: gray[500],
+    black: base.absoluteBlack,
     // TODO: focus ring color from Figma / a11y spec — primary used as interim
     focus: primary.DEFAULT,
   },
@@ -153,6 +156,7 @@ export const colors = {
   base: {
     white: base.white,
     black: base.black,
+    absoluteBlack: base.absoluteBlack,
   },
 } as const;
 
