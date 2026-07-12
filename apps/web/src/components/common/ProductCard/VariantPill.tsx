@@ -1,5 +1,13 @@
-import { opacity, radius } from '@/design-tokens';
-import { cn } from '@/lib/utils';
+import {
+  colors,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+  opacity,
+  radius,
+} from '@/design-tokens';
 
 import type { ProductVariant } from './types';
 
@@ -21,19 +29,16 @@ export function VariantPill({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className={cn(
-        'grid shrink-0 grid-cols-2 overflow-hidden',
-        'box-border font-["Gilroy"] text-[10px] font-medium leading-none transition-colors',
-        selected ? 'text-[#0B0D10]' : 'text-[#525963]',
-      )}
+      className="grid shrink-0 grid-cols-2 overflow-hidden box-border transition-colors"
       style={{
-        width: 65,
+        width: 70,
         height: 26,
         borderRadius: radius.xs,
         borderStyle: 'solid',
         borderWidth: 0.5,
         borderColor: selected ? SELECTED_BORDER : UNSELECTED_BORDER,
         backgroundColor: selected ? SELECTED_FILL : 'transparent',
+        color: colors.base.black,
       }}
     >
       <span className="flex h-full w-full items-center justify-center overflow-hidden">
@@ -53,7 +58,18 @@ export function VariantPill({
         ) : null}
       </span>
       <span className="flex h-full w-full items-center justify-center overflow-hidden px-0.5">
-        <span className="truncate">{variant.label}</span>
+        <span
+          className="truncate"
+          style={{
+            fontFamily: fontFamily.primary.join(', '),
+            fontWeight: fontWeight.medium,
+            fontSize: fontSize['10'],
+            lineHeight: lineHeight['100'],
+            letterSpacing: letterSpacing['0.6'],
+          }}
+        >
+          {variant.label}
+        </span>
       </span>
     </button>
   );

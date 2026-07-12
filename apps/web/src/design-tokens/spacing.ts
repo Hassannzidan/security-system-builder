@@ -24,8 +24,8 @@ export const spacing = {
   '101': '101px',
   /** Exact Figma — product card max height (horizontal) */
   '159': '159px',
-  /** Exact Figma — product card max width (vertical) */
-  '225': '225px',
+  /** Product card max width (vertical) — wide enough for 3 variant pills in one row */
+  '255': '255px',
   /** Exact Figma — product card max height (vertical) */
   '331': '331px',
   /** Exact Figma — product card max width (horizontal) */

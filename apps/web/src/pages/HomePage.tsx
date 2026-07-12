@@ -102,7 +102,7 @@ export function HomePage() {
             <ProductCard
               key={id}
               {...card}
-              orientation="horizontal"
+              orientation="vertical"
               quantity={quantities[id]}
               onQuantityChange={(q) => setQuantities((prev) => ({ ...prev, [id]: q }))}
               selected={selected[id]}

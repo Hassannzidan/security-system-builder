@@ -117,6 +117,8 @@ export const colors = {
     disabled: gray[500],
     inverse: base.white,
     link: status.link,
+    /** Body / description copy at 75% of base black */
+    description: withAlpha(base.black, opacity[75]),
   },
 
   /** Surface / page backgrounds */

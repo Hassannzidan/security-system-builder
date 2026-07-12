@@ -1,6 +1,16 @@
 import { useState, type MouseEvent } from 'react';
 
-import { borderWidth, colors, radius, spacing } from '@/design-tokens';
+import {
+  borderWidth,
+  colors,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+  radius,
+  spacing,
+} from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
 import { LearnMoreLink } from './LearnMoreLink';
@@ -94,14 +104,33 @@ export function ProductCard({
   const isVertical = orientation === 'vertical';
 
   const info = (
-    <div className="flex min-h-0 min-w-0 flex-1 flex-col" style={{ gap: 10 }}>
+    <div
+      className={cn('flex min-h-0 min-w-0 flex-1 flex-col', !hasVariants && 'justify-center')}
+      style={{ gap: 10 }}
+    >
       <div className="flex flex-col" style={{ gap: 8 }}>
-        <h3 className="font-['Gilroy'] text-lg font-semibold leading-tight text-[#0B0D10]">
+        <h3
+          className="text-[#0B0D10]"
+          style={{
+            fontFamily: fontFamily.primary.join(', '),
+            fontWeight: fontWeight.semiBold,
+            fontSize: isVertical ? fontSize['18'] : fontSize['16'],
+            lineHeight: lineHeight['100'],
+            letterSpacing: letterSpacing['0.6'],
+          }}
+        >
           {title}
         </h3>
 
         {(description || showLearnMore) && (
-          <p className="font-['Gilroy'] text-sm font-medium leading-snug text-[#6F7882]">
+          <p
+            className="font-['Gilroy'] text-xs font-medium"
+            style={{
+              color: colors.text.description,
+              lineHeight: lineHeight['130'],
+              letterSpacing: letterSpacing['0.6'],
+            }}
+          >
             {description}
             {showLearnMore && (
               <>
@@ -114,7 +143,7 @@ export function ProductCard({
       </div>
 
       {hasVariants && (
-        <div className="flex flex-wrap gap-1.5">
+        <div className="flex flex-nowrap gap-1.5">
           {variants!.map((variant) => (
             <VariantPill
               key={variant.id}
@@ -128,10 +157,11 @@ export function ProductCard({
 
       <div
         className={cn(
-          'mt-auto flex flex-wrap items-center',
+          'flex flex-wrap items-center',
+          hasVariants && 'mt-auto',
           isVertical ? 'justify-start' : 'justify-between',
         )}
-        style={{ gap: 10, maxHeight: 35 }}
+        style={{ gap: 10 }}
       >
         <QuantityStepper
           value={currentQuantity}
@@ -177,8 +207,8 @@ export function ProductCard({
         borderColor: isSelected ? colors.primary.DEFAULT : 'transparent',
         gap: spacing['19'],
         padding: isVertical ? `${spacing['11']} ${spacing['15']}` : spacing['11'],
-        maxWidth: isVertical ? spacing['225'] : spacing['361.5'],
-        ...(isVertical ? { maxHeight: spacing['331'] } : { minHeight: spacing['159'] }),
+        maxWidth: isVertical ? spacing['255'] : spacing['361.5'],
+        ...(isVertical ? {} : { minHeight: spacing['159'] }),
         width: '100%',
       }}
     >

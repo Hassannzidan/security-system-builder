@@ -21,7 +21,7 @@ export {
   lineHeight,
   letterSpacing,
 } from './typography';
-export type { Typography, FontFamily, FontWeight } from './typography';
+export type { Typography, FontFamily, FontWeight, LineHeight, LetterSpacing } from './typography';
 
 export { spacing } from './spacing';
 export type { Spacing, SpacingToken } from './spacing';

@@ -5,8 +5,8 @@
  * - primary   → Gilroy (headings, CTAs, brand moments)
  * - secondary → TT Norms Pro (body, forms, dense UI)
  *
- * fontSize / lineHeight / letterSpacing stay empty until the
- * final Figma type scale is extracted. Do not invent values.
+ * fontSize stays empty until the final Figma type scale is extracted.
+ * lineHeight / letterSpacing include values locked from ProductCard Figma.
  */
 
 /** System fallbacks shared by every stack */
@@ -27,27 +27,41 @@ export const fontWeight = {
 } as const;
 
 /**
- * Type scale — intentionally empty.
- * Fill from Figma once sizes are locked (e.g. xs → 4xl).
+ * Type scale — locked Figma values.
  */
 export const fontSize = {
-  // TODO: extract fontSize scale from Figma
+  /** Variant pill label — product card */
+  '10': '10px',
+  /** Discount badge — product card */
+  '12': '12px',
+  /** Title — product card (horizontal) */
+  '16': '16px',
+  /** Title — product card (vertical) */
+  '18': '18px',
 } as const;
 
 /**
- * Line heights — intentionally empty.
- * Fill from Figma once the type scale is locked.
+ * Line heights — locked Figma values.
  */
 export const lineHeight = {
-  // TODO: extract lineHeight scale from Figma
+  /** Discount badge — product card */
+  auto: 'auto',
+  /** Title / price — product card */
+  '100': '100%',
+  /** Description — product card */
+  '130': '130%',
+  /** Quantity stepper number — product card */
+  '20': '20px',
 } as const;
 
 /**
- * Letter spacing — intentionally empty.
- * Fill from Figma once tracking values are locked.
+ * Letter spacing — locked Figma values.
  */
 export const letterSpacing = {
-  // TODO: extract letterSpacing scale from Figma
+  /** Quantity stepper number — product card */
+  none: '0px',
+  /** Title / price / description — product card */
+  '0.6': '0.6px',
 } as const;
 
 export const typography = {
@@ -61,4 +75,6 @@ export const typography = {
 
 export type FontFamily = typeof fontFamily;
 export type FontWeight = typeof fontWeight;
+export type LineHeight = typeof lineHeight;
+export type LetterSpacing = typeof letterSpacing;
 export type Typography = typeof typography;
