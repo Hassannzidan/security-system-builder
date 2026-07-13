@@ -42,20 +42,7 @@ export function VariantPill({
       }}
     >
       <span className="flex h-full w-full items-center justify-center overflow-hidden">
-        {variant.thumbnailUrl ? (
-          <img
-            src={variant.thumbnailUrl}
-            alt=""
-            aria-hidden
-            className="h-full w-full object-contain"
-          />
-        ) : variant.swatch ? (
-          <span
-            aria-hidden
-            className="h-3 w-3 shrink-0 rounded-full border border-black/10"
-            style={{ backgroundColor: variant.swatch }}
-          />
-        ) : null}
+        <img src={variant.swatch} alt="" aria-hidden className="h-full w-full object-contain" />
       </span>
       <span className="flex h-full w-full items-center justify-center overflow-hidden px-0.5">
         <span

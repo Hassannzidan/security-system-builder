@@ -110,9 +110,7 @@ export function AccordionStep({
               color: isOpen ? colors.primary.DEFAULT : colors.text.tertiary,
             }}
           >
-            {isOpen && selectedCount !== undefined && (
-              <span className="hidden sm:inline">{selectedCount} selected</span>
-            )}
+            {isOpen && selectedCount !== undefined && <span>{selectedCount} selected</span>}
             <Chevron open={isOpen} />
           </span>
         </span>

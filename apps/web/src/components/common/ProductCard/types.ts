@@ -1,12 +1,6 @@
-export interface ProductVariant {
-  id: string;
-  /** Visible label, e.g. "White". */
-  label: string;
-  /** Small preview image shown inside the variant pill. */
-  thumbnailUrl?: string;
-  /** Solid color swatch, used when no thumbnail is provided. */
-  swatch?: string;
-}
+import type { ProductVariant } from '@security-system-builder/shared';
+
+export type { ProductVariant };
 
 export interface ProductCardProps {
   title: string;
@@ -23,8 +17,8 @@ export interface ProductCardProps {
 
   /** Color / configuration options. Omit or pass an empty array for no selector. */
   variants?: ProductVariant[];
-  selectedVariantId?: string;
-  defaultVariantId?: string;
+  /** Controlled active variant id (null when the product has no variants). */
+  selectedVariantId: string | null;
   onVariantChange?: (variantId: string) => void;
 
   /** Active (current) price. */
@@ -33,19 +27,14 @@ export interface ProductCardProps {
   compareAtPrice?: number;
   currency?: string;
 
-  /** Controlled quantity. Omit to let the card manage its own quantity. */
-  quantity?: number;
-  defaultQuantity?: number;
+  /** Controlled quantity of the active variant. */
+  quantity: number;
   onQuantityChange?: (quantity: number) => void;
   minQuantity?: number;
   maxQuantity?: number;
 
   orientation?: 'horizontal' | 'vertical';
-  /** Controlled selected state. Clicking the card toggles selection. */
+  /** Highlights the card border. The parent passes `quantity > 0`. */
   selected?: boolean;
-  /** Uncontrolled initial selected state when `selected` is omitted. */
-  defaultSelected?: boolean;
-  /** Called when the card is clicked to toggle selection. */
-  onSelectedChange?: (selected: boolean) => void;
   className?: string;
 }

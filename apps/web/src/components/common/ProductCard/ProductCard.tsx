@@ -1,5 +1,3 @@
-import { useState, type MouseEvent } from 'react';
-
 import {
   borderWidth,
   colors,
@@ -21,7 +19,7 @@ import { type ProductCardProps } from './types';
 import { VariantPill } from './VariantPill';
 
 /**
- * ProductCard — a reusable product tile used across catalog / storefront views.
+ * ProductCard — a reusable, fully-controlled product tile.
  *
  * Every element below the title is optional so the same component can render a
  * fully-featured product (discount badge, variants, quantity stepper, compare-at
@@ -32,16 +30,10 @@ import { VariantPill } from './VariantPill';
  *   - "horizontal" → image in a left column, product info in a right column.
  *   - "vertical"   → image on top, product info stacked underneath.
  *
- * Selection: clicking the card toggles a purple border. Interactive children
- * (links, buttons, steppers, variant pills) do not toggle selection.
- * Pass `selected` / `onSelectedChange` for controlled mode, or `defaultSelected`
- * for uncontrolled.
- *
- * Quantity and the active variant can be controlled (pass `quantity` /
- * `selectedVariantId` + change handlers) or left uncontrolled (the card keeps
- * its own state, seeded by `defaultQuantity` / `defaultVariantId`).
+ * The card owns no state: `quantity`, `selectedVariantId` and `selected` are all
+ * controlled by the parent. The purple border is driven purely by `selected`
+ * (the parent passes `quantity > 0`); clicking the card body does nothing.
  */
-
 export function ProductCard({
   title,
   description,
@@ -53,53 +45,21 @@ export function ProductCard({
   learnMoreLabel = 'Learn More',
   variants,
   selectedVariantId,
-  defaultVariantId,
   onVariantChange,
   price,
   compareAtPrice,
   currency = 'USD',
   quantity,
-  defaultQuantity = 0,
   onQuantityChange,
   minQuantity = 0,
   maxQuantity = 99,
   orientation = 'horizontal',
-  selected,
-  defaultSelected = false,
-  onSelectedChange,
+  selected = false,
   className,
 }: ProductCardProps) {
-  // Uncontrolled fallbacks — used only when the matching prop is undefined.
-  const [internalQuantity, setInternalQuantity] = useState(defaultQuantity);
-  const [internalVariantId, setInternalVariantId] = useState(defaultVariantId ?? variants?.[0]?.id);
-  const [internalSelected, setInternalSelected] = useState(defaultSelected);
-
-  const currentQuantity = quantity ?? internalQuantity;
-  const currentVariantId = selectedVariantId ?? internalVariantId;
-  const isSelected = selected ?? internalSelected;
-
   const setQuantity = (next: number) => {
     const clamped = Math.min(maxQuantity, Math.max(minQuantity, next));
-    if (quantity === undefined) setInternalQuantity(clamped);
     onQuantityChange?.(clamped);
-  };
-
-  const selectVariant = (variantId: string) => {
-    if (selectedVariantId === undefined) setInternalVariantId(variantId);
-    onVariantChange?.(variantId);
-  };
-
-  const commitSelected = (next: boolean) => {
-    if (selected === undefined) setInternalSelected(next);
-    onSelectedChange?.(next);
-  };
-
-  const toggleSelected = (event: MouseEvent<HTMLDivElement>) => {
-    const target = event.target as HTMLElement;
-    // Ignore clicks on interactive children so links / steppers / pills keep working.
-    if (target.closest('a, button, input, textarea, select')) return;
-
-    commitSelected(!isSelected);
   };
 
   const hasVariants = Boolean(variants && variants.length > 0);
@@ -151,8 +111,8 @@ export function ProductCard({
             <VariantPill
               key={variant.id}
               variant={variant}
-              selected={variant.id === currentVariantId}
-              onSelect={() => selectVariant(variant.id)}
+              selected={variant.id === selectedVariantId}
+              onSelect={() => onVariantChange?.(variant.id)}
             />
           ))}
         </div>
@@ -167,7 +127,7 @@ export function ProductCard({
         style={{ gap: 10 }}
       >
         <QuantityStepper
-          value={currentQuantity}
+          value={quantity}
           min={minQuantity}
           max={maxQuantity}
           onChange={setQuantity}
@@ -185,19 +145,9 @@ export function ProductCard({
 
   return (
     <div
-      role="button"
-      tabIndex={0}
-      aria-pressed={isSelected}
-      data-selected={isSelected}
-      onClick={toggleSelected}
-      onKeyDown={(event) => {
-        if (event.key === 'Enter' || event.key === ' ') {
-          event.preventDefault();
-          commitSelected(!isSelected);
-        }
-      }}
+      data-selected={selected}
       className={cn(
-        'flex cursor-pointer overflow-hidden bg-white transition-colors',
+        'flex overflow-hidden bg-white transition-colors',
         isVertical ? 'flex-col' : 'flex-col sm:flex-row sm:items-stretch',
         className,
       )}
@@ -205,7 +155,7 @@ export function ProductCard({
         borderRadius: radius.lg,
         borderStyle: 'solid',
         borderWidth: borderWidth.DEFAULT,
-        borderColor: isSelected ? colors.primary.DEFAULT : 'transparent',
+        borderColor: selected ? colors.primary.DEFAULT : 'transparent',
         gap: spacing['19'],
         padding: isVertical ? `${spacing['11']} ${spacing['15']}` : spacing['11'],
         maxWidth: isVertical ? spacing['255'] : spacing['361.5'],

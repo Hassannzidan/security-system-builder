@@ -1,9 +1,23 @@
 import type { ReactNode } from 'react';
 
+/**
+ * View-model for a single accordion step.
+ *
+ * This is a presentational shape, deliberately decoupled from the shared `Step`
+ * domain type. The mapping from `Step` (done in `HomePage`) is:
+ *   - `Step.id`        → `id`
+ *   - `Step.title`     → `title`
+ *   - `Step.icon`      → `icon`     (string key resolved to a React glyph)
+ *   - `Step.nextLabel` → `nextLabel`
+ *   - `Step.order`     → used only to sort steps before rendering; not stored here
+ * `selectionType`, `category` and `products` stay in the domain layer — the
+ * accordion is agnostic to them. `selectedCount` / `content` are supplied by the
+ * page from bundle-builder state.
+ */
 export interface AccordionStepConfig {
-  /** Stable identifier for the step. */
+  /** Stable identifier for the step. Maps from `Step.id`. */
   id: string;
-  /** Bold step heading, e.g. "Choose your cameras". */
+  /** Bold step heading, e.g. "Choose your cameras". Maps from `Step.title`. */
   title: string;
   /** Optional leading icon (line glyph). Tinted by the header. */
   icon?: ReactNode;
@@ -15,8 +29,9 @@ export interface AccordionStepConfig {
   /** Body content revealed when the step is expanded. */
   content?: ReactNode;
   /**
-   * Overrides the auto-generated advance label. When omitted, the step shows
-   * "Next: <next step title>" (or just "Next" for the final step).
+   * Overrides the auto-generated advance label. Maps from `Step.nextLabel`.
+   * When omitted, the step shows "Next: <next step title>" (or just "Next" for
+   * the final step).
    */
   nextLabel?: string;
 }

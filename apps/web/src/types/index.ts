@@ -3,8 +3,12 @@
  * so components import everything from one place.
  */
 export type {
-  Product,
-  Category,
+  Step,
+  StepProduct,
+  ProductVariant,
+  Pricing,
+  Seed,
+  SelectionType,
   ApiResponse,
   ApiErrorResponse,
   ApiResult,

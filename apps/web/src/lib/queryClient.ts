@@ -14,8 +14,4 @@ export const queryClient = new QueryClient({
   },
 });
 
-/** Centralised query keys keep cache invalidation consistent and typo-free. */
-export const queryKeys = {
-  products: ['products'] as const,
-  categories: ['categories'] as const,
-};
+// Query keys live in `src/lib/queryKeys.ts` as factory functions.
