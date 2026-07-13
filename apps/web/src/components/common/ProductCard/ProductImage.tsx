@@ -8,12 +8,19 @@ export function ProductImage({
   alt,
   badge,
   vertical,
+  /**
+   * How the image sits within its frame. "start" (default) top-left anchors it —
+   * ProductCard's original behaviour. "center" centers it, used by PlanCard.
+   */
+  align = 'start',
 }: {
   src?: string;
   alt: string;
   badge?: string;
   vertical: boolean;
+  align?: 'start' | 'center';
 }) {
+  const centered = align === 'center';
   return (
     <div
       className={cn(
@@ -26,7 +33,8 @@ export function ProductImage({
       {badge && <DiscountBadge>{badge}</DiscountBadge>}
       <div
         className={cn(
-          'flex w-full items-start justify-start overflow-hidden rounded-xl',
+          'flex w-full overflow-hidden rounded-xl',
+          centered ? 'items-center justify-center' : 'items-start justify-start',
           vertical ? 'aspect-[4/3]' : 'aspect-square sm:aspect-auto sm:min-h-0 sm:flex-1',
         )}
       >
@@ -35,7 +43,10 @@ export function ProductImage({
             src={src}
             alt={alt}
             loading="lazy"
-            className="h-full w-full object-contain object-left-top"
+            className={cn(
+              'h-full w-full object-contain',
+              centered ? 'object-center' : 'object-left-top',
+            )}
           />
         ) : (
           <div className="h-full w-full bg-[#F0F4F7]" aria-hidden />

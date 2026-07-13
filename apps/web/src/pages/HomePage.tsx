@@ -9,6 +9,7 @@ import {
   SensorIcon,
   ShieldPlusIcon,
   ProductCard,
+  PlanCard,
   type AccordionStepConfig,
 } from '@/components/common';
 import { useStepsQuery } from '@/hooks/useStepsQuery';
@@ -20,6 +21,7 @@ import {
 import { PageGrid } from '@/layouts';
 import { cn } from '@/lib/utils';
 import { mapStepProductToCardProps } from '@/utils/mapStepProductToCardProps';
+import { mapStepProductToPlanCardProps } from '@/utils/mapStepProductToPlanCardProps';
 
 /**
  * HomePage — the bundle builder. Fetches steps from the API, owns selection
@@ -43,10 +45,10 @@ const STEP_ICONS: Record<string, ReactNode> = {
 };
 
 /**
- * TODO: remove when steps 2-4 exist in API.
- * The steps API currently returns only the cameras step. To match the design,
- * headers 2–4 are rendered from this local placeholder config (title + icon +
- * order + advance label, no body) and merged after the API steps.
+ * TODO: remove when steps 3-4 exist in API.
+ * The steps API currently returns the cameras and plan steps. To match the
+ * design, headers 3–4 are rendered from this local placeholder config (title +
+ * icon + order + advance label, no body) and merged after the API steps.
  */
 const PLACEHOLDER_STEPS: Array<{
   id: string;
@@ -55,13 +57,6 @@ const PLACEHOLDER_STEPS: Array<{
   icon: string;
   nextLabel?: string;
 }> = [
-  {
-    id: 'plan',
-    order: 2,
-    title: 'Choose your plan',
-    icon: 'plan',
-    nextLabel: 'Next: Choose your sensors',
-  },
   {
     id: 'sensors',
     order: 3,
@@ -97,6 +92,39 @@ function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilde
   );
 }
 
+/**
+ * Responsive radiogroup of plan cards for a single-select step (3 across on
+ * desktop → 1 column on phone). Single-select semantics: exactly one card is
+ * chosen, driven by the builder's `getSingleSelection`.
+ */
+function StepPlansGrid({ step, builder }: { step: Step; builder: BundleBuilder }) {
+  const selectedId = builder.getSingleSelection(step.id);
+  return (
+    <div
+      role="radiogroup"
+      aria-label={step.title}
+      className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      {step.products.map((product) => {
+        const props = mapStepProductToPlanCardProps(product, {
+          selected: selectedId === product.id,
+          onSelect: () => builder.selectSingle(step.id, product.id),
+        });
+        return <PlanCard key={product.id} {...props} />;
+      })}
+    </div>
+  );
+}
+
+/** Render a step's body according to its selection type. */
+function StepContent({ step, builder }: { step: Step; builder: BundleBuilder }) {
+  return step.selectionType === 'single' ? (
+    <StepPlansGrid step={step} builder={builder} />
+  ) : (
+    <StepProductsGrid step={step} builder={builder} />
+  );
+}
+
 /** Merge live API steps with placeholder headers, sorted by `order`. */
 function buildAccordionSteps(apiSteps: Step[], builder: BundleBuilder): AccordionStepConfig[] {
   const apiIds = new Set(apiSteps.map((s) => s.id));
@@ -109,7 +137,7 @@ function buildAccordionSteps(apiSteps: Step[], builder: BundleBuilder): Accordio
       icon: STEP_ICONS[step.icon],
       nextLabel: step.nextLabel,
       selectedCount: builder.getSelectedCount(step.id),
-      content: <StepProductsGrid step={step} builder={builder} />,
+      content: <StepContent step={step} builder={builder} />,
     } satisfies AccordionStepConfig,
   }));
 

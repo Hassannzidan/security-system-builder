@@ -137,6 +137,7 @@
           "description": "Unlimited camera coverage. AI-powered detection, cloud video storage, and smart alerts for every camera you own.",
           "learnMoreUrl": "#",
           "badge": "Save 23%",
+          "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/unlimited-plan.png",
           "pricing": { "price": 9.99, "compareAt": 12.99, "interval": "month" },
           "variants": null,
           "seed": { "variantId": null, "qty": 1 }
@@ -146,6 +147,7 @@
           "name": "Cam Plus",
           "description": "Full-featured protection for a single camera. AI detection, unlimited video length, and no cooldowns.",
           "learnMoreUrl": "#",
+          "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/plus-plan.png",
           "pricing": { "price": 2.99, "interval": "month" },
           "variants": null,
           "seed": null
@@ -155,6 +157,7 @@
           "name": "Cam Protect",
           "description": "Cam Unlimited plus 24/7 professional monitoring and emergency dispatch.",
           "learnMoreUrl": "#",
+          "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/protect-plan.png",
           "pricing": { "price": 19.99, "interval": "month" },
           "variants": null,
           "seed": null

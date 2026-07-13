@@ -8,13 +8,21 @@ export function PriceBlock({
   currency,
   /** stacked = red above gray (horizontal card); inline = red then gray in a row (vertical card) */
   layout = 'stacked',
+  /**
+   * Billing interval for recurring prices (plans). When 'month', a `/mo` suffix
+   * is appended to both the active and struck-through prices. Omit for one-time
+   * prices — the default preserves the existing product-card behaviour.
+   */
+  interval,
 }: {
   price: number;
   compareAtPrice?: number;
   currency: string;
   layout?: 'stacked' | 'inline';
+  interval?: 'month';
 }) {
   const discounted = compareAtPrice !== undefined && compareAtPrice > price;
+  const suffix = interval === 'month' ? '/mo' : '';
   const typeStyle = {
     lineHeight: lineHeight['100'],
     letterSpacing: letterSpacing['0.6'],
@@ -33,10 +41,12 @@ export function PriceBlock({
           style={typeStyle}
         >
           {formatPrice(compareAtPrice!, currency)}
+          {suffix}
         </span>
       )}
       <span className="font-['Gilroy'] text-base font-normal text-[#525963]" style={typeStyle}>
         {formatPrice(price, currency)}
+        {suffix}
       </span>
     </div>
   );

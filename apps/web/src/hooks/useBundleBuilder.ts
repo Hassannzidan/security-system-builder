@@ -38,6 +38,12 @@ export interface LineItem {
   /** Step category the product belongs to — used to group the review panel. */
   category: string;
   stepId: string;
+  /**
+   * Whether this line came from a quantity-based (multi-select) step. Single-
+   * select steps (plans) set this to false so the review panel can render the
+   * line without a stepper. Derived from the owning step's `selectionType`.
+   */
+  hasStepper: boolean;
 }
 
 export interface BundleTotals {
@@ -49,19 +55,26 @@ export interface BundleTotals {
 /**
  * Build the initial per-product selection map.
  *
- * Every product starts UNSELECTED (empty quantities) so the user picks what they
- * want from a clean slate — the API `seed.qty` is intentionally not applied. We
- * still default the active variant (which colour chip is highlighted) to the
- * seed's variant when present, otherwise the first variant.
+ * Multi-select steps (cameras): every product starts UNSELECTED (empty
+ * quantities) so the user picks what they want from a clean slate — the API
+ * `seed.qty` is intentionally not applied. We still default the active variant
+ * (which colour chip is highlighted) to the seed's variant when present,
+ * otherwise the first variant.
+ *
+ * Single-select steps (plans): radio semantics require exactly one product
+ * chosen from load, so the seed IS applied here — the seeded product starts at
+ * qty 1 (under DEFAULT_VARIANT_KEY, since plans have no variants).
  */
 function seedSelections(steps: Step[]): Record<string, ProductSelection> {
   const selections: Record<string, ProductSelection> = {};
 
   for (const step of steps) {
+    const isSingle = step.selectionType === 'single';
     for (const product of step.products) {
+      const seeded = isSingle && product.seed != null;
       selections[product.id] = {
         activeVariantId: product.seed?.variantId ?? product.variants?.[0]?.id ?? null,
-        quantities: {},
+        quantities: seeded ? { [DEFAULT_VARIANT_KEY]: product.seed!.qty } : {},
       };
     }
   }
@@ -185,6 +198,36 @@ export function useBundleBuilder(steps: Step[]) {
     });
   }, []);
 
+  // Single-select (radio) choice for a step: set the chosen product to qty 1 and
+  // zero every OTHER product in the same step. Re-selecting the already-selected
+  // product is a no-op — a single-select step always keeps one product chosen
+  // (there is deliberately no toggle-off). Plans have no variants, so quantities
+  // live under DEFAULT_VARIANT_KEY.
+  const selectSingle = useCallback(
+    (stepId: string, productId: string) => {
+      const step = steps.find((s) => s.id === stepId);
+      if (!step) return;
+      setState((prev) => {
+        const nextSelections = { ...prev.selections };
+        for (const product of step.products) {
+          const current = nextSelections[product.id] ?? {
+            activeVariantId: null,
+            quantities: {},
+          };
+          nextSelections[product.id] = {
+            ...current,
+            quantities: {
+              ...current.quantities,
+              [DEFAULT_VARIANT_KEY]: product.id === productId ? 1 : 0,
+            },
+          };
+        }
+        return { ...prev, selections: nextSelections };
+      });
+    },
+    [steps],
+  );
+
   // --- Reads --------------------------------------------------------------
 
   const getCardState = useCallback(
@@ -221,6 +264,18 @@ export function useBundleBuilder(steps: Step[]) {
     [steps, isProductSelected],
   );
 
+  // The chosen product id in a single-select step (the one with qty > 0), or
+  // null if none is selected. For a seeded plan step this is never null.
+  const getSingleSelection = useCallback(
+    (stepId: string): string | null => {
+      const step = steps.find((s) => s.id === stepId);
+      if (!step) return null;
+      const chosen = step.products.find((product) => isProductSelected(product.id));
+      return chosen?.id ?? null;
+    },
+    [steps, isProductSelected],
+  );
+
   // --- Derived (review panel) --------------------------------------------
 
   const lineItems = useMemo<LineItem[]>(() => {
@@ -252,9 +307,10 @@ export function useBundleBuilder(steps: Step[]) {
             lineTotal: unitPrice * quantity,
             compareAtUnitPrice,
             compareAtLineTotal: compareAtUnitPrice * quantity,
-            image: variant?.image ?? product.image,
+            image: variant?.image ?? product.image ?? '',
             category: step.category,
             stepId: step.id,
+            hasStepper: step.selectionType !== 'single',
           });
         }
       }
@@ -283,7 +339,9 @@ export function useBundleBuilder(steps: Step[]) {
     incrementActive,
     decrementActive,
     toggleActive,
+    selectSingle,
     getSelectedCount,
+    getSingleSelection,
     isProductSelected,
     lineItems,
     totals,
