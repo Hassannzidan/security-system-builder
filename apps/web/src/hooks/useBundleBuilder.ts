@@ -46,24 +46,23 @@ export interface BundleTotals {
   savings: number;
 }
 
-/** Build the initial per-product selection map from each product's API seed. */
+/**
+ * Build the initial per-product selection map.
+ *
+ * Every product starts UNSELECTED (empty quantities) so the user picks what they
+ * want from a clean slate — the API `seed.qty` is intentionally not applied. We
+ * still default the active variant (which colour chip is highlighted) to the
+ * seed's variant when present, otherwise the first variant.
+ */
 function seedSelections(steps: Step[]): Record<string, ProductSelection> {
   const selections: Record<string, ProductSelection> = {};
 
   for (const step of steps) {
     for (const product of step.products) {
-      if (product.seed) {
-        const key = product.seed.variantId ?? DEFAULT_VARIANT_KEY;
-        selections[product.id] = {
-          activeVariantId: product.seed.variantId,
-          quantities: { [key]: product.seed.qty },
-        };
-      } else {
-        selections[product.id] = {
-          activeVariantId: product.variants?.[0]?.id ?? null,
-          quantities: {},
-        };
-      }
+      selections[product.id] = {
+        activeVariantId: product.seed?.variantId ?? product.variants?.[0]?.id ?? null,
+        quantities: {},
+      };
     }
   }
 
@@ -74,10 +73,11 @@ function seedSelections(steps: Step[]): Record<string, ProductSelection> {
  * useBundleBuilder — owns ALL client state for the bundle builder: the open
  * accordion step, the active variant per card, and per-variant quantities.
  *
- * It receives the `steps` array from the react-query layer and seeds selections
- * from each product's `seed` the first time real data arrives. Everything the
- * UI needs (card state, per-step selected counts, derived line items and totals)
- * is exposed as memoised, referentially-stable helpers.
+ * It receives the `steps` array from the react-query layer and initialises
+ * selections the first time real data arrives — every product starts unselected
+ * (only its default active variant is set). Everything the UI needs (card state,
+ * per-step selected counts, derived line items and totals) is exposed as
+ * memoised, referentially-stable helpers.
  */
 export function useBundleBuilder(steps: Step[]) {
   const [state, setState] = useState<BundleState>({ openStepIndex: 0, selections: {} });
@@ -163,6 +163,27 @@ export function useBundleBuilder(steps: Step[]) {
     (productId: string) => adjustActive(productId, -1),
     [adjustActive],
   );
+
+  // Toggle a product's selection: clicking a selected card zeroes the active
+  // variant, clicking an unselected one bumps it to 1. Operates on the active
+  // variant — the same count the card's stepper shows.
+  const toggleActive = useCallback((productId: string) => {
+    setState((prev) => {
+      const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
+      const key = current.activeVariantId ?? DEFAULT_VARIANT_KEY;
+      const isOn = (current.quantities[key] ?? 0) > 0;
+      return {
+        ...prev,
+        selections: {
+          ...prev.selections,
+          [productId]: {
+            ...current,
+            quantities: { ...current.quantities, [key]: isOn ? 0 : 1 },
+          },
+        },
+      };
+    });
+  }, []);
 
   // --- Reads --------------------------------------------------------------
 
@@ -261,6 +282,7 @@ export function useBundleBuilder(steps: Step[]) {
     setQuantity,
     incrementActive,
     decrementActive,
+    toggleActive,
     getSelectedCount,
     isProductSelected,
     lineItems,

@@ -88,6 +88,7 @@ function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilde
             key={product.id}
             orientation="vertical"
             selected={builder.isProductSelected(product.id)}
+            onToggleSelect={() => builder.toggleActive(product.id)}
             {...props}
           />
         );

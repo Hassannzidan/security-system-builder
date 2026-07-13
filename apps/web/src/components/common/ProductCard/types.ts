@@ -36,5 +36,11 @@ export interface ProductCardProps {
   orientation?: 'horizontal' | 'vertical';
   /** Highlights the card border. The parent passes `quantity > 0`. */
   selected?: boolean;
+  /**
+   * When provided, the card body becomes clickable and toggles selection.
+   * Clicks on interactive children (links, stepper buttons, variant pills) are
+   * ignored so they keep their own behaviour. Omit for a non-selectable card.
+   */
+  onToggleSelect?: () => void;
   className?: string;
 }

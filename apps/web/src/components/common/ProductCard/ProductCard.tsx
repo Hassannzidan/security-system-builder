@@ -1,3 +1,5 @@
+import type { KeyboardEvent, MouseEvent } from 'react';
+
 import {
   borderWidth,
   colors,
@@ -31,8 +33,10 @@ import { VariantPill } from './VariantPill';
  *   - "vertical"   → image on top, product info stacked underneath.
  *
  * The card owns no state: `quantity`, `selectedVariantId` and `selected` are all
- * controlled by the parent. The purple border is driven purely by `selected`
- * (the parent passes `quantity > 0`); clicking the card body does nothing.
+ * controlled by the parent. The purple border is driven purely by `selected`.
+ * When `onToggleSelect` is supplied, clicking the card body toggles selection
+ * (clicks on links / stepper buttons / variant pills are ignored); without it
+ * the body is inert.
  */
 export function ProductCard({
   title,
@@ -55,11 +59,30 @@ export function ProductCard({
   maxQuantity = 99,
   orientation = 'horizontal',
   selected = false,
+  onToggleSelect,
   className,
 }: ProductCardProps) {
   const setQuantity = (next: number) => {
     const clamped = Math.min(maxQuantity, Math.max(minQuantity, next));
     onQuantityChange?.(clamped);
+  };
+
+  const selectable = Boolean(onToggleSelect);
+
+  const handleClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (!onToggleSelect) return;
+    // Let interactive children (links, stepper buttons, variant pills) work
+    // without also toggling the card.
+    if ((event.target as HTMLElement).closest('a, button, input, textarea, select')) return;
+    onToggleSelect();
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!onToggleSelect) return;
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      onToggleSelect();
+    }
   };
 
   const hasVariants = Boolean(variants && variants.length > 0);
@@ -146,8 +169,14 @@ export function ProductCard({
   return (
     <div
       data-selected={selected}
+      role={selectable ? 'button' : undefined}
+      tabIndex={selectable ? 0 : undefined}
+      aria-pressed={selectable ? selected : undefined}
+      onClick={selectable ? handleClick : undefined}
+      onKeyDown={selectable ? handleKeyDown : undefined}
       className={cn(
         'flex overflow-hidden bg-white transition-colors',
+        selectable && 'cursor-pointer',
         isVertical ? 'flex-col' : 'flex-col sm:flex-row sm:items-stretch',
         className,
       )}
