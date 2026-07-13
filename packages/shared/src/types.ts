@@ -41,6 +41,8 @@ export interface ProductVariant {
 export interface Pricing {
   price: number;
   compareAt?: number;
+  /** Billing interval for recurring-priced products (plans). Absent = one-time. */
+  interval?: 'month';
 }
 
 /** Default quantity/variant the builder pre-selects for a product. */
@@ -56,7 +58,7 @@ export interface StepProduct {
   description?: string;
   learnMoreUrl?: string;
   badge?: string;
-  image: string;
+  image?: string;
   pricing: Pricing;
   variants?: ProductVariant[] | null;
   seed?: Seed | null;

@@ -26,6 +26,7 @@ const variantSchema = z.object({
 const pricingSchema = z.object({
   price: z.number(),
   compareAt: z.number().optional(),
+  interval: z.literal('month').optional(),
 });
 
 const seedSchema = z.object({
@@ -39,22 +40,46 @@ const productSchema = z.object({
   description: z.string().optional(),
   learnMoreUrl: z.string().optional(),
   badge: z.string().optional(),
-  image: z.string(),
+  image: z.string().optional(),
   pricing: pricingSchema,
   variants: z.array(variantSchema).nullable().optional(),
   seed: seedSchema.nullable().optional(),
 });
 
-const stepSchema = z.object({
-  id: z.string(),
-  order: z.number(),
-  title: z.string(),
-  icon: z.string(),
-  nextLabel: z.string().optional(),
-  category: z.string(),
-  selectionType: z.enum(['single', 'multiple']),
-  products: z.array(productSchema),
-});
+const stepSchema = z
+  .object({
+    id: z.string(),
+    order: z.number(),
+    title: z.string(),
+    icon: z.string(),
+    nextLabel: z.string().optional(),
+    category: z.string(),
+    selectionType: z.enum(['single', 'multiple']),
+    products: z.array(productSchema),
+  })
+  .superRefine((step, ctx) => {
+    if (step.selectionType !== 'single') return;
+
+    // A single-selection step may pre-select at most one product, and that
+    // seed must represent a single unit (qty exactly 1).
+    const seeded = step.products.filter((p) => p.seed != null);
+    if (seeded.length > 1) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `single-selection step "${step.id}" has ${seeded.length} seeded products; at most one is allowed`,
+        path: ['products'],
+      });
+    }
+    for (const product of seeded) {
+      if (product.seed!.qty !== 1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: `seeded product "${product.id}" in single-selection step "${step.id}" must have seed.qty === 1`,
+          path: ['products'],
+        });
+      }
+    }
+  });
 
 /** The file is shaped like a collection dump: `{ steps: [...] }`. */
 const collectionSchema = z.object({

@@ -5,7 +5,7 @@
       "order": 1,
       "title": "Choose your cameras",
       "icon": "camera",
-      "nextLabel": "Next: Choose your sensors",
+      "nextLabel": "Next: Choose your plan",
       "category": "Cameras",
       "selectionType": "multiple",
       "products": [
@@ -118,6 +118,45 @@
               "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/black-battery-camera.png"
             }
           ],
+          "seed": null
+        }
+      ]
+    },
+    {
+      "id": "plan",
+      "order": 2,
+      "title": "Choose your plan",
+      "icon": "shield",
+      "nextLabel": "Next: Choose your sensors",
+      "category": "Plan",
+      "selectionType": "single",
+      "products": [
+        {
+          "id": "cam-unlimited",
+          "name": "Cam Unlimited",
+          "description": "Unlimited camera coverage. AI-powered detection, cloud video storage, and smart alerts for every camera you own.",
+          "learnMoreUrl": "#",
+          "badge": "Save 23%",
+          "pricing": { "price": 9.99, "compareAt": 12.99, "interval": "month" },
+          "variants": null,
+          "seed": { "variantId": null, "qty": 1 }
+        },
+        {
+          "id": "cam-plus",
+          "name": "Cam Plus",
+          "description": "Full-featured protection for a single camera. AI detection, unlimited video length, and no cooldowns.",
+          "learnMoreUrl": "#",
+          "pricing": { "price": 2.99, "interval": "month" },
+          "variants": null,
+          "seed": null
+        },
+        {
+          "id": "cam-protect",
+          "name": "Cam Protect",
+          "description": "Cam Unlimited plus 24/7 professional monitoring and emergency dispatch.",
+          "learnMoreUrl": "#",
+          "pricing": { "price": 19.99, "interval": "month" },
+          "variants": null,
           "seed": null
         }
       ]
