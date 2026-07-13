@@ -11,7 +11,7 @@ export interface PageGridProps {
 }
 
 /**
- * Shared page column grid.
+ * Shared page column grid (full viewport width).
  *
  * The root element *is* the grid — pages put layout on this shell, and children
  * choose columns with `col-span` / `col-start`. Components stay layout-agnostic.
@@ -23,7 +23,7 @@ export function PageGrid({ children, as: Comp = 'div', className }: PageGridProp
   return (
     <Comp
       className={cn(
-        'mx-auto grid w-full max-w-screen-2xl grid-cols-1 gap-4 py-6 sm:py-8 lg:grid-cols-12 lg:gap-4 lg:py-10',
+        'grid w-full grid-cols-1 gap-4 py-6 sm:py-8 lg:grid-cols-12 lg:gap-4 lg:py-10',
         className,
       )}
     >
