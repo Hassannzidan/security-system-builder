@@ -3,14 +3,14 @@ import type { ReactNode } from 'react';
 import {
   colors,
   fontFamily,
-  fontSize,
   fontWeight,
   letterSpacing,
   lineHeight,
   radius,
-  spacing,
+  stepper,
 } from '@/design-tokens';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { cn } from '@/lib/utils';
 
 import { Chevron } from './icons';
 
@@ -59,114 +59,84 @@ export function AccordionStep({
   nextLabel,
   onNext,
 }: AccordionStepProps) {
-  // Open → tinted, purple-bordered card. Collapsed → flat full-width row
-  // separated from its neighbours by hairline dividers, no card chrome.
-  const itemStyle = isOpen
-    ? {
-        borderRadius: '10px',
-        border: 'none',
-        backgroundColor: EXPANDED_BG,
-      }
-    : {
-        borderBottom: `1px solid ${colors.border.default}`,
-        backgroundColor: 'transparent',
-      };
+  // Permanent bottom border on every item; open state only tints the surface.
+  const itemStyle = {
+    backgroundColor: isOpen ? EXPANDED_BG : colors.background.default,
+    borderBottom: `1px solid ${colors.border.default}`,
+  };
 
   return (
     <AccordionItem value={value} className="overflow-hidden transition-colors" style={itemStyle}>
-      <AccordionTrigger
-        className="flex w-full flex-col text-left"
-        style={{
-          gap: spacing.sm,
-          padding: `${spacing['15']} ${spacing['15']}`,
-        }}
-      >
+      <AccordionTrigger className={cn('flex w-full flex-col text-left', stepper.triggerPadding)}>
         {showEyebrow && (
           <span
-            className="w-full"
+            className={cn('w-full border-b pb-2 text-[10px] sm:text-[11px]', stepper.eyebrowBleed)}
             style={{
               fontFamily: fontFamily.secondary.join(', '),
               fontWeight: fontWeight.semiBold,
-              fontSize: '11px',
               lineHeight: lineHeight['100'],
-              letterSpacing: '1px',
+              letterSpacing: stepper.eyebrow.letterSpacing,
               textTransform: 'uppercase',
               color: colors.text.tertiary,
-              borderBottom: `1px solid ${colors.border.default}`,
-              paddingBottom: isOpen ? '5px' : spacing.sm,
+              borderColor: colors.border.default,
             }}
           >
             Step {stepNumber} of {totalSteps}
           </span>
         )}
 
-        <span className="flex w-full items-center gap-2.5">
+        <span className="flex w-full items-center gap-2 sm:gap-2.5">
           {icon && (
             <span
-              className="grid shrink-0 place-items-center"
-              style={{
-                width: 30,
-                height: 30,
-                color: colors.text.tertiary,
-              }}
+              className="grid size-6 shrink-0 place-items-center sm:size-7 lg:size-[30px]"
+              style={{ color: colors.text.tertiary }}
             >
               {icon}
             </span>
           )}
 
           <span
-            className="truncate"
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.semiBold,
-              fontSize: fontSize['28'],
-              lineHeight: lineHeight['100'],
-              letterSpacing: letterSpacing.none,
-              color: colors.text.primary,
-            }}
+            className="truncate font-['Gilroy'] text-[20px] font-semibold leading-none sm:text-2xl lg:text-[28px]"
+            style={{ color: colors.text.primary }}
           >
             {title}
           </span>
 
           <span
-            className="ml-auto flex shrink-0 items-center gap-1.5"
+            className="ml-auto flex shrink-0 items-center gap-1.5 text-xs font-medium leading-none sm:text-[12px]"
             style={{
-              color: isOpen ? colors.primary.DEFAULT : colors.text.tertiary,
               fontFamily: fontFamily.secondary.join(', '),
               fontWeight: fontWeight.medium,
-              fontSize: fontSize['12'],
-              lineHeight: lineHeight['100'],
+              color: isOpen ? colors.primary.DEFAULT : colors.text.tertiary,
             }}
           >
-            {isOpen && selectedCount !== undefined && <span>{selectedCount} selected</span>}
+            {isOpen && selectedCount !== undefined && (
+              <span className="hidden sm:inline">{selectedCount} selected</span>
+            )}
             <Chevron open={isOpen} />
           </span>
         </span>
       </AccordionTrigger>
 
-      <AccordionContent
-        className="flex flex-col"
-        style={{
-          gap: spacing.lg,
-          padding: `0 ${spacing['15']} ${spacing.lg}`,
-        }}
-      >
+      <AccordionContent className={cn('flex flex-col', stepper.contentPadding)}>
         {children}
 
         <button
           type="button"
           onClick={onNext}
-          className="self-center transition-colors hover:bg-white/60 active:opacity-90"
+          className={cn(
+            'self-center text-sm transition-colors hover:bg-white/60 active:opacity-90 sm:text-base',
+            stepper.nextButtonLayout,
+            stepper.nextButtonPadding,
+          )}
           style={{
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.semiBold,
-            fontSize: fontSize['16'],
             letterSpacing: letterSpacing['0.6'],
             color: colors.primary.DEFAULT,
             backgroundColor: colors.background.default,
             border: `1px solid ${colors.primary.muted}`,
             borderRadius: radius.md,
-            padding: `${spacing.md} ${spacing['2xl']}`,
           }}
         >
           {nextLabel}

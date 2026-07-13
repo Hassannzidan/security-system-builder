@@ -26,6 +26,12 @@ export type { Typography, FontFamily, FontWeight, LineHeight, LetterSpacing } fr
 export { spacing } from './spacing';
 export type { Spacing, SpacingToken } from './spacing';
 
+export { breakpoints } from './breakpoints';
+export type { Breakpoints, BreakpointToken } from './breakpoints';
+
+export { stepper } from './stepper';
+export type { Stepper } from './stepper';
+
 export { radius } from './radius';
 export type { Radius, RadiusToken } from './radius';
 
@@ -37,7 +43,9 @@ export type { Shadows, ShadowToken } from './shadows';
 
 import { colors } from './colors';
 import { typography } from './typography';
+import { breakpoints } from './breakpoints';
 import { spacing } from './spacing';
+import { stepper } from './stepper';
 import { radius } from './radius';
 import { borders } from './borders';
 import { shadows } from './shadows';
@@ -50,6 +58,8 @@ export const tokens = {
   radius,
   borders,
   shadows,
+  breakpoints,
+  stepper,
 } as const;
 
 export type DesignTokens = typeof tokens;

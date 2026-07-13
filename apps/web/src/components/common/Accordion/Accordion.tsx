@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { Accordion as AccordionRoot } from '@/components/ui/accordion';
+import { cn } from '@/lib/utils';
 
 import { AccordionStep } from './AccordionStep';
 import type { AccordionProps } from './types';
@@ -58,8 +59,7 @@ export function Accordion({
       collapsible
       value={currentValue}
       onValueChange={handleValueChange}
-      className={className}
-      style={{ display: 'flex', flexDirection: 'column' }}
+      className={cn('flex flex-col', className)}
     >
       {steps.map((step, index) => {
         const nextStep = steps[index + 1];

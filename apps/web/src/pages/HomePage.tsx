@@ -23,9 +23,9 @@ const STEPS: AccordionStepConfig[] = [
 
 export function HomePage() {
   return (
-    <main className="min-h-screen bg-[#F7F8FC] px-4 py-10">
-      <div className="mx-auto w-full max-w-4xl">
-        <h1 className="mb-6 font-['Gilroy'] text-2xl font-bold text-[#0B0D10]">
+    <main className="min-h-screen bg-[#F7F8FC] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10">
+      <div className="mx-auto w-full max-w-4xl xl:max-w-5xl">
+        <h1 className="mb-4 font-['Gilroy'] text-xl font-bold text-[#0B0D10] sm:mb-6 sm:text-2xl lg:text-[28px]">
           Build your system
         </h1>
         <Accordion steps={STEPS} />

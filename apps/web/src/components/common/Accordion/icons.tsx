@@ -16,10 +16,10 @@ import SensorsSvg from '@/assets/icons/step-sensors.svg?react';
 
 type IconProps = SVGProps<SVGSVGElement>;
 
-/** Wrap an svgr component so every step icon renders at a consistent 30×30. */
+/** Wrap an svgr component so the accordion header controls icon size via CSS. */
 function withSize(Svg: ComponentType<IconProps>) {
   return function StepIcon(props: IconProps) {
-    return <Svg width={30} height={30} aria-hidden="true" {...props} />;
+    return <Svg className="size-full" aria-hidden="true" {...props} />;
   };
 }
 
