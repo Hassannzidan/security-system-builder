@@ -26,6 +26,54 @@ export interface Category {
   productCount: number;
 }
 
+/** Whether a step allows selecting one or many of its products. */
+export type SelectionType = 'single' | 'multiple';
+
+/** A selectable colour/finish option for a step product. */
+export interface ProductVariant {
+  id: string;
+  label: string;
+  swatch: string;
+  image: string;
+}
+
+/** Pricing for a step product, with an optional strike-through compare-at. */
+export interface Pricing {
+  price: number;
+  compareAt?: number;
+}
+
+/** Default quantity/variant the builder pre-selects for a product. */
+export interface Seed {
+  variantId: string | null;
+  qty: number;
+}
+
+/** A product presented inside a bundle-builder step. */
+export interface StepProduct {
+  id: string;
+  name: string;
+  description?: string;
+  learnMoreUrl?: string;
+  badge?: string;
+  image: string;
+  pricing: Pricing;
+  variants?: ProductVariant[] | null;
+  seed?: Seed | null;
+}
+
+/** A single step in the bundle builder, embedding its own products. */
+export interface Step {
+  id: string;
+  order: number;
+  title: string;
+  icon: string;
+  nextLabel?: string;
+  category: string;
+  selectionType: SelectionType;
+  products: StepProduct[];
+}
+
 /** Standard success envelope returned by the API. */
 export interface ApiResponse<T> {
   success: true;

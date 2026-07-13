@@ -4,11 +4,13 @@
  * Usage:
  *   router.get('/', validate({ query: mySchema }), handler)
  *
- * On success the parsed values replace `req.body/query/params`. On failure a
- * `ZodError` is forwarded to the error handler.
+ * On success the parsed values replace `req.body/query/params`. On failure the
+ * Zod issues are wrapped in a 400 `ApiError` (bad request) and forwarded to the
+ * central error handler; any non-Zod error is passed through untouched.
  */
 import type { RequestHandler } from 'express';
-import type { ZodTypeAny } from 'zod';
+import { ZodError, type ZodTypeAny } from 'zod';
+import { ApiError } from '../utils/ApiError.js';
 
 interface ValidationSchemas {
   body?: ZodTypeAny;
@@ -24,7 +26,11 @@ export function validate(schemas: ValidationSchemas): RequestHandler {
       if (schemas.params) Object.assign(req.params, schemas.params.parse(req.params));
       next();
     } catch (error) {
-      // Forward Zod (or any) validation error to the centralised error handler.
+      // Translate validation failures into a 400 and forward everything else.
+      if (error instanceof ZodError) {
+        next(ApiError.badRequest('Invalid request parameters', error.flatten()));
+        return;
+      }
       next(error);
     }
   };
