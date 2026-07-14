@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import type { Step } from '@security-system-builder/shared';
 
@@ -236,22 +236,29 @@ export function useBundleBuilder(steps: Step[]) {
   const [state, setState] = useState<BundleState>({ openStepIndex: 0, selections: {} });
 
   // Resolve initial state once, the first time real steps arrive. The guard is
-  // gated on `steps.length > 0`, so it never fires (and never marks itself done)
-  // against the empty array react-query returns before the fetch resolves — the
-  // hydration waits for the catalog rather than giving up on it. Assigning state
-  // during render (guarded by the ref) re-renders before commit, so the first
-  // paint already shows the resolved quantities — no flash of empty state a
-  // useEffect causes, and no seed-then-hydrate flicker.
+  // gated on `steps.length > 0`, so it never fires against the empty array
+  // react-query returns before the fetch resolves — hydration waits for the
+  // catalog rather than giving up on it. Assigning state during render re-renders
+  // before commit, so the first paint already shows the resolved quantities — no
+  // flash of empty state a useEffect causes, and no seed-then-hydrate flicker.
+  //
+  // The "have I hydrated for these steps?" marker lives in STATE (`hydratedFrom`),
+  // not a ref. This is React's documented "adjust state during render" pattern
+  // (react.dev: storing information from previous renders). A ref mutated during
+  // render is an impure side effect that StrictMode deliberately breaks: on its
+  // dev double-mount the ref/state reset while react-query keeps its cache, and
+  // the render-phase setState was silently dropped — so a saved system only
+  // appeared after the user touched the UI. Tracking the marker in state (which
+  // React owns and restores correctly across the double-mount) makes hydration
+  // fire reliably on load. Regression-covered in the react-dom StrictMode test.
   //
   // `resolveInitialState` is the ONLY writer of initial selections: it restores
   // a saved system when one exists (reconciled against the current catalog) and
   // seeds from the API only when nothing is saved — saved-state-first, never
-  // seed-first. Because the ref tracks the `steps` identity (stable across
-  // re-renders and re-created on a fresh mount), this survives StrictMode's
-  // double-invocation without flipping to the seed path on a second run.
-  const seededStepsRef = useRef<Step[] | null>(null);
-  if (steps.length > 0 && seededStepsRef.current !== steps) {
-    seededStepsRef.current = steps;
+  // seed-first.
+  const [hydratedFrom, setHydratedFrom] = useState<Step[] | null>(null);
+  if (steps.length > 0 && hydratedFrom !== steps) {
+    setHydratedFrom(steps);
     setState(resolveInitialState(steps, loadSystem()));
   }
 
