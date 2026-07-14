@@ -69,10 +69,20 @@ export default {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
+        shimmer: {
+          '100%': { transform: 'translateX(100%)' },
+        },
+        // ChatGPT-style loader: a soft gradient that flows across the frame.
+        'gradient-flow': {
+          '0%, 100%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.25s ease-out',
         'accordion-up': 'accordion-up 0.25s ease-out',
+        shimmer: 'shimmer 1.5s infinite',
+        'gradient-flow': 'gradient-flow 2.2s ease-in-out infinite',
       },
     },
   },

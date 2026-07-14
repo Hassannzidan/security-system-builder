@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import { spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
@@ -21,6 +23,9 @@ export function ProductImage({
   align?: 'start' | 'center';
 }) {
   const centered = align === 'center';
+  // Show the shimmer skeleton until the image finishes decoding. A load error
+  // also clears it so we don't shimmer forever over a broken src.
+  const [loaded, setLoaded] = useState(false);
   return (
     <div
       className={cn(
@@ -35,21 +40,34 @@ export function ProductImage({
       {badge && <DiscountBadge>{badge}</DiscountBadge>}
       <div
         className={cn(
-          'flex w-full overflow-hidden rounded-xl',
+          'relative flex w-full overflow-hidden rounded-xl',
           centered ? 'items-center justify-center' : 'items-start justify-start',
           vertical ? 'aspect-[4/3]' : 'aspect-square sm:aspect-auto sm:min-h-0 sm:flex-1',
         )}
       >
         {src ? (
-          <img
-            src={src}
-            alt={alt}
-            loading="lazy"
-            className={cn(
-              'h-full w-full object-contain',
-              centered ? 'object-center' : 'object-left-top',
+          <>
+            {/* ChatGPT-style loader — a soft gradient that flows until load. */}
+            {!loaded && (
+              <div
+                aria-hidden
+                className="absolute inset-0 animate-gradient-flow bg-gradient-to-r from-[#EDF1F5] via-[#DCE3EB] to-[#EDF1F5] motion-reduce:animate-none"
+                style={{ backgroundSize: '200% 100%' }}
+              />
             )}
-          />
+            <img
+              src={src}
+              alt={alt}
+              loading="lazy"
+              onLoad={() => setLoaded(true)}
+              onError={() => setLoaded(true)}
+              className={cn(
+                'h-full w-full object-contain transition-opacity duration-300',
+                centered ? 'object-center' : 'object-left-top',
+                loaded ? 'opacity-100' : 'opacity-0',
+              )}
+            />
+          </>
         ) : (
           <div className="h-full w-full bg-[#F0F4F7]" aria-hidden />
         )}
