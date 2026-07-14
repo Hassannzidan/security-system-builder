@@ -29,9 +29,8 @@ export function VariantPill({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className="grid shrink-0 grid-cols-2 overflow-hidden box-border transition-colors"
+      className="inline-flex shrink-0 items-center overflow-hidden box-border transition-colors"
       style={{
-        width: 70,
         height: 26,
         borderRadius: radius.xs,
         borderStyle: 'solid',
@@ -41,12 +40,12 @@ export function VariantPill({
         color: colors.base.black,
       }}
     >
-      <span className="flex h-full w-full items-center justify-center overflow-hidden">
+      <span className="flex h-full w-7 shrink-0 items-center justify-center overflow-hidden">
         <img src={variant.swatch} alt="" aria-hidden className="h-full w-full object-contain" />
       </span>
-      <span className="flex h-full w-full items-center justify-center overflow-hidden px-0.5">
+      <span className="flex h-full items-center pl-0.5 pr-2">
         <span
-          className="truncate"
+          className="whitespace-nowrap"
           style={{
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.medium,

@@ -107,10 +107,6 @@ export function loadSystem(): BundleState | null {
 
   const result = savedSystemSchema.safeParse(parsed);
   if (!result.success) {
-    // Wrong version, wrong shape, or otherwise unusable — discard it. In dev,
-    // name which failure it was (version vs shape) and surface the offending
-    // zod issues, so a saved payload that stops validating is diagnosable at a
-    // glance instead of silently falling back to seeds.
     if (import.meta.env.DEV) {
       const versionMismatch = result.error.issues.some((issue) => issue.path[0] === 'version');
       console.warn(

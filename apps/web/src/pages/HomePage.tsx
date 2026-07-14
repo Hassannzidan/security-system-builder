@@ -193,6 +193,21 @@ function HomeContent() {
     // again, so the review returns to a full-width panel beneath the accordion.
     <div className="grid grid-cols-1 items-start gap-4 lg:max-[1439px]:grid-cols-10 lg:max-[1439px]:gap-2">
       <div className="min-w-0 lg:max-[1439px]:col-span-6">
+        {/* Mobile-only heading shown above the stepper. */}
+        <h1
+          className="mb-4 block px-4 sm:hidden"
+          style={{
+            fontFamily: "'Gilroy-Bold', 'Gilroy', sans-serif",
+            fontWeight: 400,
+            fontSize: '31px',
+            lineHeight: '110%',
+            letterSpacing: '-0.06px',
+            textAlign: 'center',
+            color: '#1F1F1F',
+          }}
+        >
+          Let’s get started!
+        </h1>
         <Accordion
           steps={buildAccordionSteps(builder.steps, builder)}
           openIndex={builder.openStepIndex}

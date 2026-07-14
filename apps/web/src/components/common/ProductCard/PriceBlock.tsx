@@ -6,13 +6,7 @@ export function PriceBlock({
   price,
   compareAtPrice,
   currency,
-  /** stacked = red above gray (horizontal card); inline = red then gray in a row (vertical card) */
   layout = 'stacked',
-  /**
-   * Billing interval for recurring prices (plans). When 'month', a `/mo` suffix
-   * is appended to both the active and struck-through prices. Omit for one-time
-   * prices — the default preserves the existing product-card behaviour.
-   */
   interval,
 }: {
   price: number;
@@ -22,9 +16,6 @@ export function PriceBlock({
   interval?: 'month';
 }) {
   const discounted = compareAtPrice !== undefined && compareAtPrice > price;
-  // A zero price with a compare-at reads as a giveaway: strike the compare-at and
-  // show the word "FREE" (in the brand purple) where the active price would be —
-  // never "$0.00", and never an interval suffix.
   const isFree = isFreePrice(price, compareAtPrice);
   const suffix = priceIntervalSuffix(interval);
   const typeStyle = {

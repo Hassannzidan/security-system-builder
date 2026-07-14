@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
 import { DiscountBadge } from './DiscountBadge';
@@ -23,26 +22,21 @@ export function ProductImage({
   align?: 'start' | 'center';
 }) {
   const centered = align === 'center';
-  // Show the shimmer skeleton until the image finishes decoding. A load error
-  // also clears it so we don't shimmer forever over a broken src.
   const [loaded, setLoaded] = useState(false);
   return (
     <div
       className={cn(
         'relative shrink-0',
-        // Vertical: span the full card row. Horizontal: capped at 101px — a left
-        // column on `sm`+, but on mobile the card stacks so center the capped
-        // frame (`mx-auto`) instead of letting it anchor top-left.
-        vertical ? 'w-full' : 'mx-auto w-full sm:mx-0 sm:flex sm:self-stretch',
+        vertical ? 'w-full' : 'w-full sm:flex sm:max-w-[101px] sm:self-stretch',
       )}
-      style={vertical ? { width: '100%' } : { width: '100%', maxWidth: spacing['101'] }}
+      style={{ width: '100%' }}
     >
       {badge && <DiscountBadge>{badge}</DiscountBadge>}
       <div
         className={cn(
           'relative flex w-full overflow-hidden rounded-xl',
           centered ? 'items-center justify-center' : 'items-start justify-start',
-          vertical ? 'aspect-[4/3]' : 'aspect-square sm:aspect-auto sm:min-h-0 sm:flex-1',
+          vertical ? 'aspect-[4/3]' : 'aspect-[4/3] sm:aspect-auto sm:min-h-0 sm:flex-1',
         )}
       >
         {src ? (

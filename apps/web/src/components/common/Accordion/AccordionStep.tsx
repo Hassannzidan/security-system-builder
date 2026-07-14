@@ -107,8 +107,11 @@ export function AccordionStep({
               color: isOpen ? colors.primary.DEFAULT : colors.text.tertiary,
             }}
           >
-            {isOpen && selectedCount !== undefined && (
+            {selectedCount !== undefined && (
               <span
+                // On small screens the count is always visible (open or closed).
+                // On sm+ it keeps the original behaviour: shown only while open.
+                className={cn(!isOpen && 'sm:hidden')}
                 style={{
                   fontFamily: fontFamily.primary.join(', '),
                   fontWeight: 400,
@@ -116,6 +119,7 @@ export function AccordionStep({
                   lineHeight: '16px',
                   letterSpacing: '0px',
                   textAlign: 'center',
+                  color: colors.primary.DEFAULT,
                 }}
               >
                 {selectedCount} selected

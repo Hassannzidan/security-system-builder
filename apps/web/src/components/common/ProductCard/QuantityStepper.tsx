@@ -24,9 +24,7 @@ export function QuantityStepper({
   max: number;
   onChange: (next: number) => void;
   title: string;
-  /** When true, both − and + are disabled regardless of value (locked quantity). */
   disabled?: boolean;
-  /** Visual style: 'card' (grey buttons) on the product card, 'review' (white buttons) in the review summary. */
   variant?: 'card' | 'review';
 }) {
   const btnBg =
