@@ -133,14 +133,6 @@ function buildAccordionSteps(apiSteps: Step[], builder: Builder): AccordionStepC
     }));
 }
 
-function Heading() {
-  return (
-    <h1 className="font-['Gilroy'] text-xl font-bold text-[#0B0D10] sm:text-2xl lg:text-[28px]">
-      Build your system
-    </h1>
-  );
-}
-
 /** The page body — reads shared state from context and renders the loaded UI. */
 function HomeContent() {
   const builder = useBundleBuilderContext();
@@ -192,7 +184,6 @@ export function HomePage() {
     <BundleBuilderProvider>
       <PageGrid as="main" className="min-h-screen bg-[#F7F8FC]">
         <div className={cn(CENTER_COLS, 'flex flex-col gap-4')}>
-          <Heading />
           <HomeContent />
         </div>
       </PageGrid>
