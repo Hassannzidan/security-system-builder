@@ -94,9 +94,9 @@ export function ProductCard({
   const info = (
     <div
       className={cn('flex min-h-0 min-w-0 flex-1 flex-col', !hasVariants && 'justify-center')}
-      style={{ gap: 10 }}
+      style={{ gap: spacing['10'] }}
     >
-      <div className="flex flex-col" style={{ gap: 8 }}>
+      <div className="flex flex-col" style={{ gap: spacing.sm }}>
         <h3
           className="text-[#0B0D10]"
           style={{
@@ -112,7 +112,7 @@ export function ProductCard({
 
         {(description || showLearnMore) && (
           <p
-            className="font-['Gilroy'] text-xs font-medium"
+            className="font-primary text-xs font-medium"
             style={{
               color: colors.text.description,
               lineHeight: lineHeight['130'],
@@ -149,7 +149,7 @@ export function ProductCard({
           hasVariants && 'mt-auto',
           isVertical ? 'justify-start' : 'justify-between',
         )}
-        style={{ gap: 10 }}
+        style={{ gap: spacing['10'] }}
       >
         <QuantityStepper
           value={quantity}

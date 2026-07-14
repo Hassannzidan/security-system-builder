@@ -1,4 +1,4 @@
-import { fontFamily, fontWeight } from '@/design-tokens';
+import { fontFamily, fontWeight, lineHeight } from '@/design-tokens';
 
 import { QuantityStepper } from '../ProductCard/QuantityStepper';
 import { ReviewPrice } from './ReviewPrice';
@@ -39,7 +39,7 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
         style={{
           fontFamily: fontFamily.primary.join(', '),
           fontWeight: fontWeight.medium,
-          lineHeight: '16px',
+          lineHeight: lineHeight['16'],
           letterSpacing: '0.5%',
         }}
       >

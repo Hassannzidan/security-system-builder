@@ -20,22 +20,22 @@ export function NotFoundPage() {
           'flex min-h-[70vh] flex-col items-center justify-center text-center',
         )}
       >
-        <p className="font-['Gilroy'] text-[64px] font-bold leading-none tracking-tight text-[#6D28D9] sm:text-[88px]">
+        <p className="font-primary text-[64px] font-bold leading-none tracking-tight text-[#6D28D9] sm:text-[88px]">
           404
         </p>
 
-        <h1 className="mt-4 font-['Gilroy'] text-xl font-semibold text-[#1E2430] sm:text-2xl">
+        <h1 className="mt-4 font-primary text-xl font-semibold text-[#1E2430] sm:text-2xl">
           This page went off the grid
         </h1>
 
-        <p className="mt-3 max-w-md font-['Gilroy'] text-sm font-medium text-[#525963]">
+        <p className="mt-3 max-w-md font-primary text-sm font-medium text-[#525963]">
           The page you’re looking for doesn’t exist or may have been moved. Let’s get you back to
           building your security system.
         </p>
 
         <Link
           to="/"
-          className="mt-8 inline-flex items-center justify-center rounded-md bg-[#6D28D9] px-6 py-3 font-['Gilroy'] text-sm font-semibold text-white transition-colors hover:bg-[#5B21B6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6D28D9]"
+          className="mt-8 inline-flex items-center justify-center rounded-md bg-[#6D28D9] px-6 py-3 font-primary text-sm font-semibold text-white transition-colors hover:bg-[#5B21B6] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#6D28D9]"
         >
           Back to home
         </Link>

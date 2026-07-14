@@ -12,6 +12,12 @@
 /** System fallbacks shared by every stack */
 export const fontFamilyFallback = ['system-ui', 'sans-serif'] as const;
 
+/**
+ * NOTE: `tailwind.config.js` → theme.extend.fontFamily.{primary,secondary} MUST
+ * mirror these stacks exactly. The `font-primary` / `font-secondary` utility
+ * classes are generated from that config; keep the two in sync so class-based and
+ * inline (`fontFamily.primary.join(', ')`) usage resolve to identical stacks.
+ */
 export const fontFamily = {
   /** Gilroy — headings, CTAs, brand moments */
   primary: ['Gilroy', ...fontFamilyFallback],
@@ -34,10 +40,14 @@ export const fontSize = {
   '10': '10px',
   /** Discount badge — product card */
   '12': '12px',
+  /** Review line names / "N selected" / save + savings copy */
+  '14': '14px',
   /** Title — product card (horizontal) */
   '16': '16px',
   /** Title — product card (vertical) */
   '18': '18px',
+  /** Compare-at total (review) / section title (mobile) */
+  '22': '22px',
   /** Step title — accordion */
   '28': '28px',
 } as const;
@@ -50,8 +60,12 @@ export const lineHeight = {
   auto: 'auto',
   /** Title / price — product card */
   '100': '100%',
+  /** Guarantee heading/body (review) / mobile H1 */
+  '110': '110%',
   /** Description — product card */
   '130': '130%',
+  /** Review line names / prices / "N selected" leading */
+  '16': '16px',
   /** Quantity stepper number — product card */
   '20': '20px',
 } as const;

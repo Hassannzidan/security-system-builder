@@ -22,7 +22,7 @@ export function DiscountBadge({ children }: { children: ReactNode }) {
         width: 65,
         height: 19,
         borderRadius: radius.lg,
-        background: 'linear-gradient(135deg, #6D4AE0 0%, #4E2FD2 100%)',
+        background: `linear-gradient(135deg, #6D4AE0 0%, ${colors.primary.DEFAULT} 100%)`,
         border: `solid ${borderWidth.sm} ${colors.border.black}`,
         fontFamily: fontFamily.primary.join(', '),
         fontWeight: fontWeight.semiBold,

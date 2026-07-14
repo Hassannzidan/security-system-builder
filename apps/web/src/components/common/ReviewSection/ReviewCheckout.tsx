@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 
 import satisfactionBadge from '@/assets/satisfaction-badge.svg';
-import { colors, fontFamily, fontWeight, letterSpacing, lineHeight } from '@/design-tokens';
+import {
+  colors,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+  radius,
+} from '@/design-tokens';
 import { formatPrice } from '@/utils/format';
 
 import { FINANCING_ESTIMATE, RETURNS_BODY, RETURNS_HEADING } from './constants';
@@ -64,8 +72,8 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.semiBold,
-              fontSize: '18px',
-              lineHeight: '110%',
+              fontSize: fontSize['18'],
+              lineHeight: lineHeight['110'],
               letterSpacing: letterSpacing['0.6'],
               verticalAlign: 'middle',
             }}
@@ -76,8 +84,8 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.regular,
-              fontSize: '18px',
-              lineHeight: '110%',
+              fontSize: fontSize['18'],
+              lineHeight: lineHeight['110'],
               letterSpacing: letterSpacing['0.6'],
               verticalAlign: 'middle',
               color: colors.text.description,
@@ -97,7 +105,7 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             borderRadius: '3px',
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.regular,
-            fontSize: '16px',
+            fontSize: fontSize['16'],
             lineHeight: lineHeight['100'],
             letterSpacing: '-0.05em',
           }}
@@ -111,8 +119,8 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.medium,
-              fontSize: '22px',
-              lineHeight: '20px',
+              fontSize: fontSize['22'],
+              lineHeight: lineHeight['20'],
               letterSpacing: '0.25%',
               textAlign: 'center',
               color: colors.gray[600],
@@ -124,7 +132,7 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.bold,
-              fontSize: '28px',
+              fontSize: fontSize['28'],
               lineHeight: '32px',
               letterSpacing: '-0.13%',
               textAlign: 'right',
@@ -144,8 +152,8 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
           style={{
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.semiBold,
-            fontSize: '14px',
-            lineHeight: '100%',
+            fontSize: fontSize['14'],
+            lineHeight: lineHeight['100'],
             letterSpacing: '-0.06px',
             verticalAlign: 'middle',
             color: colors.status.success,
@@ -163,13 +171,13 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         className="flex h-12 w-full items-center justify-center gap-2 text-white transition-colors disabled:cursor-default"
         style={{
           backgroundColor: placed ? colors.status.success : colors.primary.DEFAULT,
-          borderRadius: '4px',
+          borderRadius: radius.sm,
           padding: '13px 16px',
           fontFamily: fontFamily.secondary.join(', '),
           fontWeight: fontWeight.bold,
           fontSize: '17px',
           lineHeight: lineHeight['100'],
-          letterSpacing: '0px',
+          letterSpacing: letterSpacing.none,
           verticalAlign: 'middle',
         }}
       >
@@ -187,7 +195,7 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         style={{
           fontFamily: fontFamily.primary.join(', '),
           fontWeight: fontWeight.medium,
-          fontSize: '14px',
+          fontSize: fontSize['14'],
           lineHeight: lineHeight['130'],
           letterSpacing: letterSpacing['0.6'],
           color: saveStatus === 'error' ? colors.status.error : colors.primary.DEFAULT,

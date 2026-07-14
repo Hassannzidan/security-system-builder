@@ -1,4 +1,11 @@
-import { colors, fontFamily, fontWeight, letterSpacing, lineHeight } from '@/design-tokens';
+import {
+  colors,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+} from '@/design-tokens';
 
 import { PlanIcon } from '../Accordion';
 import { ReviewPrice } from './ReviewPrice';
@@ -45,7 +52,7 @@ export function ReviewPlanLine({ item }: ReviewPlanLineProps) {
         style={{
           fontFamily: fontFamily.primary.join(', '),
           fontWeight: fontWeight.bold,
-          fontSize: '16px',
+          fontSize: fontSize['16'],
           lineHeight: lineHeight['130'],
           letterSpacing: letterSpacing['0.6'],
         }}

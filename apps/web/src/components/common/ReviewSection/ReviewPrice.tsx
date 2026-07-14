@@ -1,4 +1,4 @@
-import { colors, fontFamily, fontWeight } from '@/design-tokens';
+import { colors, fontFamily, fontSize, fontWeight, lineHeight } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 import { formatPrice, isFreePrice, priceIntervalSuffix } from '@/utils/format';
 
@@ -29,8 +29,8 @@ export function ReviewPrice({
   const typeStyle = {
     fontFamily: fontFamily.primary.join(', '),
     fontWeight: fontWeight.medium,
-    fontSize: '16px',
-    lineHeight: '16px',
+    fontSize: fontSize['16'],
+    lineHeight: lineHeight['16'],
     letterSpacing: '0.5%',
     textAlign: 'right',
     verticalAlign: 'middle',

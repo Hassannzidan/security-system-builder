@@ -4,9 +4,11 @@ import {
   borderWidth,
   colors,
   fontFamily,
+  fontSize,
   fontWeight,
   letterSpacing,
   lineHeight,
+  spacing,
 } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
@@ -40,8 +42,8 @@ export function QuantityStepper({
         type="button"
         className={cn(btn, 'disabled:bg-transparent disabled:hover:bg-transparent')}
         style={{
-          width: 20,
-          height: 20,
+          width: spacing.xl,
+          height: spacing.xl,
           ...(decreaseDisabled
             ? {
                 borderStyle: 'solid',
@@ -66,9 +68,9 @@ export function QuantityStepper({
             ? {
                 fontFamily: fontFamily.primary.join(', '),
                 fontWeight: fontWeight.semiBold,
-                fontSize: '14px',
-                lineHeight: '16px',
-                letterSpacing: '0px',
+                fontSize: fontSize['14'],
+                lineHeight: lineHeight['16'],
+                letterSpacing: letterSpacing.none,
                 verticalAlign: 'bottom',
               }
             : { lineHeight: lineHeight['20'], letterSpacing: letterSpacing.none }
@@ -80,7 +82,7 @@ export function QuantityStepper({
       <button
         type="button"
         className={btn}
-        style={{ width: 20, height: 20 }}
+        style={{ width: spacing.xl, height: spacing.xl }}
         onClick={() => onChange(value + 1)}
         disabled={disabled || value >= max}
         aria-label={`Increase ${title} quantity`}

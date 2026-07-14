@@ -9,6 +9,8 @@ export const spacing = {
   none: '0px',
   xs: '4px',
   sm: '8px', // clusters Figma 5–8
+  /** Exact Figma 10 — card info-column flex gaps / accordion next-button gap */
+  '10': '10px',
   /** Exact Figma 11 — product card padding */
   '11': '11px',
   md: '12px', // clusters Figma 10–13

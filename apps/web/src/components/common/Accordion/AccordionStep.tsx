@@ -1,6 +1,16 @@
 import type { ReactNode } from 'react';
 
-import { colors, fontFamily, fontWeight, stepper } from '@/design-tokens';
+import {
+  borderWidth,
+  colors,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+  spacing,
+  stepper,
+} from '@/design-tokens';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 
@@ -57,7 +67,7 @@ export function AccordionStep({
   // Permanent bottom border on every item; open state only tints the surface.
   const itemStyle = {
     backgroundColor: isOpen ? EXPANDED_BG : colors.background.default,
-    borderBottom: '1px solid #1F1F1F',
+    borderBottom: `${borderWidth.sm} solid ${colors.base.black}`,
   };
 
   return (
@@ -68,14 +78,14 @@ export function AccordionStep({
             className={cn('w-full border-b pb-2', stepper.eyebrowBleed)}
             style={{
               fontFamily: fontFamily.primary.join(', '),
-              fontWeight: 400,
-              fontSize: '12px',
-              lineHeight: '100%',
+              fontWeight: fontWeight.regular,
+              fontSize: fontSize['12'],
+              lineHeight: lineHeight['100'],
               letterSpacing: '1.6px',
               verticalAlign: 'middle',
               textTransform: 'uppercase',
               color: '#484848',
-              borderColor: '#1F1F1F',
+              borderColor: colors.base.black,
             }}
           >
             Step {stepNumber} of {totalSteps}
@@ -93,7 +103,7 @@ export function AccordionStep({
           )}
 
           <span
-            className="truncate font-['Gilroy'] text-[20px] font-semibold leading-none sm:text-2xl lg:text-[28px]"
+            className="truncate font-primary text-[20px] font-semibold leading-none sm:text-2xl lg:text-[28px]"
             style={{ color: colors.text.primary }}
           >
             {title}
@@ -114,10 +124,10 @@ export function AccordionStep({
                 className={cn(!isOpen && 'sm:hidden')}
                 style={{
                   fontFamily: fontFamily.primary.join(', '),
-                  fontWeight: 400,
-                  fontSize: '14px',
-                  lineHeight: '16px',
-                  letterSpacing: '0px',
+                  fontWeight: fontWeight.regular,
+                  fontSize: fontSize['14'],
+                  lineHeight: lineHeight['16'],
+                  letterSpacing: letterSpacing.none,
                   textAlign: 'center',
                   color: colors.primary.DEFAULT,
                 }}
@@ -142,14 +152,14 @@ export function AccordionStep({
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.semiBold,
-              fontSize: '18px',
+              fontSize: fontSize['18'],
               lineHeight: '24px',
               letterSpacing: '0%',
               textAlign: 'center',
               verticalAlign: 'middle',
               color: colors.primary.DEFAULT,
               backgroundColor: 'transparent',
-              border: `1px solid ${colors.primary.muted}`,
+              border: `${borderWidth.sm} solid ${colors.primary.muted}`,
               width: 'fit-content',
               height: '39px',
               borderRadius: '7px',
@@ -157,7 +167,7 @@ export function AccordionStep({
               paddingRight: '24px',
               paddingBottom: '5px',
               paddingLeft: '24px',
-              gap: '10px',
+              gap: spacing['10'],
             }}
           >
             {nextLabel}

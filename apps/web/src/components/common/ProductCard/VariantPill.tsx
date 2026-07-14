@@ -12,7 +12,7 @@ import {
 import type { ProductVariant } from './types';
 
 const UNSELECTED_BORDER = '#CCCCCC';
-const SELECTED_BORDER = '#0AA288';
+const SELECTED_BORDER = colors.status.success; // #0AA288
 const SELECTED_FILL = `rgba(29, 240, 187, ${opacity[4]})`; // #1DF0BB @ 4%
 
 export function VariantPill({

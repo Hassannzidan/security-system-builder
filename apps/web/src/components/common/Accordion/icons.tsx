@@ -4,6 +4,7 @@ import CamerasSvg from '@/assets/icons/step-cameras.svg?react';
 import ExtrasSvg from '@/assets/icons/step-extras.svg?react';
 import PlanSvg from '@/assets/icons/step-plan.svg?react';
 import SensorsSvg from '@/assets/icons/step-sensors.svg?react';
+import { colors } from '@/design-tokens';
 
 /**
  * Example step icons for the Accordion (security system builder use case).
@@ -42,8 +43,8 @@ export function Chevron({ open, ...props }: IconProps & { open: boolean }) {
       width={18}
       height={18}
       viewBox="0 0 24 24"
-      fill="#4E2FD2"
-      stroke="#4E2FD2"
+      fill={colors.primary.DEFAULT}
+      stroke={colors.primary.DEFAULT}
       strokeWidth={2}
       strokeLinejoin="round"
       aria-hidden="true"

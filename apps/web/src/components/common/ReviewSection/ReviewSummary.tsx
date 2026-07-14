@@ -1,5 +1,12 @@
 import FastShippingSvg from '@/assets/icons/fast-shipping.svg?react';
-import { colors, fontFamily, fontWeight, letterSpacing, lineHeight } from '@/design-tokens';
+import {
+  colors,
+  fontFamily,
+  fontSize,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+} from '@/design-tokens';
 
 import {
   FAST_SHIPPING,
@@ -66,9 +73,9 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.medium,
-              fontSize: '12px',
+              fontSize: fontSize['12'],
               lineHeight: lineHeight['100'],
-              letterSpacing: '0.6px',
+              letterSpacing: letterSpacing['0.6'],
               color: colors.gray[500],
             }}
           >
@@ -101,7 +108,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
           style={{
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.medium,
-            fontSize: '16px',
+            fontSize: fontSize['16'],
             lineHeight: lineHeight['130'],
             letterSpacing: letterSpacing['0.6'],
           }}

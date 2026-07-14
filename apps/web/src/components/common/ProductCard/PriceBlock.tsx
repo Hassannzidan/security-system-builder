@@ -32,7 +32,7 @@ export function PriceBlock({
     >
       {discounted && (
         <span
-          className="font-['Gilroy'] text-base font-normal text-[#D8392B] line-through"
+          className="font-primary text-base font-normal text-[#D8392B] line-through"
           style={typeStyle}
         >
           {formatPrice(compareAtPrice!, currency)}
@@ -41,13 +41,13 @@ export function PriceBlock({
       )}
       {isFree ? (
         <span
-          className="font-['Gilroy'] text-base font-normal"
+          className="font-primary text-base font-normal"
           style={{ ...typeStyle, color: colors.primary.DEFAULT }}
         >
           FREE
         </span>
       ) : (
-        <span className="font-['Gilroy'] text-base font-normal text-[#525963]" style={typeStyle}>
+        <span className="font-primary text-base font-normal text-[#525963]" style={typeStyle}>
           {formatPrice(price, currency)}
           {suffix}
         </span>

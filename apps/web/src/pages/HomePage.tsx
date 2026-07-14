@@ -18,6 +18,7 @@ import {
   useBundleBuilderContext,
   type BundleBuilderContextValue,
 } from '@/context/BundleBuilderContext';
+import { breakpoints, colors, fontWeight, lineHeight } from '@/design-tokens';
 import { DEFAULT_VARIANT_KEY } from '@/hooks/useBundleBuilder';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { PageGrid } from '@/layouts';
@@ -62,7 +63,7 @@ const STEP_ICONS: Record<string, ReactNode> = {
 function StepProductsGrid({ step, builder }: { step: Step; builder: Builder }) {
   // Center every product image within its frame — both axes, both orientations.
   const imageAlign = 'center';
-  const isCompact = useMediaQuery('(max-width: 1439px)');
+  const isCompact = useMediaQuery(`(max-width: ${breakpoints.wideMax})`);
   const orientation = isCompact ? 'horizontal' : 'vertical';
   return (
     <div
@@ -173,7 +174,7 @@ function HomeContent() {
   if (builder.isError) {
     return (
       <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center">
-        <p className="font-['Gilroy'] text-sm font-medium text-[#525963]">
+        <p className="font-primary text-sm font-medium text-[#525963]">
           We couldn’t load the system builder.
         </p>
         <button
@@ -198,12 +199,12 @@ function HomeContent() {
           className="mb-4 block px-4 sm:hidden"
           style={{
             fontFamily: "'Gilroy-Bold', 'Gilroy', sans-serif",
-            fontWeight: 400,
+            fontWeight: fontWeight.regular,
             fontSize: '31px',
-            lineHeight: '110%',
+            lineHeight: lineHeight['110'],
             letterSpacing: '-0.06px',
             textAlign: 'center',
-            color: '#1F1F1F',
+            color: colors.base.black,
           }}
         >
           Let’s get started!

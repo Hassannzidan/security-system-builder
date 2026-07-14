@@ -92,8 +92,11 @@ export function PlanCard({
     >
       <ProductImage src={imageUrl} alt={imageAlt ?? title} badge={badge} vertical align="center" />
 
-      <div className="flex min-h-0 min-w-0 flex-1 flex-col justify-center" style={{ gap: 10 }}>
-        <div className="flex flex-col" style={{ gap: 8 }}>
+      <div
+        className="flex min-h-0 min-w-0 flex-1 flex-col justify-center"
+        style={{ gap: spacing['10'] }}
+      >
+        <div className="flex flex-col" style={{ gap: spacing.sm }}>
           <h3
             className="text-[#0B0D10]"
             style={{
@@ -110,7 +113,7 @@ export function PlanCard({
 
           {(description || showLearnMore) && (
             <p
-              className="font-['Gilroy'] text-xs font-medium"
+              className="font-primary text-xs font-medium"
               style={{
                 color: colors.text.description,
                 lineHeight: lineHeight['130'],
@@ -128,7 +131,7 @@ export function PlanCard({
           )}
         </div>
 
-        <div className="flex flex-wrap items-center justify-start" style={{ gap: 10 }}>
+        <div className="flex flex-wrap items-center justify-start" style={{ gap: spacing['10'] }}>
           <PriceBlock
             price={price}
             compareAtPrice={compareAtPrice}

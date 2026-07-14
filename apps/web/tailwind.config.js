@@ -20,6 +20,12 @@ export default {
       '2xl': '1536px',
     },
     extend: {
+      // Mirrors src/design-tokens/typography.ts → fontFamily. Keep in sync.
+      // Enables `font-primary` / `font-secondary` to replace `font-['Gilroy']`.
+      fontFamily: {
+        primary: ['Gilroy', 'system-ui', 'sans-serif'],
+        secondary: ['"TT Norms Pro"', 'system-ui', 'sans-serif'],
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
