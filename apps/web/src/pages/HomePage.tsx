@@ -19,6 +19,7 @@ import {
   type BundleBuilderContextValue,
 } from '@/context/BundleBuilderContext';
 import { DEFAULT_VARIANT_KEY } from '@/hooks/useBundleBuilder';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { PageGrid } from '@/layouts';
 import { cn } from '@/lib/utils';
 import { mapStepProductToCardProps } from '@/utils/mapStepProductToCardProps';
@@ -49,13 +50,25 @@ const STEP_ICONS: Record<string, ReactNode> = {
   extras: <ShieldPlusIcon />,
 };
 
-/** Responsive grid of product cards for a step (5 across on desktop → 1 on phone). */
+/**
+ * Responsive grid of product cards for a step.
+ *
+ * At `1440px`+ the accordion is full-width, so cards render *vertically* and pack
+ * up to 5 across. Below `1440px` the accordion narrows to a 6-col column beside
+ * the review sidebar; there the cards switch to a *horizontal* layout (image left,
+ * info right) and drop to at most 2 across. The orientation flip is a real JS prop
+ * (it drives image/price sub-layouts), so it's keyed off a media query, not CSS.
+ */
 function StepProductsGrid({ step, builder }: { step: Step; builder: Builder }) {
-  const imageAlign = step.id === 'sensors' ? 'center' : 'start';
+  // Center every product image within its frame — both axes, both orientations.
+  const imageAlign = 'center';
+  const isCompact = useMediaQuery('(max-width: 1439px)');
+  const orientation = isCompact ? 'horizontal' : 'vertical';
   return (
     <div
       className={cn(
-        'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+        'grid grid-cols-1 gap-4',
+        isCompact ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
         // The bottom margin only separates the grid from the footer button.
         // The last step has no button, so it collapses to the content padding.
         step.nextLabel && 'mb-6',
@@ -71,7 +84,10 @@ function StepProductsGrid({ step, builder }: { step: Step; builder: Builder }) {
         return (
           <ProductCard
             key={product.id}
-            orientation="vertical"
+            // Single-column (mobile) grid cell is wider than the card's max-width,
+            // so center the capped card in its cell; left-align from `sm` up.
+            className="mx-auto sm:mx-0"
+            orientation={orientation}
             imageAlign={imageAlign}
             selected={builder.isProductSelected(product.id)}
             onToggleSelect={() => builder.toggleActive(product.id)}
@@ -168,14 +184,21 @@ function HomeContent() {
   }
 
   return (
-    <>
-      <Accordion
-        steps={buildAccordionSteps(builder.steps, builder)}
-        openIndex={builder.openStepIndex}
-        onOpenChange={builder.setOpenStep}
-      />
-      <ReviewSection />
-    </>
+    // Below `lg`: single column (mobile stack). `lg`–1439px: a 10-col grid split
+    // into a 6-col accordion + a 4-col review sidebar. `1440px`+: single column
+    // again, so the review returns to a full-width panel beneath the accordion.
+    <div className="grid grid-cols-1 items-start gap-4 lg:max-[1439px]:grid-cols-10 lg:max-[1439px]:gap-6">
+      <div className="min-w-0 lg:max-[1439px]:col-span-6">
+        <Accordion
+          steps={buildAccordionSteps(builder.steps, builder)}
+          openIndex={builder.openStepIndex}
+          onOpenChange={builder.setOpenStep}
+        />
+      </div>
+      <div className="min-w-0 lg:max-[1439px]:col-span-4">
+        <ReviewSection />
+      </div>
+    </div>
   );
 }
 

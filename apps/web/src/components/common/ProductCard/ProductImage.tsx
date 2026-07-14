@@ -25,8 +25,10 @@ export function ProductImage({
     <div
       className={cn(
         'relative shrink-0',
-        // Vertical: span the full card row. Horizontal: left column, capped at 101px.
-        vertical ? 'w-full' : 'w-full sm:flex sm:self-stretch',
+        // Vertical: span the full card row. Horizontal: capped at 101px — a left
+        // column on `sm`+, but on mobile the card stacks so center the capped
+        // frame (`mx-auto`) instead of letting it anchor top-left.
+        vertical ? 'w-full' : 'mx-auto w-full sm:mx-0 sm:flex sm:self-stretch',
       )}
       style={vertical ? { width: '100%' } : { width: '100%', maxWidth: spacing['101'] }}
     >
