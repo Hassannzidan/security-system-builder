@@ -1,5 +1,4 @@
-import { Truck } from 'lucide-react';
-
+import FastShippingSvg from '@/assets/icons/fast-shipping.svg?react';
 import { colors, fontFamily, fontWeight, letterSpacing, lineHeight } from '@/design-tokens';
 
 import {
@@ -96,7 +95,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
       {/* Bundle-level fulfillment row per design — static, not a product line. */}
       <div className="flex items-center gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white">
-          <Truck className="h-5 w-5" style={{ color: colors.status.success }} strokeWidth={2} />
+          <FastShippingSvg className="h-7 w-7" />
         </div>
         <span
           className="min-w-0 flex-1 truncate text-[#1F1F1F]"

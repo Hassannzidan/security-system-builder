@@ -93,20 +93,38 @@ export function loadSystem(): BundleState | null {
   }
   if (raw == null) return null;
 
+  let parsed: unknown;
   try {
-    const parsed: unknown = JSON.parse(raw);
-    const result = savedSystemSchema.safeParse(parsed);
-    if (!result.success) {
-      // Wrong version, wrong shape, or otherwise unusable — discard it.
-      clearSystem();
-      return null;
-    }
-    return result.data.state;
+    parsed = JSON.parse(raw);
   } catch {
     // JSON.parse failed → corrupt blob. Remove it so we cleanly fall back to seeds.
+    if (import.meta.env.DEV) {
+      console.warn('[systemStorage] Discarding saved system: JSON.parse failed (corrupt blob).');
+    }
     clearSystem();
     return null;
   }
+
+  const result = savedSystemSchema.safeParse(parsed);
+  if (!result.success) {
+    // Wrong version, wrong shape, or otherwise unusable — discard it. In dev,
+    // name which failure it was (version vs shape) and surface the offending
+    // zod issues, so a saved payload that stops validating is diagnosable at a
+    // glance instead of silently falling back to seeds.
+    if (import.meta.env.DEV) {
+      const versionMismatch = result.error.issues.some((issue) => issue.path[0] === 'version');
+      console.warn(
+        `[systemStorage] Discarding saved system: ${
+          versionMismatch ? 'version mismatch' : 'schema validation failed'
+        }.`,
+        result.error.issues,
+      );
+    }
+    clearSystem();
+    return null;
+  }
+
+  return result.data.state;
 }
 
 /** Remove any saved system. No-op when storage is unavailable; never throws. */

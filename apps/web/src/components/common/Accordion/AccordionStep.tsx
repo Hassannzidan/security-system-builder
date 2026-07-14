@@ -1,14 +1,6 @@
 import type { ReactNode } from 'react';
 
-import {
-  colors,
-  fontFamily,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-  radius,
-  stepper,
-} from '@/design-tokens';
+import { colors, fontFamily, fontWeight, stepper } from '@/design-tokens';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 
@@ -65,7 +57,7 @@ export function AccordionStep({
   // Permanent bottom border on every item; open state only tints the surface.
   const itemStyle = {
     backgroundColor: isOpen ? EXPANDED_BG : colors.background.default,
-    borderBottom: `1px solid ${colors.border.default}`,
+    borderBottom: '1px solid #1F1F1F',
   };
 
   return (
@@ -73,15 +65,17 @@ export function AccordionStep({
       <AccordionTrigger className={cn('flex w-full flex-col text-left', stepper.triggerPadding)}>
         {showEyebrow && (
           <span
-            className={cn('w-full border-b pb-2 text-[10px] sm:text-[11px]', stepper.eyebrowBleed)}
+            className={cn('w-full border-b pb-2', stepper.eyebrowBleed)}
             style={{
-              fontFamily: fontFamily.secondary.join(', '),
-              fontWeight: fontWeight.semiBold,
-              lineHeight: lineHeight['100'],
-              letterSpacing: stepper.eyebrow.letterSpacing,
+              fontFamily: fontFamily.primary.join(', '),
+              fontWeight: 400,
+              fontSize: '12px',
+              lineHeight: '100%',
+              letterSpacing: '1.6px',
+              verticalAlign: 'middle',
               textTransform: 'uppercase',
-              color: colors.text.tertiary,
-              borderColor: colors.border.default,
+              color: '#484848',
+              borderColor: '#1F1F1F',
             }}
           >
             Step {stepNumber} of {totalSteps}
@@ -91,7 +85,7 @@ export function AccordionStep({
         <span className="flex w-full items-center gap-2 sm:gap-2.5">
           {icon && (
             <span
-              className="grid size-6 shrink-0 place-items-center sm:size-7 lg:size-[30px]"
+              className="grid size-7 shrink-0 place-items-center sm:size-[30px]"
               style={{ color: colors.text.tertiary }}
             >
               {icon}
@@ -113,7 +107,20 @@ export function AccordionStep({
               color: isOpen ? colors.primary.DEFAULT : colors.text.tertiary,
             }}
           >
-            {isOpen && selectedCount !== undefined && <span>{selectedCount} selected</span>}
+            {isOpen && selectedCount !== undefined && (
+              <span
+                style={{
+                  fontFamily: fontFamily.primary.join(', '),
+                  fontWeight: 400,
+                  fontSize: '14px',
+                  lineHeight: '16px',
+                  letterSpacing: '0px',
+                  textAlign: 'center',
+                }}
+              >
+                {selectedCount} selected
+              </span>
+            )}
             <Chevron open={isOpen} />
           </span>
         </span>
@@ -127,19 +134,26 @@ export function AccordionStep({
           <button
             type="button"
             onClick={onNext}
-            className={cn(
-              'self-center text-sm transition-colors hover:bg-white/60 active:opacity-90 sm:text-base',
-              stepper.nextButtonLayout,
-              stepper.nextButtonPadding,
-            )}
+            className="inline-flex items-center justify-center self-center transition-colors hover:bg-white/60 active:opacity-90"
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.semiBold,
-              letterSpacing: letterSpacing['0.6'],
+              fontSize: '18px',
+              lineHeight: '24px',
+              letterSpacing: '0%',
+              textAlign: 'center',
+              verticalAlign: 'middle',
               color: colors.primary.DEFAULT,
-              backgroundColor: colors.background.default,
+              backgroundColor: 'transparent',
               border: `1px solid ${colors.primary.muted}`,
-              borderRadius: radius.md,
+              width: 'fit-content',
+              height: '39px',
+              borderRadius: '7px',
+              paddingTop: '5px',
+              paddingRight: '24px',
+              paddingBottom: '5px',
+              paddingLeft: '24px',
+              gap: '10px',
             }}
           >
             {nextLabel}

@@ -23,12 +23,21 @@ export function ReviewPlanLine({ item }: ReviewPlanLineProps) {
   return (
     <div className="flex items-center gap-3">
       <span
-        className="flex h-6 w-6 shrink-0 items-center justify-center"
+        className="flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden"
         style={{ color: colors.primary.DEFAULT }}
         aria-hidden
       >
-        {/* Reuse the plan step's shield glyph tinted purple as the Wyze mark. */}
-        <PlanIcon />
+        {/* Show the selected plan's own image; fall back to the tinted shield mark. */}
+        {item.thumbnail ? (
+          <img
+            src={item.thumbnail}
+            alt={item.name}
+            loading="lazy"
+            className="h-full w-full object-contain"
+          />
+        ) : (
+          <PlanIcon />
+        )}
       </span>
 
       <span

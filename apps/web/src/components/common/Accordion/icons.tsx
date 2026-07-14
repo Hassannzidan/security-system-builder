@@ -35,17 +35,16 @@ export const SensorIcon = withSize(SensorsSvg);
 /** Step 4 — Add extra protection. */
 export const ShieldPlusIcon = withSize(ExtrasSvg);
 
-/** Chevron that points up when `open`, down otherwise. */
+/** Filled triangle that points up when `open`, down otherwise. */
 export function Chevron({ open, ...props }: IconProps & { open: boolean }) {
   return (
     <svg
       width={18}
       height={18}
       viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
+      fill="#4E2FD2"
+      stroke="#4E2FD2"
       strokeWidth={2}
-      strokeLinecap="round"
       strokeLinejoin="round"
       aria-hidden="true"
       style={{
@@ -54,7 +53,7 @@ export function Chevron({ open, ...props }: IconProps & { open: boolean }) {
       }}
       {...props}
     >
-      <path d="m6 9 6 6 6-6" />
+      <path d="M7 9h10l-5 6z" />
     </svg>
   );
 }

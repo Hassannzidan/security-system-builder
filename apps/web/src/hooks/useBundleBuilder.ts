@@ -208,6 +208,21 @@ export function reconcileSavedState(steps: Step[], saved: BundleState): BundleSt
 }
 
 /**
+ * The single source of the builder's initial selections, applied once the first
+ * real `steps` arrive. There is exactly ONE resolution rule and no competing
+ * path: a saved system (when present) is restored — reconciled against the
+ * current catalog — and the API seeds are used ONLY when nothing is saved.
+ *
+ * Kept pure and exported so the initialization contract (saved-state-first, not
+ * seed-first) is unit-tested directly, independent of React's render timing.
+ */
+export function resolveInitialState(steps: Step[], saved: BundleState | null): BundleState {
+  return saved
+    ? reconcileSavedState(steps, saved)
+    : { openStepIndex: 0, selections: seedSelections(steps) };
+}
+
+/**
  * useBundleBuilder — owns ALL client state for the bundle builder: the open
  * accordion step, the active variant per card, and per-variant quantities.
  *
@@ -220,23 +235,24 @@ export function reconcileSavedState(steps: Step[], saved: BundleState): BundleSt
 export function useBundleBuilder(steps: Step[]) {
   const [state, setState] = useState<BundleState>({ openStepIndex: 0, selections: {} });
 
-  // Resolve initial state once per steps identity. Assigning state during render
-  // (guarded by the ref) re-renders before commit, so the first paint already
-  // shows the resolved quantities — no flash of empty state a useEffect causes.
+  // Resolve initial state once, the first time real steps arrive. The guard is
+  // gated on `steps.length > 0`, so it never fires (and never marks itself done)
+  // against the empty array react-query returns before the fetch resolves — the
+  // hydration waits for the catalog rather than giving up on it. Assigning state
+  // during render (guarded by the ref) re-renders before commit, so the first
+  // paint already shows the resolved quantities — no flash of empty state a
+  // useEffect causes, and no seed-then-hydrate flicker.
   //
-  // Resolution order (applied the first time real steps arrive):
-  //   1. A saved system in localStorage → reconcile it against the current
-  //      catalog and use it (restores the user's configuration + open step).
-  //   2. Otherwise → seed from the API seeds exactly as before this feature.
+  // `resolveInitialState` is the ONLY writer of initial selections: it restores
+  // a saved system when one exists (reconciled against the current catalog) and
+  // seeds from the API only when nothing is saved — saved-state-first, never
+  // seed-first. Because the ref tracks the `steps` identity (stable across
+  // re-renders and re-created on a fresh mount), this survives StrictMode's
+  // double-invocation without flipping to the seed path on a second run.
   const seededStepsRef = useRef<Step[] | null>(null);
   if (steps.length > 0 && seededStepsRef.current !== steps) {
     seededStepsRef.current = steps;
-    const saved = loadSystem();
-    setState(
-      saved
-        ? reconcileSavedState(steps, saved)
-        : { openStepIndex: 0, selections: seedSelections(steps) },
-    );
+    setState(resolveInitialState(steps, loadSystem()));
   }
 
   const { openStepIndex, selections } = state;
