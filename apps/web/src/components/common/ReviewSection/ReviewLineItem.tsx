@@ -1,4 +1,4 @@
-import { fontFamily, fontWeight, letterSpacing, lineHeight } from '@/design-tokens';
+import { fontFamily, fontWeight } from '@/design-tokens';
 
 import { QuantityStepper } from '../ProductCard/QuantityStepper';
 import { ReviewPrice } from './ReviewPrice';
@@ -21,7 +21,7 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
 
   return (
     <div className="flex items-center gap-3">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
+      <div className="flex h-[41px] w-[41px] shrink-0 items-center justify-center overflow-hidden rounded-lg bg-white">
         {item.thumbnail ? (
           <img
             src={item.thumbnail}
@@ -39,9 +39,9 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
         style={{
           fontFamily: fontFamily.primary.join(', '),
           fontWeight: fontWeight.medium,
-          fontSize: '16px',
-          lineHeight: lineHeight['130'],
-          letterSpacing: letterSpacing['0.6'],
+          fontSize: '18px',
+          lineHeight: '16px',
+          letterSpacing: '0.5%',
         }}
       >
         {label}
@@ -55,6 +55,7 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
           onChange={(next) => onSetQuantity(item.productId, item.variantKey, next)}
           title={item.name}
           disabled={item.locked}
+          variant="review"
         />
         <ReviewPrice
           price={item.lineTotal}

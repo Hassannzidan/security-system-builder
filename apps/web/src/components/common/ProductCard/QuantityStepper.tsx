@@ -1,6 +1,13 @@
 import { Minus, Plus } from 'lucide-react';
 
-import { borderWidth, colors, letterSpacing, lineHeight } from '@/design-tokens';
+import {
+  borderWidth,
+  colors,
+  fontFamily,
+  fontWeight,
+  letterSpacing,
+  lineHeight,
+} from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
 export function QuantityStepper({
@@ -10,6 +17,7 @@ export function QuantityStepper({
   onChange,
   title,
   disabled = false,
+  variant = 'card',
 }: {
   value: number;
   min: number;
@@ -18,14 +26,18 @@ export function QuantityStepper({
   title: string;
   /** When true, both − and + are disabled regardless of value (locked quantity). */
   disabled?: boolean;
+  /** Visual style: 'card' (grey buttons) on the product card, 'review' (white buttons) in the review summary. */
+  variant?: 'card' | 'review';
 }) {
+  const btnBg =
+    variant === 'review' ? 'bg-white hover:bg-[#F0F4F7]' : 'bg-[#F0F4F7] hover:bg-[#E4E9EF]';
   const btn =
-    'flex shrink-0 items-center justify-center rounded bg-[#F0F4F7] text-[#525963] ' +
-    'transition-colors hover:bg-[#E4E9EF] disabled:cursor-not-allowed disabled:opacity-40';
+    `flex shrink-0 items-center justify-center rounded text-[#525963] ${btnBg} ` +
+    'transition-colors disabled:cursor-not-allowed disabled:opacity-40';
   const decreaseDisabled = disabled || value <= min;
 
   return (
-    <div className="flex h-full items-center gap-2">
+    <div className={cn('flex h-full items-center', variant === 'review' ? 'gap-2.5' : 'gap-2')}>
       <button
         type="button"
         className={cn(btn, 'disabled:bg-transparent disabled:hover:bg-transparent')}
@@ -47,8 +59,22 @@ export function QuantityStepper({
         <Minus className="h-3 w-3" strokeWidth={2.5} />
       </button>
       <span
-        className="min-w-[1rem] text-center text-base font-semibold tabular-nums text-[#0B0D10]"
-        style={{ lineHeight: lineHeight['20'], letterSpacing: letterSpacing.none }}
+        className={cn(
+          'min-w-[1rem] text-center tabular-nums text-[#0B0D10]',
+          variant === 'review' ? '' : 'text-base font-semibold',
+        )}
+        style={
+          variant === 'review'
+            ? {
+                fontFamily: fontFamily.primary.join(', '),
+                fontWeight: fontWeight.semiBold,
+                fontSize: '14px',
+                lineHeight: '16px',
+                letterSpacing: '0px',
+                verticalAlign: 'bottom',
+              }
+            : { lineHeight: lineHeight['20'], letterSpacing: letterSpacing.none }
+        }
         aria-live="polite"
       >
         {value}

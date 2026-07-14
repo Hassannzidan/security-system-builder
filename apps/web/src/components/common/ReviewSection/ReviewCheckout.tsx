@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import satisfactionBadge from '@/assets/satisfaction-badge.svg';
-import { colors, fontFamily, fontWeight, letterSpacing, lineHeight, radius } from '@/design-tokens';
+import { colors, fontFamily, fontWeight, letterSpacing, lineHeight } from '@/design-tokens';
 import { formatPrice } from '@/utils/format';
 
 import { FINANCING_ESTIMATE, RETURNS_BODY, RETURNS_HEADING } from './constants';
@@ -52,21 +52,22 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
   return (
     <div className="flex flex-col gap-5">
       {/* Guarantee */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-[25px]">
         <img
           src={satisfactionBadge}
           alt="100% Wyze satisfaction guarantee"
-          className="h-[120px] w-[120px] shrink-0"
+          className="h-[131px] w-[131px] shrink-0"
         />
-        <div className="flex min-w-0 flex-col gap-1.5">
+        <div className="flex min-w-0 flex-col gap-2.5">
           <h3
             className="text-[#1F1F1F]"
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.semiBold,
               fontSize: '18px',
-              lineHeight: lineHeight['130'],
+              lineHeight: '110%',
               letterSpacing: letterSpacing['0.6'],
+              verticalAlign: 'middle',
             }}
           >
             {RETURNS_HEADING}
@@ -74,10 +75,11 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
           <p
             style={{
               fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.medium,
-              fontSize: '16px',
-              lineHeight: lineHeight['130'],
+              fontWeight: fontWeight.regular,
+              fontSize: '18px',
+              lineHeight: '110%',
               letterSpacing: letterSpacing['0.6'],
+              verticalAlign: 'middle',
               color: colors.text.description,
             }}
           >
@@ -89,14 +91,15 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
       {/* Financing pill + total */}
       <div className="flex flex-wrap items-center justify-between gap-3">
         <span
-          className="inline-flex items-center rounded-full px-3 py-1.5 text-white"
+          className="inline-flex h-[27px] w-fit items-center gap-2.5 p-2 text-white"
           style={{
             backgroundColor: colors.primary.DEFAULT,
+            borderRadius: '3px',
             fontFamily: fontFamily.primary.join(', '),
-            fontWeight: fontWeight.semiBold,
-            fontSize: '13px',
+            fontWeight: fontWeight.regular,
+            fontSize: '16px',
             lineHeight: lineHeight['100'],
-            letterSpacing: letterSpacing['0.6'],
+            letterSpacing: '-0.05em',
           }}
         >
           {/* Single allowed hard-coded money value — see FINANCING_ESTIMATE. */}
@@ -104,22 +107,28 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         </span>
         <div className="flex items-baseline gap-2">
           <span
-            className="font-['Gilroy'] font-normal line-through"
+            className="line-through"
             style={{
-              fontSize: '18px',
+              fontFamily: fontFamily.primary.join(', '),
+              fontWeight: fontWeight.medium,
+              fontSize: '22px',
+              lineHeight: '20px',
+              letterSpacing: '0.25%',
+              textAlign: 'center',
               color: colors.gray[600],
-              letterSpacing: letterSpacing['0.6'],
             }}
           >
             {formatPrice(totals.compareAtSubtotal)}
           </span>
           <span
-            className="font-['Gilroy']"
             style={{
-              fontSize: '28px',
+              fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.bold,
-              lineHeight: lineHeight['100'],
-              letterSpacing: letterSpacing['0.6'],
+              fontSize: '28px',
+              lineHeight: '32px',
+              letterSpacing: '-0.13%',
+              textAlign: 'right',
+              verticalAlign: 'middle',
               color: colors.primary.DEFAULT,
             }}
           >
@@ -136,8 +145,9 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.semiBold,
             fontSize: '14px',
-            lineHeight: lineHeight['130'],
-            letterSpacing: letterSpacing['0.6'],
+            lineHeight: '100%',
+            letterSpacing: '-0.06px',
+            verticalAlign: 'middle',
             color: colors.status.success,
           }}
         >
@@ -150,16 +160,17 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         type="button"
         onClick={() => setPlaced(true)}
         disabled={placed}
-        className="w-full text-white transition-colors disabled:cursor-default"
+        className="flex h-12 w-full items-center justify-center gap-2 text-white transition-colors disabled:cursor-default"
         style={{
           backgroundColor: placed ? colors.status.success : colors.primary.DEFAULT,
-          borderRadius: radius.md,
-          padding: '14px 16px',
-          fontFamily: fontFamily.primary.join(', '),
-          fontWeight: fontWeight.semiBold,
-          fontSize: '16px',
+          borderRadius: '4px',
+          padding: '13px 16px',
+          fontFamily: fontFamily.secondary.join(', '),
+          fontWeight: fontWeight.bold,
+          fontSize: '17px',
           lineHeight: lineHeight['100'],
-          letterSpacing: letterSpacing['0.6'],
+          letterSpacing: '0px',
+          verticalAlign: 'middle',
         }}
       >
         {placed ? 'Order placed — this is a prototype' : 'Checkout'}

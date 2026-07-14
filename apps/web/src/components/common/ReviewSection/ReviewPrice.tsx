@@ -1,4 +1,4 @@
-import { colors, letterSpacing, lineHeight } from '@/design-tokens';
+import { colors, fontFamily, fontWeight } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 import { formatPrice, isFreePrice, priceIntervalSuffix } from '@/utils/format';
 
@@ -27,25 +27,24 @@ export function ReviewPrice({
   const discounted = compareAtPrice !== undefined && compareAtPrice > price;
   const suffix = priceIntervalSuffix(interval);
   const typeStyle = {
-    lineHeight: lineHeight['100'],
-    letterSpacing: letterSpacing['0.6'],
+    fontFamily: fontFamily.primary.join(', '),
+    fontWeight: fontWeight.medium,
+    fontSize: '16px',
+    lineHeight: '16px',
+    letterSpacing: '0.5%',
+    textAlign: 'right',
+    verticalAlign: 'middle',
   } as const;
 
   return (
     <div className={cn('flex flex-row items-baseline justify-end gap-1.5', className)}>
       {discounted && (
-        <span
-          className="font-['Gilroy'] text-base font-normal line-through"
-          style={{ ...typeStyle, color: colors.gray[600] }}
-        >
+        <span className="line-through" style={{ ...typeStyle, color: colors.gray[600] }}>
           {formatPrice(compareAtPrice!, currency)}
           {suffix}
         </span>
       )}
-      <span
-        className="font-['Gilroy'] text-base font-semibold"
-        style={{ ...typeStyle, color: colors.primary.DEFAULT }}
-      >
+      <span style={{ ...typeStyle, color: colors.primary.DEFAULT }}>
         {free ? 'FREE' : `${formatPrice(price, currency)}${suffix}`}
       </span>
     </div>
