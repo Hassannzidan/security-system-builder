@@ -4,6 +4,12 @@ import { cn } from '@/lib/utils';
 
 import { DiscountBadge } from './DiscountBadge';
 
+/**
+ * Product/plan image frame: renders the image in a fixed-aspect box with an
+ * optional discount badge and a flowing gradient placeholder shown until load,
+ * across the vertical/horizontal and start/center layout variants. Falls back to
+ * a blank tile when `src` is absent.
+ */
 export function ProductImage({
   src,
   alt,

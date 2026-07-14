@@ -5,8 +5,7 @@
  * - primary   → Gilroy (headings, CTAs, brand moments)
  * - secondary → TT Norms Pro (body, forms, dense UI)
  *
- * fontSize stays empty until the final Figma type scale is extracted.
- * lineHeight / letterSpacing include values locked from ProductCard Figma.
+ * fontSize / lineHeight / letterSpacing hold values locked from the ProductCard Figma.
  */
 
 /** System fallbacks shared by every stack */
