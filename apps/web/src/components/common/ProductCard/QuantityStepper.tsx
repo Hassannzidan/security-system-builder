@@ -9,17 +9,20 @@ export function QuantityStepper({
   max,
   onChange,
   title,
+  disabled = false,
 }: {
   value: number;
   min: number;
   max: number;
   onChange: (next: number) => void;
   title: string;
+  /** When true, both − and + are disabled regardless of value (locked quantity). */
+  disabled?: boolean;
 }) {
   const btn =
     'flex shrink-0 items-center justify-center rounded bg-[#F0F4F7] text-[#525963] ' +
     'transition-colors hover:bg-[#E4E9EF] disabled:cursor-not-allowed disabled:opacity-40';
-  const decreaseDisabled = value <= min;
+  const decreaseDisabled = disabled || value <= min;
 
   return (
     <div className="flex h-full items-center gap-2">
@@ -55,7 +58,7 @@ export function QuantityStepper({
         className={btn}
         style={{ width: 20, height: 20 }}
         onClick={() => onChange(value + 1)}
-        disabled={value >= max}
+        disabled={disabled || value >= max}
         aria-label={`Increase ${title} quantity`}
       >
         <Plus className="h-3 w-3" strokeWidth={2.5} />

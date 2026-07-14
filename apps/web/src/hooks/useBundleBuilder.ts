@@ -44,6 +44,11 @@ export interface LineItem {
    * line without a stepper. Derived from the owning step's `selectionType`.
    */
   hasStepper: boolean;
+  /**
+   * Whether this line is a required product locked at its seeded quantity. The
+   * review panel renders its stepper disabled. Derived from `product.required`.
+   */
+  locked: boolean;
 }
 
 export interface BundleTotals {
@@ -64,6 +69,10 @@ export interface BundleTotals {
  * Single-select steps (plans): radio semantics require exactly one product
  * chosen from load, so the seed IS applied here — the seeded product starts at
  * qty 1 (under DEFAULT_VARIANT_KEY, since plans have no variants).
+ *
+ * Required products (multi-select): mandatory items are locked at their seeded
+ * quantity, so their seed IS applied too — the product starts selected at
+ * seed.qty and can never be changed (see the mutator guards below).
  */
 function seedSelections(steps: Step[]): Record<string, ProductSelection> {
   const selections: Record<string, ProductSelection> = {};
@@ -71,10 +80,11 @@ function seedSelections(steps: Step[]): Record<string, ProductSelection> {
   for (const step of steps) {
     const isSingle = step.selectionType === 'single';
     for (const product of step.products) {
-      const seeded = isSingle && product.seed != null;
+      const seeded = (isSingle && product.seed != null) || product.required === true;
+      const seedKey = product.seed?.variantId ?? DEFAULT_VARIANT_KEY;
       selections[product.id] = {
         activeVariantId: product.seed?.variantId ?? product.variants?.[0]?.id ?? null,
-        quantities: seeded ? { [DEFAULT_VARIANT_KEY]: product.seed!.qty } : {},
+        quantities: seeded ? { [seedKey]: product.seed!.qty } : {},
       };
     }
   }
@@ -106,6 +116,18 @@ export function useBundleBuilder(steps: Step[]) {
 
   const { openStepIndex, selections } = state;
 
+  // Required products are locked at their seeded quantity: every mutator below
+  // short-circuits for them so their selection state can never change.
+  const requiredProductIds = useMemo(() => {
+    const ids = new Set<string>();
+    for (const step of steps) {
+      for (const product of step.products) {
+        if (product.required === true) ids.add(product.id);
+      }
+    }
+    return ids;
+  }, [steps]);
+
   // --- Open step ----------------------------------------------------------
 
   const setOpenStep = useCallback((index: number) => {
@@ -118,22 +140,26 @@ export function useBundleBuilder(steps: Step[]) {
 
   // --- Quantity / variant mutations --------------------------------------
 
-  const setQuantity = useCallback((productId: string, variantKey: string, qty: number) => {
-    const clamped = Math.max(0, qty);
-    setState((prev) => {
-      const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
-      return {
-        ...prev,
-        selections: {
-          ...prev.selections,
-          [productId]: {
-            ...current,
-            quantities: { ...current.quantities, [variantKey]: clamped },
+  const setQuantity = useCallback(
+    (productId: string, variantKey: string, qty: number) => {
+      if (requiredProductIds.has(productId)) return;
+      const clamped = Math.max(0, qty);
+      setState((prev) => {
+        const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
+        return {
+          ...prev,
+          selections: {
+            ...prev.selections,
+            [productId]: {
+              ...current,
+              quantities: { ...current.quantities, [variantKey]: clamped },
+            },
           },
-        },
-      };
-    });
-  }, []);
+        };
+      });
+    },
+    [requiredProductIds],
+  );
 
   const selectVariant = useCallback((productId: string, variantId: string) => {
     // Switching the active variant must NOT touch any quantities — each
@@ -150,23 +176,27 @@ export function useBundleBuilder(steps: Step[]) {
     });
   }, []);
 
-  const adjustActive = useCallback((productId: string, delta: number) => {
-    setState((prev) => {
-      const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
-      const key = current.activeVariantId ?? DEFAULT_VARIANT_KEY;
-      const next = Math.max(0, (current.quantities[key] ?? 0) + delta);
-      return {
-        ...prev,
-        selections: {
-          ...prev.selections,
-          [productId]: {
-            ...current,
-            quantities: { ...current.quantities, [key]: next },
+  const adjustActive = useCallback(
+    (productId: string, delta: number) => {
+      if (requiredProductIds.has(productId)) return;
+      setState((prev) => {
+        const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
+        const key = current.activeVariantId ?? DEFAULT_VARIANT_KEY;
+        const next = Math.max(0, (current.quantities[key] ?? 0) + delta);
+        return {
+          ...prev,
+          selections: {
+            ...prev.selections,
+            [productId]: {
+              ...current,
+              quantities: { ...current.quantities, [key]: next },
+            },
           },
-        },
-      };
-    });
-  }, []);
+        };
+      });
+    },
+    [requiredProductIds],
+  );
 
   const incrementActive = useCallback(
     (productId: string) => adjustActive(productId, 1),
@@ -180,23 +210,27 @@ export function useBundleBuilder(steps: Step[]) {
   // Toggle a product's selection: clicking a selected card zeroes the active
   // variant, clicking an unselected one bumps it to 1. Operates on the active
   // variant — the same count the card's stepper shows.
-  const toggleActive = useCallback((productId: string) => {
-    setState((prev) => {
-      const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
-      const key = current.activeVariantId ?? DEFAULT_VARIANT_KEY;
-      const isOn = (current.quantities[key] ?? 0) > 0;
-      return {
-        ...prev,
-        selections: {
-          ...prev.selections,
-          [productId]: {
-            ...current,
-            quantities: { ...current.quantities, [key]: isOn ? 0 : 1 },
+  const toggleActive = useCallback(
+    (productId: string) => {
+      if (requiredProductIds.has(productId)) return;
+      setState((prev) => {
+        const current = prev.selections[productId] ?? { activeVariantId: null, quantities: {} };
+        const key = current.activeVariantId ?? DEFAULT_VARIANT_KEY;
+        const isOn = (current.quantities[key] ?? 0) > 0;
+        return {
+          ...prev,
+          selections: {
+            ...prev.selections,
+            [productId]: {
+              ...current,
+              quantities: { ...current.quantities, [key]: isOn ? 0 : 1 },
+            },
           },
-        },
-      };
-    });
-  }, []);
+        };
+      });
+    },
+    [requiredProductIds],
+  );
 
   // Single-select (radio) choice for a step: set the chosen product to qty 1 and
   // zero every OTHER product in the same step. Re-selecting the already-selected
@@ -311,6 +345,7 @@ export function useBundleBuilder(steps: Step[]) {
             category: step.category,
             stepId: step.id,
             hasStepper: step.selectionType !== 'single',
+            locked: product.required === true,
           });
         }
       }

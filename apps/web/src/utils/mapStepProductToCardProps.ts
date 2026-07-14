@@ -47,5 +47,6 @@ export function mapStepProductToCardProps(
     compareAtPrice: product.pricing.compareAt,
     quantity: cardState.quantity,
     onQuantityChange: handlers.onQuantityChange,
+    stepperDisabled: product.required === true,
   };
 }

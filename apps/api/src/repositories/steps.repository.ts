@@ -34,17 +34,30 @@ const seedSchema = z.object({
   qty: z.number(),
 });
 
-const productSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  description: z.string().optional(),
-  learnMoreUrl: z.string().optional(),
-  badge: z.string().optional(),
-  image: z.string().optional(),
-  pricing: pricingSchema,
-  variants: z.array(variantSchema).nullable().optional(),
-  seed: seedSchema.nullable().optional(),
-});
+const productSchema = z
+  .object({
+    id: z.string(),
+    name: z.string(),
+    description: z.string().optional(),
+    learnMoreUrl: z.string().optional(),
+    badge: z.string().optional(),
+    image: z.string().optional(),
+    pricing: pricingSchema,
+    variants: z.array(variantSchema).nullable().optional(),
+    seed: seedSchema.nullable().optional(),
+    required: z.boolean().optional(),
+  })
+  .superRefine((product, ctx) => {
+    // A required product is locked at its seeded quantity, so it must ship with
+    // a non-null seed of at least one unit.
+    if (product.required === true && (product.seed == null || product.seed.qty < 1)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: `required product "${product.id}" must have a non-null seed with qty >= 1`,
+        path: ['seed'],
+      });
+    }
+  });
 
 const stepSchema = z
   .object({

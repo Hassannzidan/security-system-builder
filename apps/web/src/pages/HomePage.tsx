@@ -45,10 +45,10 @@ const STEP_ICONS: Record<string, ReactNode> = {
 };
 
 /**
- * TODO: remove when steps 3-4 exist in API.
- * The steps API currently returns the cameras and plan steps. To match the
- * design, headers 3–4 are rendered from this local placeholder config (title +
- * icon + order + advance label, no body) and merged after the API steps.
+ * TODO: remove when step 4 exists in API.
+ * The steps API returns the cameras, plan and sensors steps. To match the
+ * design, the extras header is rendered from this local placeholder config
+ * (title + icon + order + advance label, no body) and merged after the API steps.
  */
 const PLACEHOLDER_STEPS: Array<{
   id: string;
@@ -56,19 +56,11 @@ const PLACEHOLDER_STEPS: Array<{
   title: string;
   icon: string;
   nextLabel?: string;
-}> = [
-  {
-    id: 'sensors',
-    order: 3,
-    title: 'Choose your sensors',
-    icon: 'sensor',
-    nextLabel: 'Next: Add extra protection',
-  },
-  { id: 'extras', order: 4, title: 'Add extra protection', icon: 'extras', nextLabel: 'Next' },
-];
+}> = [{ id: 'extras', order: 4, title: 'Add extra protection', icon: 'extras', nextLabel: 'Next' }];
 
 /** Responsive grid of product cards for a step (5 across on desktop → 1 on phone). */
 function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilder }) {
+  const imageAlign = step.id === 'sensors' ? 'center' : 'start';
   return (
     <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
       {step.products.map((product) => {
@@ -82,6 +74,7 @@ function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilde
           <ProductCard
             key={product.id}
             orientation="vertical"
+            imageAlign={imageAlign}
             selected={builder.isProductSelected(product.id)}
             onToggleSelect={() => builder.toggleActive(product.id)}
             {...props}

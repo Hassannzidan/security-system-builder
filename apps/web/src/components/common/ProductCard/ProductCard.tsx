@@ -57,7 +57,9 @@ export function ProductCard({
   onQuantityChange,
   minQuantity = 0,
   maxQuantity = 99,
+  stepperDisabled = false,
   orientation = 'horizontal',
+  imageAlign = 'start',
   selected = false,
   onToggleSelect,
   className,
@@ -155,6 +157,7 @@ export function ProductCard({
           max={maxQuantity}
           onChange={setQuantity}
           title={title}
+          disabled={stepperDisabled}
         />
         <PriceBlock
           price={price}
@@ -192,7 +195,13 @@ export function ProductCard({
         width: '100%',
       }}
     >
-      <ProductImage src={imageUrl} alt={imageAlt ?? title} badge={badge} vertical={isVertical} />
+      <ProductImage
+        src={imageUrl}
+        alt={imageAlt ?? title}
+        badge={badge}
+        vertical={isVertical}
+        align={imageAlign}
+      />
       {info}
     </div>
   );

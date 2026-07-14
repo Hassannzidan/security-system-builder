@@ -32,8 +32,19 @@ export interface ProductCardProps {
   onQuantityChange?: (quantity: number) => void;
   minQuantity?: number;
   maxQuantity?: number;
+  /**
+   * When true, both stepper buttons render disabled regardless of quantity —
+   * used for required products whose quantity is locked. Purely visual; the
+   * bundle builder also guards its mutators for these products.
+   */
+  stepperDisabled?: boolean;
 
   orientation?: 'horizontal' | 'vertical';
+  /**
+   * How the image sits within its frame. "start" (default) top-left anchors it;
+   * "center" horizontally centers it within the card.
+   */
+  imageAlign?: 'start' | 'center';
   /** Highlights the card border. The parent passes `quantity > 0`. */
   selected?: boolean;
   /**

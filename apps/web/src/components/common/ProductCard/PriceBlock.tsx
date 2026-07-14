@@ -1,4 +1,4 @@
-import { letterSpacing, lineHeight } from '@/design-tokens';
+import { colors, letterSpacing, lineHeight } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 import { formatPrice } from '@/utils/format';
 
@@ -22,6 +22,10 @@ export function PriceBlock({
   interval?: 'month';
 }) {
   const discounted = compareAtPrice !== undefined && compareAtPrice > price;
+  // A zero price with a compare-at reads as a giveaway: strike the compare-at and
+  // show the word "FREE" (in the brand purple) where the active price would be —
+  // never "$0.00", and never an interval suffix.
+  const isFree = price === 0 && compareAtPrice !== undefined;
   const suffix = interval === 'month' ? '/mo' : '';
   const typeStyle = {
     lineHeight: lineHeight['100'],
@@ -44,10 +48,19 @@ export function PriceBlock({
           {suffix}
         </span>
       )}
-      <span className="font-['Gilroy'] text-base font-normal text-[#525963]" style={typeStyle}>
-        {formatPrice(price, currency)}
-        {suffix}
-      </span>
+      {isFree ? (
+        <span
+          className="font-['Gilroy'] text-base font-normal"
+          style={{ ...typeStyle, color: colors.primary.DEFAULT }}
+        >
+          FREE
+        </span>
+      ) : (
+        <span className="font-['Gilroy'] text-base font-normal text-[#525963]" style={typeStyle}>
+          {formatPrice(price, currency)}
+          {suffix}
+        </span>
+      )}
     </div>
   );
 }

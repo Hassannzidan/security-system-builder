@@ -163,6 +163,38 @@
           "seed": null
         }
       ]
+    },
+    {
+      "id": "sensors",
+      "order": 3,
+      "title": "Choose your sensors",
+      "icon": "sensor",
+      "nextLabel": "Next: Add extra protection",
+      "category": "Sensors",
+      "selectionType": "multiple",
+      "products": [
+        {
+          "id": "wyze-sense-motion-sensor",
+          "name": "Wyze Sense Motion Sensor",
+          "description": "Detects motion up to 25 feet away with a 120° field of view. Instant alerts when movement is detected.",
+          "learnMoreUrl": "#",
+          "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/motion-sensor.png",
+          "pricing": { "price": 29.99 },
+          "variants": null,
+          "seed": { "variantId": null, "qty": 2 }
+        },
+        {
+          "id": "wyze-sense-hub",
+          "name": "Wyze Sense Hub (Required)",
+          "description": "The brain of your sensor system. Connects all sensors and sounds a 100dB siren when triggered. Included free with your system.",
+          "learnMoreUrl": "#",
+          "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/hub-sensor.png",
+          "pricing": { "price": 0, "compareAt": 29.92 },
+          "variants": null,
+          "required": true,
+          "seed": { "variantId": null, "qty": 1 }
+        }
+      ]
     }
   ]
 }

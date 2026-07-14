@@ -62,6 +62,12 @@ export interface StepProduct {
   pricing: Pricing;
   variants?: ProductVariant[] | null;
   seed?: Seed | null;
+  /**
+   * When true the product is mandatory: locked at its seeded quantity and never
+   * incremented, decremented or removed. A required product must have a non-null
+   * seed with qty >= 1. Absent/false = normal behaviour.
+   */
+  required?: boolean;
 }
 
 /** A single step in the bundle builder, embedding its own products. */
