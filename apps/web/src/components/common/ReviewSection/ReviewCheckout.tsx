@@ -173,7 +173,7 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
           verticalAlign: 'middle',
         }}
       >
-        {placed ? 'Order placed — this is a prototype' : 'Checkout'}
+        {placed ? 'Order placed' : 'Checkout'}
       </button>
 
       {/* Save for later — click-triggered persistence via the storage module.

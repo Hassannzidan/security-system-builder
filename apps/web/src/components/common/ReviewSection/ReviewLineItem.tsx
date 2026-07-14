@@ -35,11 +35,10 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
       </div>
 
       <span
-        className="min-w-0 flex-1 truncate text-[#1F1F1F]"
+        className="min-w-0 flex-1 truncate text-[14px] text-[#1F1F1F] min-[1440px]:text-[18px]"
         style={{
           fontFamily: fontFamily.primary.join(', '),
           fontWeight: fontWeight.medium,
-          fontSize: '18px',
           lineHeight: '16px',
           letterSpacing: '0.5%',
         }}

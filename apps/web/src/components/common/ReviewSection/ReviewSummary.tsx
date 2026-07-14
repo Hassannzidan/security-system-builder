@@ -34,11 +34,10 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
         <h2
           // Design spec labels this Gilroy-SemiBold; the family registers SemiBold
           // at weight 600, so we use that to render the intended glyph.
-          className="text-[#1F1F1F]"
+          className="text-[22px] text-[#1F1F1F] min-[1440px]:text-[28px]"
           style={{
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.semiBold,
-            fontSize: '28px',
             lineHeight: lineHeight['100'],
             letterSpacing: letterSpacing['0.6'],
           }}
@@ -46,10 +45,10 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
           Your security system
         </h2>
         <p
+          className="text-[14px] min-[1440px]:text-[16px]"
           style={{
             fontFamily: fontFamily.primary.join(', '),
             fontWeight: fontWeight.medium,
-            fontSize: '16px',
             lineHeight: lineHeight['130'],
             letterSpacing: letterSpacing['0.6'],
             color: colors.text.description,

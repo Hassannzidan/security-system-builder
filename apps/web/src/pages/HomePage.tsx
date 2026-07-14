@@ -68,7 +68,11 @@ function StepProductsGrid({ step, builder }: { step: Step; builder: Builder }) {
     <div
       className={cn(
         'grid grid-cols-1 gap-4',
-        isCompact ? 'sm:grid-cols-2' : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+        isCompact
+          ? // 2-across in compact. When the product count is odd, the final card
+            // is alone in the last row — span it across both columns and center it.
+            'sm:grid-cols-2 sm:[&>*:last-child:nth-child(odd)]:col-span-2 sm:[&>*:last-child:nth-child(odd)]:mx-auto'
+          : 'sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
         // The bottom margin only separates the grid from the footer button.
         // The last step has no button, so it collapses to the content padding.
         step.nextLabel && 'mb-6',
@@ -187,7 +191,7 @@ function HomeContent() {
     // Below `lg`: single column (mobile stack). `lg`–1439px: a 10-col grid split
     // into a 6-col accordion + a 4-col review sidebar. `1440px`+: single column
     // again, so the review returns to a full-width panel beneath the accordion.
-    <div className="grid grid-cols-1 items-start gap-4 lg:max-[1439px]:grid-cols-10 lg:max-[1439px]:gap-6">
+    <div className="grid grid-cols-1 items-start gap-4 lg:max-[1439px]:grid-cols-10 lg:max-[1439px]:gap-2">
       <div className="min-w-0 lg:max-[1439px]:col-span-6">
         <Accordion
           steps={buildAccordionSteps(builder.steps, builder)}

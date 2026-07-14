@@ -101,9 +101,9 @@ export function ProductCard({
           className="text-[#0B0D10]"
           style={{
             fontFamily: fontFamily.primary.join(', '),
-            fontWeight: fontWeight.semiBold,
+            fontWeight: isVertical ? fontWeight.semiBold : fontWeight.regular,
             fontSize: isVertical ? fontSize['18'] : fontSize['16'],
-            lineHeight: lineHeight['100'],
+            lineHeight: lineHeight['130'],
             letterSpacing: letterSpacing['0.6'],
           }}
         >
@@ -131,7 +131,7 @@ export function ProductCard({
       </div>
 
       {hasVariants && (
-        <div className="flex flex-nowrap gap-1.5">
+        <div className="flex flex-wrap gap-1.5">
           {variants!.map((variant) => (
             <VariantPill
               key={variant.id}
