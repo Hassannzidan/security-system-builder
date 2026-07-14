@@ -11,3 +11,4 @@ export {
   ShieldPlusIcon,
 } from './Accordion';
 export type { AccordionProps, AccordionStepConfig, AccordionStepProps } from './Accordion';
+export { ReviewSection } from './ReviewSection';

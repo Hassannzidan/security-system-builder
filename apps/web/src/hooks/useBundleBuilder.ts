@@ -25,16 +25,35 @@ interface BundleState {
 /** One (product, variant) pair with a positive quantity, for the review panel. */
 export interface LineItem {
   productId: string;
+  /**
+   * Quantity-map key for this line: the variant id, or DEFAULT_VARIANT_KEY when
+   * the product is variant-less. The review row passes it straight back to
+   * `setQuantity(productId, variantKey, qty)` so its stepper edits exactly this
+   * line's variant.
+   */
+  variantKey: string;
+  /** Real variant id (null when the product has no variants). */
   variantId: string | null;
-  productName: string;
-  variantLabel: string | null;
-  quantity: number;
+  name: string;
+  /**
+   * Variant label appended after the name ("Wyze Cam v4 – Black"), but ONLY for
+   * non-default variants. The default variant (the seed's, else the first) renders
+   * as the bare product name to match the design's "Wyze Cam v4"; any other
+   * variant is labelled so multiple lines of the same product stay distinguishable.
+   */
+  variantLabel?: string;
+  /** Variant image when present, otherwise the product image. */
+  thumbnail: string;
+  qty: number;
   unitPrice: number;
   lineTotal: number;
-  /** Original per-unit price when discounted, else equal to `unitPrice`. */
-  compareAtUnitPrice: number;
-  compareAtLineTotal: number;
-  image: string;
+  /**
+   * Struck-through original line total — present only when the product carries a
+   * compare-at price (i.e. it is discounted). Absent for full-price lines.
+   */
+  lineCompareAtTotal?: number;
+  /** Billing interval for recurring lines (plans) — drives the `/mo` suffix. */
+  interval?: 'month';
   /** Step category the product belongs to — used to group the review panel. */
   category: string;
   stepId: string;
@@ -261,6 +280,15 @@ export function useBundleBuilder(steps: Step[]) {
     [steps],
   );
 
+  // --- Persistence (stub) -------------------------------------------------
+
+  // Exposed for the review panel's "Save my system for later" link. Persistence
+  // lands in the next iteration; for now it just records intent.
+  const saveSystem = useCallback(() => {
+    // TODO: localStorage persistence next iteration
+    console.info('[bundle] saveSystem invoked — persistence not yet implemented');
+  }, []);
+
   // --- Reads --------------------------------------------------------------
 
   const getCardState = useCallback(
@@ -320,7 +348,11 @@ export function useBundleBuilder(steps: Step[]) {
         if (!selection) continue;
 
         const unitPrice = product.pricing.price;
-        const compareAtUnitPrice = product.pricing.compareAt ?? unitPrice;
+        const compareAt = product.pricing.compareAt;
+        // The default variant (the seed's, else the first) renders without a
+        // label to match the design's bare "Wyze Cam v4"; any other variant is
+        // labelled so duplicate-product lines stay distinguishable.
+        const defaultVariantId = product.seed?.variantId ?? product.variants?.[0]?.id ?? null;
 
         for (const [variantKey, quantity] of Object.entries(selection.quantities)) {
           if (quantity <= 0) continue;
@@ -332,15 +364,16 @@ export function useBundleBuilder(steps: Step[]) {
 
           items.push({
             productId: product.id,
+            variantKey,
             variantId: variant?.id ?? null,
-            productName: product.name,
-            variantLabel: variant?.label ?? null,
-            quantity,
+            name: product.name,
+            variantLabel: variant && variant.id !== defaultVariantId ? variant.label : undefined,
+            thumbnail: variant?.image ?? product.image ?? '',
+            qty: quantity,
             unitPrice,
             lineTotal: unitPrice * quantity,
-            compareAtUnitPrice,
-            compareAtLineTotal: compareAtUnitPrice * quantity,
-            image: variant?.image ?? product.image ?? '',
+            lineCompareAtTotal: compareAt != null ? compareAt * quantity : undefined,
+            interval: product.pricing.interval,
             category: step.category,
             stepId: step.id,
             hasStepper: step.selectionType !== 'single',
@@ -355,7 +388,12 @@ export function useBundleBuilder(steps: Step[]) {
 
   const totals = useMemo<BundleTotals>(() => {
     const subtotal = lineItems.reduce((sum, item) => sum + item.lineTotal, 0);
-    const compareAtSubtotal = lineItems.reduce((sum, item) => sum + item.compareAtLineTotal, 0);
+    // Lines with no compare-at contribute their own total, so an all-full-price
+    // bundle yields zero savings.
+    const compareAtSubtotal = lineItems.reduce(
+      (sum, item) => sum + (item.lineCompareAtTotal ?? item.lineTotal),
+      0,
+    );
     return {
       subtotal,
       compareAtSubtotal,
@@ -377,6 +415,7 @@ export function useBundleBuilder(steps: Step[]) {
     getSelectedCount,
     getSingleSelection,
     isProductSelected,
+    saveSystem,
     lineItems,
     totals,
   };

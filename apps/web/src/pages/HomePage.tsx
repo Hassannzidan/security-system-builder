@@ -10,23 +10,25 @@ import {
   ShieldPlusIcon,
   ProductCard,
   PlanCard,
+  ReviewSection,
   type AccordionStepConfig,
 } from '@/components/common';
-import { useStepsQuery } from '@/hooks/useStepsQuery';
 import {
-  useBundleBuilder,
-  DEFAULT_VARIANT_KEY,
-  type BundleBuilder,
-} from '@/hooks/useBundleBuilder';
+  BundleBuilderProvider,
+  useBundleBuilderContext,
+  type BundleBuilderContextValue,
+} from '@/context/BundleBuilderContext';
+import { DEFAULT_VARIANT_KEY } from '@/hooks/useBundleBuilder';
 import { PageGrid } from '@/layouts';
 import { cn } from '@/lib/utils';
 import { mapStepProductToCardProps } from '@/utils/mapStepProductToCardProps';
 import { mapStepProductToPlanCardProps } from '@/utils/mapStepProductToPlanCardProps';
 
 /**
- * HomePage — the bundle builder. Fetches steps from the API, owns selection
- * state via `useBundleBuilder`, and renders the 4-step accordion with Step 1
- * (cameras) wired to live product cards.
+ * HomePage — the bundle builder. Selection state lives in `BundleBuilderProvider`
+ * (which instantiates the steps query + `useBundleBuilder` once), so the 4-step
+ * accordion and the review panel below it are two sibling consumers of the same
+ * state — a change in either place is instantly reflected in the other.
  *
  * Layout (mobile-first):
  * - `<main>` *is* the shared 12-column PageGrid (full viewport width).
@@ -35,6 +37,9 @@ import { mapStepProductToPlanCardProps } from '@/utils/mapStepProductToPlanCardP
 
 /** Center band: full width on mobile, cols 2–11 on lg+. */
 const CENTER_COLS = 'col-span-full min-w-0 lg:col-span-10 lg:col-start-2';
+
+/** The context value satisfies the builder shape the step grids consume. */
+type Builder = BundleBuilderContextValue;
 
 /** Resolve a `Step.icon` string key to its React glyph. */
 const STEP_ICONS: Record<string, ReactNode> = {
@@ -45,7 +50,7 @@ const STEP_ICONS: Record<string, ReactNode> = {
 };
 
 /** Responsive grid of product cards for a step (5 across on desktop → 1 on phone). */
-function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilder }) {
+function StepProductsGrid({ step, builder }: { step: Step; builder: Builder }) {
   const imageAlign = step.id === 'sensors' ? 'center' : 'start';
   return (
     <div
@@ -83,7 +88,7 @@ function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilde
  * desktop → 1 column on phone). Single-select semantics: exactly one card is
  * chosen, driven by the builder's `getSingleSelection`.
  */
-function StepPlansGrid({ step, builder }: { step: Step; builder: BundleBuilder }) {
+function StepPlansGrid({ step, builder }: { step: Step; builder: Builder }) {
   const selectedId = builder.getSingleSelection(step.id);
   return (
     <div
@@ -106,7 +111,7 @@ function StepPlansGrid({ step, builder }: { step: Step; builder: BundleBuilder }
 }
 
 /** Render a step's body according to its selection type. */
-function StepContent({ step, builder }: { step: Step; builder: BundleBuilder }) {
+function StepContent({ step, builder }: { step: Step; builder: Builder }) {
   return step.selectionType === 'single' ? (
     <StepPlansGrid step={step} builder={builder} />
   ) : (
@@ -115,7 +120,7 @@ function StepContent({ step, builder }: { step: Step; builder: BundleBuilder }) 
 }
 
 /** Map live API steps to accordion configs, sorted by `order`. */
-function buildAccordionSteps(apiSteps: Step[], builder: BundleBuilder): AccordionStepConfig[] {
+function buildAccordionSteps(apiSteps: Step[], builder: Builder): AccordionStepConfig[] {
   return [...apiSteps]
     .sort((a, b) => a.order - b.order)
     .map((step) => ({
@@ -136,14 +141,12 @@ function Heading() {
   );
 }
 
-export function HomePage() {
-  const stepsQuery = useStepsQuery();
-  const builder = useBundleBuilder(stepsQuery.data ?? []);
+/** The page body — reads shared state from context and renders the loaded UI. */
+function HomeContent() {
+  const builder = useBundleBuilderContext();
 
-  let body: ReactNode;
-
-  if (stepsQuery.isPending) {
-    body = (
+  if (builder.isPending) {
+    return (
       <div
         className="flex min-h-[40vh] items-center justify-center"
         role="status"
@@ -153,37 +156,46 @@ export function HomePage() {
         <span className="sr-only">Loading your system builder…</span>
       </div>
     );
-  } else if (stepsQuery.isError) {
-    body = (
+  }
+
+  if (builder.isError) {
+    return (
       <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center">
         <p className="font-['Gilroy'] text-sm font-medium text-[#525963]">
           We couldn’t load the system builder.
         </p>
         <button
           type="button"
-          onClick={() => stepsQuery.refetch()}
+          onClick={() => builder.refetch()}
           className="rounded-md border border-[#6D28D9]/40 px-4 py-2 text-sm font-semibold text-[#6D28D9] transition-colors hover:bg-[#6D28D9]/5"
         >
           Try again
         </button>
       </div>
     );
-  } else {
-    body = (
-      <Accordion
-        steps={buildAccordionSteps(stepsQuery.data, builder)}
-        openIndex={builder.openStepIndex}
-        onOpenChange={builder.setOpenStep}
-      />
-    );
   }
 
   return (
-    <PageGrid as="main" className="min-h-screen bg-[#F7F8FC]">
-      <div className={cn(CENTER_COLS, 'flex flex-col gap-4')}>
-        <Heading />
-        {body}
-      </div>
-    </PageGrid>
+    <>
+      <Accordion
+        steps={buildAccordionSteps(builder.steps, builder)}
+        openIndex={builder.openStepIndex}
+        onOpenChange={builder.setOpenStep}
+      />
+      <ReviewSection />
+    </>
+  );
+}
+
+export function HomePage() {
+  return (
+    <BundleBuilderProvider>
+      <PageGrid as="main" className="min-h-screen bg-[#F7F8FC]">
+        <div className={cn(CENTER_COLS, 'flex flex-col gap-4')}>
+          <Heading />
+          <HomeContent />
+        </div>
+      </PageGrid>
+    </BundleBuilderProvider>
   );
 }

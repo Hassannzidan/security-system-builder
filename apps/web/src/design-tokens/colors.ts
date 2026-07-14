@@ -52,6 +52,11 @@ const mint = {
   DEFAULT: '#0AA288',
 } as const;
 
+/** Soft indigo wash — the review panel surface from Figma. */
+const indigo = {
+  50: '#EEF1FB',
+} as const;
+
 const status = {
   success: '#0AA288',
   error: '#D8392B',
@@ -82,6 +87,7 @@ export const primitiveColors = {
   primary,
   base,
   mint,
+  indigo,
   status,
   opacity,
 } as const;
@@ -131,6 +137,8 @@ export const colors = {
     overlay: withAlpha(base.black, opacity.overlay),
     tint: withAlpha(mint.DEFAULT, opacity.subtle),
     wash: withAlpha(base.white, opacity.subtle),
+    /** Review panel surface — soft indigo wash from Figma */
+    reviewPanel: indigo[50],
   },
 
   /** Borders & dividers */
