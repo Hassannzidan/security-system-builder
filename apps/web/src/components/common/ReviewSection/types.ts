@@ -19,5 +19,6 @@ export interface ReviewPlanLineProps {
 
 export interface ReviewCheckoutProps {
   totals: BundleTotals;
-  onSave: () => void;
+  /** Persist the current system. Returns whether the save succeeded. */
+  onSave: () => boolean;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import satisfactionBadge from '@/assets/satisfaction-badge.svg';
 import { colors, fontFamily, fontWeight, letterSpacing, lineHeight, radius } from '@/design-tokens';
@@ -7,11 +7,47 @@ import { formatPrice } from '@/utils/format';
 import { FINANCING_ESTIMATE, RETURNS_BODY, RETURNS_HEADING } from './constants';
 import type { ReviewCheckoutProps } from './types';
 
+/** How long the "Saved ✓" confirmation stays up before reverting to the link. */
+const SAVED_FEEDBACK_MS = 2000;
+
+/** Save-for-later feedback: idle link, transient success, or a persistent error. */
+type SaveStatus = 'idle' | 'saved' | 'error';
+
+const SAVE_LABELS: Record<SaveStatus, string> = {
+  idle: 'Save my system for later',
+  saved: 'Saved ✓',
+  error: "Couldn't save — check browser storage settings",
+};
+
 /** Right column of the review panel: guarantee, financing + total, savings, CTA. */
 export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
   // Placeholder confirmation — the task allows a prototype checkout with no order
   // backend. Swaps the CTA for an inline confirmation on click.
   const [placed, setPlaced] = useState(false);
+
+  // Feedback for the "Save my system for later" link. On success it flips to
+  // "Saved ✓" (disabled) for ~2s then reverts; on failure it shows a persistent
+  // error in the same slot that the user can click to retry.
+  const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
+  const revertTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(
+    () => () => {
+      if (revertTimer.current) clearTimeout(revertTimer.current);
+    },
+    [],
+  );
+
+  const handleSave = () => {
+    if (revertTimer.current) clearTimeout(revertTimer.current);
+    const succeeded = onSave();
+    if (succeeded) {
+      setSaveStatus('saved');
+      revertTimer.current = setTimeout(() => setSaveStatus('idle'), SAVED_FEEDBACK_MS);
+    } else {
+      setSaveStatus('error');
+    }
+  };
 
   return (
     <div className="flex flex-col gap-5">
@@ -129,21 +165,24 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         {placed ? 'Order placed — this is a prototype' : 'Checkout'}
       </button>
 
-      {/* Save for later — persistence lands next iteration (see saveSystem stub) */}
+      {/* Save for later — click-triggered persistence via the storage module.
+          The link doubles as its own feedback slot (see saveStatus). */}
       <button
         type="button"
-        onClick={onSave}
-        className="mx-auto underline"
+        onClick={handleSave}
+        disabled={saveStatus === 'saved'}
+        aria-live="polite"
+        className="mx-auto underline disabled:cursor-default disabled:no-underline"
         style={{
           fontFamily: fontFamily.primary.join(', '),
           fontWeight: fontWeight.medium,
           fontSize: '14px',
           lineHeight: lineHeight['130'],
           letterSpacing: letterSpacing['0.6'],
-          color: colors.primary.DEFAULT,
+          color: saveStatus === 'error' ? colors.status.error : colors.primary.DEFAULT,
         }}
       >
-        Save my system for later
+        {SAVE_LABELS[saveStatus]}
       </button>
     </div>
   );

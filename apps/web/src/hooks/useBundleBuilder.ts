@@ -2,20 +2,28 @@ import { useCallback, useMemo, useRef, useState } from 'react';
 
 import type { Step } from '@security-system-builder/shared';
 
+import { loadSystem, saveSystem as writeSavedSystem } from '@/lib/systemStorage';
+
 /**
  * Quantity-map key used for products that have no variants. Real variant ids
  * are used verbatim; this sentinel keeps the map shape uniform.
  */
 export const DEFAULT_VARIANT_KEY = '__default__';
 
-interface ProductSelection {
+export interface ProductSelection {
   /** Which variant chip is currently active on the card (null when variant-less). */
   activeVariantId: string | null;
   /** Per-variant quantities. Keyed by variant id, or DEFAULT_VARIANT_KEY. */
   quantities: Record<string, number>;
 }
 
-interface BundleState {
+/**
+ * The full serialisable client state of the builder. This is exactly what the
+ * storage module persists (as `SavedSystem['state']`) and what
+ * {@link reconcileSavedState} produces — the storage layer imports this type
+ * rather than redeclaring the shape.
+ */
+export interface BundleState {
   /** Index of the currently-open accordion step (0 on load, -1 when all collapsed). */
   openStepIndex: number;
   /** Client selection state, keyed by product id. */
@@ -111,6 +119,95 @@ function seedSelections(steps: Step[]): Record<string, ProductSelection> {
 }
 
 /**
+ * Reconcile a previously-saved state against the CURRENT catalog.
+ *
+ * A saved system may predate catalog changes (a product renamed away, a variant
+ * dropped, a required flag added). This maps the saved selections onto today's
+ * steps, discarding anything that no longer applies and re-asserting the
+ * invariants the live mutators guarantee, so hydration can never surface a
+ * corrupt or impossible selection. Pure and side-effect free — unit tested.
+ *
+ * Rules, in order:
+ *   - Start from a freshly-seeded baseline so products ADDED since the save get
+ *     their seed defaults (and single-select/required products are covered).
+ *   - Drop saved selections whose product no longer exists in any step.
+ *   - Drop quantity keys whose variant no longer exists on the product
+ *     (DEFAULT_VARIANT_KEY is always kept); clamp negative/non-finite qtys to 0.
+ *   - Repair an activeVariantId that points at a now-missing variant.
+ *   - Force `required` products back to their seeded selection, ignoring the
+ *     saved value (they are locked and must never drift).
+ *   - For single-select steps, enforce exactly one product at qty 1: honour the
+ *     saved choice when still valid, else fall back to the step's seeded product.
+ *   - Clamp openStepIndex into [-1, steps.length - 1] (−1 = all collapsed).
+ */
+export function reconcileSavedState(steps: Step[], saved: BundleState): BundleState {
+  // Seeded baseline: guarantees an entry for every current product, so products
+  // added to the catalog since the save appear with their defaults.
+  const selections = seedSelections(steps);
+
+  for (const step of steps) {
+    for (const product of step.products) {
+      // Required products are locked — keep the seeded selection untouched.
+      if (product.required === true) continue;
+
+      const savedSelection = saved.selections[product.id];
+      if (!savedSelection) continue; // product absent from save → keep seed default
+
+      const validVariantIds = new Set((product.variants ?? []).map((v) => v.id));
+
+      // Keep only quantity keys that still resolve to a variant (or the default
+      // sentinel), clamping negatives / non-finite values to 0.
+      const quantities: Record<string, number> = {};
+      for (const [key, qty] of Object.entries(savedSelection.quantities)) {
+        if (key !== DEFAULT_VARIANT_KEY && !validVariantIds.has(key)) continue;
+        quantities[key] = Number.isFinite(qty) ? Math.max(0, qty) : 0;
+      }
+
+      // Repair a dangling active variant back to the seed's (else first) variant.
+      const activeVariantId =
+        savedSelection.activeVariantId != null &&
+        !validVariantIds.has(savedSelection.activeVariantId)
+          ? (product.seed?.variantId ?? product.variants?.[0]?.id ?? null)
+          : savedSelection.activeVariantId;
+
+      selections[product.id] = { activeVariantId, quantities };
+    }
+  }
+
+  // Single-select steps: exactly one product chosen at qty 1 under the default
+  // key. Prefer the saved choice when it survived reconciliation; otherwise fall
+  // back to the step's seeded product (or the first, if none is seeded).
+  for (const step of steps) {
+    if (step.selectionType !== 'single') continue;
+
+    const savedChoice = step.products.find(
+      (product) => (selections[product.id]?.quantities[DEFAULT_VARIANT_KEY] ?? 0) > 0,
+    );
+    const seededChoice = step.products.find((product) => product.seed != null);
+    const chosenId = savedChoice?.id ?? seededChoice?.id ?? step.products[0]?.id ?? null;
+
+    for (const product of step.products) {
+      const current = selections[product.id] ?? { activeVariantId: null, quantities: {} };
+      selections[product.id] = {
+        ...current,
+        quantities: {
+          ...current.quantities,
+          [DEFAULT_VARIANT_KEY]: product.id === chosenId ? 1 : 0,
+        },
+      };
+    }
+  }
+
+  // Clamp the open step into range; −1 keeps the "all collapsed" state valid.
+  const rawOpen = saved.openStepIndex;
+  const openStepIndex = Number.isInteger(rawOpen)
+    ? Math.max(-1, Math.min(steps.length - 1, rawOpen))
+    : 0;
+
+  return { openStepIndex, selections };
+}
+
+/**
  * useBundleBuilder — owns ALL client state for the bundle builder: the open
  * accordion step, the active variant per card, and per-variant quantities.
  *
@@ -123,13 +220,23 @@ function seedSelections(steps: Step[]): Record<string, ProductSelection> {
 export function useBundleBuilder(steps: Step[]) {
   const [state, setState] = useState<BundleState>({ openStepIndex: 0, selections: {} });
 
-  // Seed once per steps identity. Assigning state during render (guarded by the
-  // ref) re-renders before commit, so the first paint already shows seeded
-  // quantities — no flash of empty state that a useEffect would cause.
+  // Resolve initial state once per steps identity. Assigning state during render
+  // (guarded by the ref) re-renders before commit, so the first paint already
+  // shows the resolved quantities — no flash of empty state a useEffect causes.
+  //
+  // Resolution order (applied the first time real steps arrive):
+  //   1. A saved system in localStorage → reconcile it against the current
+  //      catalog and use it (restores the user's configuration + open step).
+  //   2. Otherwise → seed from the API seeds exactly as before this feature.
   const seededStepsRef = useRef<Step[] | null>(null);
   if (steps.length > 0 && seededStepsRef.current !== steps) {
     seededStepsRef.current = steps;
-    setState((prev) => ({ ...prev, selections: seedSelections(steps) }));
+    const saved = loadSystem();
+    setState(
+      saved
+        ? reconcileSavedState(steps, saved)
+        : { openStepIndex: 0, selections: seedSelections(steps) },
+    );
   }
 
   const { openStepIndex, selections } = state;
@@ -280,14 +387,20 @@ export function useBundleBuilder(steps: Step[]) {
     [steps],
   );
 
-  // --- Persistence (stub) -------------------------------------------------
+  // --- Persistence --------------------------------------------------------
 
-  // Exposed for the review panel's "Save my system for later" link. Persistence
-  // lands in the next iteration; for now it just records intent.
-  const saveSystem = useCallback(() => {
-    // TODO: localStorage persistence next iteration
-    console.info('[bundle] saveSystem invoked — persistence not yet implemented');
-  }, []);
+  // Exposed for the review panel's "Save my system for later" link. Snapshots the
+  // current { openStepIndex, selections } and writes it through the storage
+  // module, returning whether the write succeeded (false in private-mode / quota
+  // situations) so the UI can give feedback.
+  //
+  // Saving is CLICK-TRIGGERED ONLY. Auto-saving on every state change was
+  // deliberately NOT implemented: the task's contract is explicit — build →
+  // click → return → restored — so persistence happens only when the user asks.
+  const saveSystem = useCallback(
+    (): boolean => writeSavedSystem({ openStepIndex, selections }),
+    [openStepIndex, selections],
+  );
 
   // --- Reads --------------------------------------------------------------
 
