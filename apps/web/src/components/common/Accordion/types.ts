@@ -29,9 +29,9 @@ export interface AccordionStepConfig {
   /** Body content revealed when the step is expanded. */
   content?: ReactNode;
   /**
-   * Overrides the auto-generated advance label. Maps from `Step.nextLabel`.
-   * When omitted, the step shows "Next: <next step title>" (or just "Next" for
-   * the final step).
+   * Label for the centered advance button. Maps from `Step.nextLabel`.
+   * Present → the step renders that button. Omitted → no footer button at all
+   * (e.g. the final step). A label is never auto-generated.
    */
   nextLabel?: string;
 }

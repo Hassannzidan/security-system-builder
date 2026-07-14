@@ -61,28 +61,25 @@ export function Accordion({
       onValueChange={handleValueChange}
       className={cn('flex flex-col', className)}
     >
-      {steps.map((step, index) => {
-        const nextStep = steps[index + 1];
-        const nextLabel = step.nextLabel ?? (nextStep ? `Next: ${nextStep.title}` : 'Next');
-
-        return (
-          <AccordionStep
-            key={step.id}
-            value={step.id}
-            stepNumber={index + 1}
-            totalSteps={steps.length}
-            showEyebrow={showStepEyebrow}
-            icon={step.icon}
-            title={step.title}
-            isOpen={currentOpen === index}
-            selectedCount={step.selectedCount}
-            nextLabel={nextLabel}
-            onNext={() => goToNext(index)}
-          >
-            {step.content}
-          </AccordionStep>
-        );
-      })}
+      {steps.map((step, index) => (
+        <AccordionStep
+          key={step.id}
+          value={step.id}
+          stepNumber={index + 1}
+          totalSteps={steps.length}
+          showEyebrow={showStepEyebrow}
+          icon={step.icon}
+          title={step.title}
+          isOpen={currentOpen === index}
+          selectedCount={step.selectedCount}
+          // Absent nextLabel → no footer button (e.g. the final step). The label
+          // is a deliberate, per-step opt-in — never auto-invented here.
+          nextLabel={step.nextLabel}
+          onNext={() => goToNext(index)}
+        >
+          {step.content}
+        </AccordionStep>
+      ))}
     </AccordionRoot>
   );
 }

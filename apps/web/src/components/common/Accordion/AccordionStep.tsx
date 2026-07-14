@@ -32,8 +32,11 @@ export interface AccordionStepProps {
   selectedCount?: number;
   /** Body content, rendered only while open. Optional. */
   children?: ReactNode;
-  /** Label for the centered advance button, e.g. "Next: Choose your plan". */
-  nextLabel: string;
+  /**
+   * Label for the centered advance button, e.g. "Next: Choose your plan".
+   * Omit to render no footer button at all (e.g. the final step).
+   */
+  nextLabel?: string;
   onNext: () => void;
 }
 
@@ -119,26 +122,29 @@ export function AccordionStep({
       <AccordionContent className={cn('flex flex-col', stepper.contentPadding)}>
         {children}
 
-        <button
-          type="button"
-          onClick={onNext}
-          className={cn(
-            'self-center text-sm transition-colors hover:bg-white/60 active:opacity-90 sm:text-base',
-            stepper.nextButtonLayout,
-            stepper.nextButtonPadding,
-          )}
-          style={{
-            fontFamily: fontFamily.primary.join(', '),
-            fontWeight: fontWeight.semiBold,
-            letterSpacing: letterSpacing['0.6'],
-            color: colors.primary.DEFAULT,
-            backgroundColor: colors.background.default,
-            border: `1px solid ${colors.primary.muted}`,
-            borderRadius: radius.md,
-          }}
-        >
-          {nextLabel}
-        </button>
+        {/* No nextLabel → final step → no footer button (design shows none). */}
+        {nextLabel && (
+          <button
+            type="button"
+            onClick={onNext}
+            className={cn(
+              'self-center text-sm transition-colors hover:bg-white/60 active:opacity-90 sm:text-base',
+              stepper.nextButtonLayout,
+              stepper.nextButtonPadding,
+            )}
+            style={{
+              fontFamily: fontFamily.primary.join(', '),
+              fontWeight: fontWeight.semiBold,
+              letterSpacing: letterSpacing['0.6'],
+              color: colors.primary.DEFAULT,
+              backgroundColor: colors.background.default,
+              border: `1px solid ${colors.primary.muted}`,
+              borderRadius: radius.md,
+            }}
+          >
+            {nextLabel}
+          </button>
+        )}
       </AccordionContent>
     </AccordionItem>
   );

@@ -60,31 +60,30 @@ export interface BundleTotals {
 /**
  * Build the initial per-product selection map.
  *
- * Multi-select steps (cameras): every product starts UNSELECTED (empty
- * quantities) so the user picks what they want from a clean slate — the API
- * `seed.qty` is intentionally not applied. We still default the active variant
- * (which colour chip is highlighted) to the seed's variant when present,
- * otherwise the first variant.
+ * Every product that ships with a `seed` starts selected at its seeded quantity
+ * (under the seed's variant id, or DEFAULT_VARIANT_KEY when variant-less);
+ * products with no seed start unselected. This holds uniformly across step
+ * kinds:
+ *   - Multi-select (cameras / sensors / extras): seeded products are pre-added
+ *     at seed.qty so the default bundle — and its review-panel totals — is
+ *     visible on load. Products with `seed: null` stay empty.
+ *   - Single-select (plans): radio semantics require exactly one product chosen
+ *     from load; the one seeded product (qty 1, under DEFAULT_VARIANT_KEY) is it.
+ *   - Required (e.g. the sensor hub): seeded like the rest, then locked at that
+ *     quantity by the mutator guards below so it can never change.
  *
- * Single-select steps (plans): radio semantics require exactly one product
- * chosen from load, so the seed IS applied here — the seeded product starts at
- * qty 1 (under DEFAULT_VARIANT_KEY, since plans have no variants).
- *
- * Required products (multi-select): mandatory items are locked at their seeded
- * quantity, so their seed IS applied too — the product starts selected at
- * seed.qty and can never be changed (see the mutator guards below).
+ * The active variant (which colour chip is highlighted) always defaults to the
+ * seed's variant when present, otherwise the first variant.
  */
 function seedSelections(steps: Step[]): Record<string, ProductSelection> {
   const selections: Record<string, ProductSelection> = {};
 
   for (const step of steps) {
-    const isSingle = step.selectionType === 'single';
     for (const product of step.products) {
-      const seeded = (isSingle && product.seed != null) || product.required === true;
       const seedKey = product.seed?.variantId ?? DEFAULT_VARIANT_KEY;
       selections[product.id] = {
         activeVariantId: product.seed?.variantId ?? product.variants?.[0]?.id ?? null,
-        quantities: seeded ? { [seedKey]: product.seed!.qty } : {},
+        quantities: product.seed != null ? { [seedKey]: product.seed.qty } : {},
       };
     }
   }

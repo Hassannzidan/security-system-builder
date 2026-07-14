@@ -44,25 +44,18 @@ const STEP_ICONS: Record<string, ReactNode> = {
   extras: <ShieldPlusIcon />,
 };
 
-/**
- * TODO: remove when step 4 exists in API.
- * The steps API returns the cameras, plan and sensors steps. To match the
- * design, the extras header is rendered from this local placeholder config
- * (title + icon + order + advance label, no body) and merged after the API steps.
- */
-const PLACEHOLDER_STEPS: Array<{
-  id: string;
-  order: number;
-  title: string;
-  icon: string;
-  nextLabel?: string;
-}> = [{ id: 'extras', order: 4, title: 'Add extra protection', icon: 'extras', nextLabel: 'Next' }];
-
 /** Responsive grid of product cards for a step (5 across on desktop → 1 on phone). */
 function StepProductsGrid({ step, builder }: { step: Step; builder: BundleBuilder }) {
   const imageAlign = step.id === 'sensors' ? 'center' : 'start';
   return (
-    <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+    <div
+      className={cn(
+        'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5',
+        // The bottom margin only separates the grid from the footer button.
+        // The last step has no button, so it collapses to the content padding.
+        step.nextLabel && 'mb-6',
+      )}
+    >
       {step.products.map((product) => {
         const cardState = builder.getCardState(product.id);
         const activeKey = cardState.activeVariantId ?? DEFAULT_VARIANT_KEY;
@@ -96,7 +89,10 @@ function StepPlansGrid({ step, builder }: { step: Step; builder: BundleBuilder }
     <div
       role="radiogroup"
       aria-label={step.title}
-      className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+      className={cn(
+        'grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3',
+        step.nextLabel && 'mb-6',
+      )}
     >
       {step.products.map((product) => {
         const props = mapStepProductToPlanCardProps(product, {
@@ -118,33 +114,18 @@ function StepContent({ step, builder }: { step: Step; builder: BundleBuilder }) 
   );
 }
 
-/** Merge live API steps with placeholder headers, sorted by `order`. */
+/** Map live API steps to accordion configs, sorted by `order`. */
 function buildAccordionSteps(apiSteps: Step[], builder: BundleBuilder): AccordionStepConfig[] {
-  const apiIds = new Set(apiSteps.map((s) => s.id));
-
-  const fromApi = apiSteps.map((step) => ({
-    order: step.order,
-    config: {
+  return [...apiSteps]
+    .sort((a, b) => a.order - b.order)
+    .map((step) => ({
       id: step.id,
       title: step.title,
       icon: STEP_ICONS[step.icon],
       nextLabel: step.nextLabel,
       selectedCount: builder.getSelectedCount(step.id),
       content: <StepContent step={step} builder={builder} />,
-    } satisfies AccordionStepConfig,
-  }));
-
-  const fromPlaceholders = PLACEHOLDER_STEPS.filter((p) => !apiIds.has(p.id)).map((p) => ({
-    order: p.order,
-    config: {
-      id: p.id,
-      title: p.title,
-      icon: STEP_ICONS[p.icon],
-      nextLabel: p.nextLabel,
-    } satisfies AccordionStepConfig,
-  }));
-
-  return [...fromApi, ...fromPlaceholders].sort((a, b) => a.order - b.order).map((s) => s.config);
+    }));
 }
 
 function Heading() {

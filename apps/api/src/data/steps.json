@@ -126,7 +126,7 @@
       "id": "plan",
       "order": 2,
       "title": "Choose your plan",
-      "icon": "shield",
+      "icon": "plan",
       "nextLabel": "Next: Choose your sensors",
       "category": "Plan",
       "selectionType": "single",
@@ -179,7 +179,7 @@
           "description": "Detects motion up to 25 feet away with a 120° field of view. Instant alerts when movement is detected.",
           "learnMoreUrl": "#",
           "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/motion-sensor.png",
-          "pricing": { "price": 29.99 },
+          "pricing": { "price": 19.0 },
           "variants": null,
           "seed": { "variantId": null, "qty": 2 }
         },
@@ -193,6 +193,26 @@
           "variants": null,
           "required": true,
           "seed": { "variantId": null, "qty": 1 }
+        }
+      ]
+    },
+    {
+      "id": "extras",
+      "order": 4,
+      "title": "Add extra protection",
+      "icon": "extras",
+      "category": "Accessories",
+      "selectionType": "multiple",
+      "products": [
+        {
+          "id": "wyze-microsd-card-256gb",
+          "name": "Wyze MicroSD Card (256GB)",
+          "description": "High-endurance local storage. Record continuously for weeks and never miss a moment, even without internet.",
+          "learnMoreUrl": "#",
+          "image": "https://my-react-home-task-images-2026.s3.eu-north-1.amazonaws.com/memroy-card.png",
+          "pricing": { "price": 20.98 },
+          "variants": null,
+          "seed": { "variantId": null, "qty": 2 }
         }
       ]
     }
