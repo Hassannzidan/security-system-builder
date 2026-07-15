@@ -6,9 +6,6 @@ import { cn } from '@/lib/utils';
 
 import { Chevron } from './icons';
 
-/** Surface tint shown behind an expanded step. */
-const EXPANDED_BG = '#EDF4FF';
-
 export interface AccordionStepProps {
   /** Radix item value — unique per step, used to drive open state. */
   value: string;
@@ -55,7 +52,7 @@ export function AccordionStep({
   onNext,
 }: AccordionStepProps) {
   const itemStyle = {
-    backgroundColor: isOpen ? EXPANDED_BG : colors.background.default,
+    backgroundColor: isOpen ? colors.background.expandedStep : colors.background.default,
     borderColor: colors.base.black,
   };
 
@@ -71,7 +68,7 @@ export function AccordionStep({
             className={cn('text-eyebrow w-full pb-2', stepper.divider, stepper.eyebrowBleed)}
             style={{
               verticalAlign: 'middle',
-              color: '#484848',
+              color: colors.text.eyebrow,
               borderColor: colors.base.black,
             }}
           >

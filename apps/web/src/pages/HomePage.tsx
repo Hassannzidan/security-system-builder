@@ -165,7 +165,7 @@ function HomeContent() {
         role="status"
         aria-live="polite"
       >
-        <span className="h-8 w-8 animate-spin rounded-full border-2 border-[#CBD5E1] border-t-[#6D28D9]" />
+        <span className="h-8 w-8 animate-spin rounded-full border-2 border-track border-t-primary" />
         <span className="sr-only">Loading your system builder…</span>
       </div>
     );
@@ -174,13 +174,13 @@ function HomeContent() {
   if (builder.isError) {
     return (
       <div className="flex min-h-[40vh] flex-col items-center justify-center gap-3 text-center">
-        <p className="font-primary text-sm font-medium text-[#525963]">
+        <p className="font-primary text-sm font-medium text-ink-secondary">
           We couldn’t load the system builder.
         </p>
         <button
           type="button"
           onClick={() => builder.refetch()}
-          className="rounded-md border border-[#6D28D9]/40 px-4 py-2 text-sm font-semibold text-[#6D28D9] transition-colors hover:bg-[#6D28D9]/5"
+          className="rounded-md border border-primary/40 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
         >
           Try again
         </button>
@@ -220,7 +220,7 @@ function HomeContent() {
 export function HomePage() {
   return (
     <BundleBuilderProvider>
-      <PageGrid as="main" className="min-h-screen bg-[#F7F8FC]">
+      <PageGrid as="main" className="min-h-screen bg-canvas">
         <div className={cn(CENTER_COLS, 'flex flex-col gap-4')}>
           <HomeContent />
         </div>

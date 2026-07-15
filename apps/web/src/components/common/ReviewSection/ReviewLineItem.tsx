@@ -28,11 +28,11 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
             className="h-full w-full object-contain p-1"
           />
         ) : (
-          <div className="h-full w-full bg-[#F0F4F7]" aria-hidden />
+          <div className="h-full w-full bg-surface" aria-hidden />
         )}
       </div>
 
-      <span className="text-line-item-name min-w-0 flex-1 truncate text-[#1F1F1F]">{label}</span>
+      <span className="text-line-item-name min-w-0 flex-1 truncate text-ink-black">{label}</span>
 
       <div className="flex shrink-0 items-center gap-4">
         <QuantityStepper

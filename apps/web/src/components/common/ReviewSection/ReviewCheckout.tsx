@@ -100,7 +100,7 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         />
 
         <div className="hidden min-w-0 flex-col gap-2.5 min-[1440px]:flex">
-          <h3 className="text-returns-heading text-[#1F1F1F]" style={{ verticalAlign: 'middle' }}>
+          <h3 className="text-returns-heading text-ink-black" style={{ verticalAlign: 'middle' }}>
             {RETURNS_HEADING}
           </h3>
           <p

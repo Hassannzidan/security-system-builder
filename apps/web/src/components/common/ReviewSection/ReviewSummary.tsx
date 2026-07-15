@@ -32,7 +32,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <h2 className="text-review-title text-[#1F1F1F]">Your security system</h2>
+        <h2 className="text-review-title text-ink-black">Your security system</h2>
         <p className="text-body-responsive" style={{ color: colors.text.description }}>
           Review your personalized protection system designed to keep what matters most safe.
         </p>
@@ -69,7 +69,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white">
           <FastShippingSvg className="h-7 w-7" />
         </div>
-        <span className="text-label-strong min-w-0 flex-1 truncate text-[#1F1F1F]">
+        <span className="text-label-strong min-w-0 flex-1 truncate text-ink-black">
           {FAST_SHIPPING.label}
         </span>
         <ReviewPrice

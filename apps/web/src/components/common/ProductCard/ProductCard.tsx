@@ -87,7 +87,7 @@ export function ProductCard({
       <div className="flex flex-col" style={{ gap: spacing.sm }}>
         <h3
           className={cn(
-            'text-[#0B0D10]',
+            'text-ink',
             isVertical ? 'text-card-title-vertical' : 'text-card-title-horizontal',
           )}
         >

@@ -2,9 +2,9 @@ import { colors, opacity, radius } from '@/design-tokens';
 
 import type { ProductVariant } from './types';
 
-const UNSELECTED_BORDER = '#CCCCCC';
-const SELECTED_BORDER = colors.status.success; // #0AA288
-const SELECTED_FILL = `rgba(29, 240, 187, ${opacity[4]})`; // #1DF0BB @ 4%
+const UNSELECTED_BORDER = colors.border.swatch;
+const SELECTED_BORDER = colors.status.success; // success mint
+const SELECTED_FILL = `rgba(29, 240, 187, ${opacity[4]})`; // mint @ 4%
 
 export function VariantPill({
   variant,

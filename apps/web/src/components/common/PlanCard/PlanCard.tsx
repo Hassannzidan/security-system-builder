@@ -84,7 +84,7 @@ export function PlanCard({
         style={{ gap: spacing['10'] }}
       >
         <div className="flex flex-col" style={{ gap: spacing.sm }}>
-          <h3 className="text-plan-title text-[#0B0D10]">
+          <h3 className="text-plan-title text-ink">
             {titleLead}
             <span style={{ color: colors.primary.DEFAULT }}>{titleAccent}</span>
           </h3>

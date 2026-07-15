@@ -50,7 +50,7 @@ export function ProductImage({
             {!loaded && (
               <div
                 aria-hidden
-                className="absolute inset-0 animate-gradient-flow bg-gradient-to-r from-[#EDF1F5] via-[#DCE3EB] to-[#EDF1F5] motion-reduce:animate-none"
+                className="absolute inset-0 animate-gradient-flow bg-gradient-to-r from-shimmer-from via-shimmer-to to-shimmer-from motion-reduce:animate-none"
                 style={{ backgroundSize: '200% 100%' }}
               />
             )}
@@ -68,7 +68,7 @@ export function ProductImage({
             />
           </>
         ) : (
-          <div className="h-full w-full bg-[#F0F4F7]" aria-hidden />
+          <div className="h-full w-full bg-surface" aria-hidden />
         )}
       </div>
     </div>

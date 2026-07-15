@@ -21,9 +21,9 @@ export function QuantityStepper({
   variant?: 'card' | 'review';
 }) {
   const btnBg =
-    variant === 'review' ? 'bg-white hover:bg-[#F0F4F7]' : 'bg-[#F0F4F7] hover:bg-[#E4E9EF]';
+    variant === 'review' ? 'bg-white hover:bg-surface' : 'bg-surface hover:bg-surface-hover';
   const btn =
-    `flex shrink-0 items-center justify-center rounded text-[#525963] ${btnBg} ` +
+    `flex shrink-0 items-center justify-center rounded text-ink-secondary ${btnBg} ` +
     'transition-colors disabled:cursor-not-allowed disabled:opacity-40';
   const decreaseDisabled = disabled || value <= min;
 
@@ -51,7 +51,7 @@ export function QuantityStepper({
       </button>
       <span
         className={cn(
-          'min-w-[1rem] text-center text-[#0B0D10]',
+          'min-w-[1rem] text-center text-ink',
           variant === 'review' ? 'text-quantity-review' : 'text-quantity-card',
         )}
         style={variant === 'review' ? { verticalAlign: 'bottom' } : undefined}

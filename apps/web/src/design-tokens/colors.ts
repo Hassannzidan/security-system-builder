@@ -57,6 +57,31 @@ const indigo = {
   50: '#EEF1FB',
 } as const;
 
+/**
+ * UI-specific neutrals that sit off the numeric gray ramp — each tied to one
+ * surface/role rather than a step in a scale. Kept as primitives so every raw
+ * hex is declared exactly once and consumed through the semantic aliases below.
+ */
+const neutral = {
+  /** App page canvas — the off-white builder background. */
+  canvas: '#F7F8FC',
+  /** Display heading ink (e.g. the 404 headline). */
+  heading: '#1E2430',
+  /** Eyebrow / step-label ink. */
+  eyebrow: '#484848',
+  /** Hover fill for neutral surface buttons (one notch below `gray.300`). */
+  surfaceHover: '#E4E9EF',
+  /** Expanded accordion-step surface tint. */
+  expandedStep: '#EDF4FF',
+  /** Loader/spinner track ring. */
+  loaderTrack: '#CBD5E1',
+  /** Unselected variant-swatch hairline. */
+  swatchBorder: '#CCCCCC',
+  /** Image-placeholder shimmer gradient stops. */
+  shimmerFrom: '#EDF1F5',
+  shimmerTo: '#DCE3EB',
+} as const;
+
 const status = {
   success: '#0AA288',
   error: '#D8392B',
@@ -88,6 +113,7 @@ export const primitiveColors = {
   base,
   mint,
   indigo,
+  neutral,
   status,
   opacity,
 } as const;
@@ -123,6 +149,10 @@ export const colors = {
     disabled: gray[500],
     inverse: base.white,
     link: status.link,
+    /** Display heading ink — larger than `primary`, used on hero/404 headlines */
+    heading: neutral.heading,
+    /** Eyebrow / step-label ink */
+    eyebrow: neutral.eyebrow,
     /** Body / description copy at 75% of base black */
     description: withAlpha(base.black, opacity[75]),
   },
@@ -130,7 +160,13 @@ export const colors = {
   /** Surface / page backgrounds */
   background: {
     default: base.white,
+    /** App page canvas — the off-white builder background */
+    canvas: neutral.canvas,
     surface: gray[300],
+    /** Hover fill for neutral surface buttons (one notch below `surface`) */
+    surfaceHover: neutral.surfaceHover,
+    /** Expanded accordion-step surface tint */
+    expandedStep: neutral.expandedStep,
     // TODO: dedicated elevated surface from Figma (cards, popovers) — gray.300 for now
     surfaceElevated: gray[300],
     inverse: gray[900],
@@ -139,6 +175,9 @@ export const colors = {
     wash: withAlpha(base.white, opacity.subtle),
     /** Review panel surface — soft indigo wash from Figma */
     reviewPanel: indigo[50],
+    /** Image-placeholder shimmer gradient stops */
+    shimmerFrom: neutral.shimmerFrom,
+    shimmerTo: neutral.shimmerTo,
   },
 
   /** Borders & dividers */
@@ -147,6 +186,10 @@ export const colors = {
     muted: gray[300],
     strong: gray[500],
     black: base.absoluteBlack,
+    /** Unselected variant-swatch hairline */
+    swatch: neutral.swatchBorder,
+    /** Loader/spinner track ring */
+    loaderTrack: neutral.loaderTrack,
     // TODO: focus ring color from Figma / a11y spec — primary used as interim
     focus: primary.DEFAULT,
   },

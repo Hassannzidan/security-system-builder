@@ -1,5 +1,6 @@
 import tailwindcssAnimate from 'tailwindcss-animate';
 
+import { colors as tokens } from './src/design-tokens/colors';
 import typographyPlugin from './src/design-tokens/typography-plugin';
 
 /** @type {import('tailwindcss').Config} */
@@ -39,8 +40,10 @@ export default {
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        // `--primary` is aligned to the brand token #4E2FD2 in globals.css.
+        // `<alpha-value>` lets opacity modifiers (e.g. `bg-primary/5`) resolve.
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
+          DEFAULT: 'hsl(var(--primary) / <alpha-value>)',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
@@ -66,6 +69,29 @@ export default {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
+        },
+        // Design-token bridge — values single-sourced from
+        // src/design-tokens/colors.ts. Role-based utilities (e.g. `bg-canvas`,
+        // `text-ink-secondary`) replace inline arbitrary hex in components.
+        canvas: tokens.background.canvas,
+        surface: {
+          DEFAULT: tokens.background.surface,
+          hover: tokens.background.surfaceHover,
+          expanded: tokens.background.expandedStep,
+        },
+        ink: {
+          DEFAULT: tokens.text.primary,
+          secondary: tokens.text.secondary,
+          heading: tokens.text.heading,
+          eyebrow: tokens.text.eyebrow,
+          black: tokens.base.black,
+        },
+        sale: tokens.status.error,
+        swatch: tokens.border.swatch,
+        track: tokens.border.loaderTrack,
+        shimmer: {
+          from: tokens.background.shimmerFrom,
+          to: tokens.background.shimmerTo,
         },
       },
       borderRadius: {

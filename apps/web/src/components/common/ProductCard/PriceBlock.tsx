@@ -27,7 +27,7 @@ export function PriceBlock({
       )}
     >
       {discounted && (
-        <span className="text-card-price text-[#D8392B] line-through">
+        <span className="text-card-price text-sale line-through">
           {formatPrice(compareAtPrice!, currency)}
           {suffix}
         </span>
@@ -37,7 +37,7 @@ export function PriceBlock({
           FREE
         </span>
       ) : (
-        <span className="text-card-price text-[#525963]">
+        <span className="text-card-price text-ink-secondary">
           {formatPrice(price, currency)}
           {suffix}
         </span>

@@ -13,7 +13,7 @@ export function DiscountBadge({ children }: { children: ReactNode }) {
         width: 65,
         height: 19,
         borderRadius: radius.lg,
-        background: `linear-gradient(135deg, #6D4AE0 0%, ${colors.primary.DEFAULT} 100%)`,
+        background: colors.primary.DEFAULT,
         border: `solid ${borderWidth.sm} ${colors.border.black}`,
       }}
     >

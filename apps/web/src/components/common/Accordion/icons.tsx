@@ -10,8 +10,8 @@ import { colors } from '@/design-tokens';
  * Example step icons for the Accordion (security system builder use case).
  *
  * The four step glyphs are the Figma exports in `@/assets/icons/*.svg`, imported
- * as React components via `vite-plugin-svgr`. Their source `#6F7882` was swapped
- * for `currentColor`, so the accordion header tints them (purple when the step
+ * as React components via `vite-plugin-svgr`. Their source neutral (`gray.600`)
+ * was swapped for `currentColor`, so the accordion header tints them (purple when the step
  * is open, grey when collapsed). Each is normalized to a 30×30 box here.
  */
 
