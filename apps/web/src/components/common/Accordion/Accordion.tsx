@@ -72,8 +72,6 @@ export function Accordion({
           title={step.title}
           isOpen={currentOpen === index}
           selectedCount={step.selectedCount}
-          // Absent nextLabel → no footer button (e.g. the final step). The label
-          // is a deliberate, per-step opt-in — never auto-invented here.
           nextLabel={step.nextLabel}
           onNext={() => goToNext(index)}
         >

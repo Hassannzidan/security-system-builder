@@ -1,13 +1,6 @@
 import { Minus, Plus } from 'lucide-react';
 
-import {
-  borderWidth,
-  colors,
-  fontFamily,
-  letterSpacing,
-  lineHeight,
-  spacing,
-} from '@/design-tokens';
+import { borderWidth, colors, spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
 export function QuantityStepper({
@@ -58,19 +51,10 @@ export function QuantityStepper({
       </button>
       <span
         className={cn(
-          'min-w-[1rem] text-center tabular-nums text-[#0B0D10] font-normal sm:font-semibold',
-          variant === 'review' ? 'text-sm' : 'text-base',
+          'min-w-[1rem] text-center text-[#0B0D10]',
+          variant === 'review' ? 'text-quantity-review' : 'text-quantity-card',
         )}
-        style={
-          variant === 'review'
-            ? {
-                fontFamily: fontFamily.primary.join(', '),
-                lineHeight: lineHeight['16'],
-                letterSpacing: letterSpacing.none,
-                verticalAlign: 'bottom',
-              }
-            : { lineHeight: lineHeight['20'], letterSpacing: letterSpacing.none }
-        }
+        style={variant === 'review' ? { verticalAlign: 'bottom' } : undefined}
         aria-live="polite"
       >
         {value}

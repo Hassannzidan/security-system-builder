@@ -1,5 +1,7 @@
 import tailwindcssAnimate from 'tailwindcss-animate';
 
+import typographyPlugin from './src/design-tokens/typography-plugin';
+
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ['class'],
@@ -17,6 +19,11 @@ export default {
       md: '768px',
       lg: '1024px',
       xl: '1280px',
+      // Additive: mirrors breakpoints.wide (1440px). Lets future code use `wide:`
+      // instead of the literal `min-[1440px]:` arbitrary variant. Positioned by
+      // min-width so Tailwind orders it between xl and 2xl. Does not alter the
+      // existing sm/md/lg/xl/2xl values.
+      wide: '1440px',
       '2xl': '1536px',
     },
     extend: {
@@ -92,5 +99,5 @@ export default {
       },
     },
   },
-  plugins: [tailwindcssAnimate],
+  plugins: [tailwindcssAnimate, typographyPlugin],
 };

@@ -1,16 +1,6 @@
 import type { KeyboardEvent, MouseEvent } from 'react';
 
-import {
-  borderWidth,
-  colors,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-  radius,
-  spacing,
-} from '@/design-tokens';
+import { borderWidth, colors, radius, spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
 import { LearnMoreLink } from './LearnMoreLink';
@@ -73,8 +63,6 @@ export function ProductCard({
 
   const handleClick = (event: MouseEvent<HTMLDivElement>) => {
     if (!onToggleSelect) return;
-    // Let interactive children (links, stepper buttons, variant pills) work
-    // without also toggling the card.
     if ((event.target as HTMLElement).closest('a, button, input, textarea, select')) return;
     onToggleSelect();
   };
@@ -98,27 +86,16 @@ export function ProductCard({
     >
       <div className="flex flex-col" style={{ gap: spacing.sm }}>
         <h3
-          className="text-[#0B0D10]"
-          style={{
-            fontFamily: fontFamily.primary.join(', '),
-            fontWeight: isVertical ? fontWeight.semiBold : fontWeight.regular,
-            fontSize: isVertical ? fontSize['18'] : fontSize['16'],
-            lineHeight: lineHeight['130'],
-            letterSpacing: letterSpacing['0.6'],
-          }}
+          className={cn(
+            'text-[#0B0D10]',
+            isVertical ? 'text-card-title-vertical' : 'text-card-title-horizontal',
+          )}
         >
           {title}
         </h3>
 
         {(description || showLearnMore) && (
-          <p
-            className="font-primary text-xs font-medium"
-            style={{
-              color: colors.text.description,
-              lineHeight: lineHeight['130'],
-              letterSpacing: letterSpacing['0.6'],
-            }}
-          >
+          <p className="text-card-description" style={{ color: colors.text.description }}>
             {description}
             {showLearnMore && (
               <>

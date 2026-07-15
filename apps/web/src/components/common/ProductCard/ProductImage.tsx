@@ -47,7 +47,6 @@ export function ProductImage({
       >
         {src ? (
           <>
-            {/* ChatGPT-style loader — a soft gradient that flows until load. */}
             {!loaded && (
               <div
                 aria-hidden

@@ -18,7 +18,7 @@ import {
   useBundleBuilderContext,
   type BundleBuilderContextValue,
 } from '@/context/BundleBuilderContext';
-import { breakpoints, colors, fontWeight, lineHeight } from '@/design-tokens';
+import { breakpoints, colors } from '@/design-tokens';
 import { DEFAULT_VARIANT_KEY } from '@/hooks/useBundleBuilder';
 import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { PageGrid } from '@/layouts';
@@ -196,13 +196,8 @@ function HomeContent() {
       <div className="min-w-0 lg:max-[1439px]:col-span-6">
         {/* Mobile-only heading shown above the stepper. */}
         <h1
-          className="mb-4 block px-4 sm:hidden"
+          className="text-hero-mobile mb-4 block px-4 sm:hidden"
           style={{
-            fontFamily: "'Gilroy-Bold', 'Gilroy', sans-serif",
-            fontWeight: fontWeight.regular,
-            fontSize: '31px',
-            lineHeight: lineHeight['110'],
-            letterSpacing: '-0.06px',
             textAlign: 'center',
             color: colors.base.black,
           }}

@@ -20,7 +20,6 @@ export interface PlanCardProps {
 
   /** Whether this plan is the currently-chosen radio option. */
   selected: boolean;
-  /** Fired when the card is clicked or activated via keyboard (Enter/Space). */
   onSelect: () => void;
   className?: string;
 }

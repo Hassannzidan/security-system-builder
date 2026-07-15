@@ -1,13 +1,4 @@
-import {
-  colors,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-  opacity,
-  radius,
-} from '@/design-tokens';
+import { colors, opacity, radius } from '@/design-tokens';
 
 import type { ProductVariant } from './types';
 
@@ -44,18 +35,7 @@ export function VariantPill({
         <img src={variant.swatch} alt="" aria-hidden className="h-full w-full object-contain" />
       </span>
       <span className="flex h-full items-center pl-0.5 pr-2">
-        <span
-          className="whitespace-nowrap"
-          style={{
-            fontFamily: fontFamily.primary.join(', '),
-            fontWeight: fontWeight.medium,
-            fontSize: fontSize['10'],
-            lineHeight: lineHeight['100'],
-            letterSpacing: letterSpacing['0.6'],
-          }}
-        >
-          {variant.label}
-        </span>
+        <span className="text-pill-label whitespace-nowrap">{variant.label}</span>
       </span>
     </button>
   );

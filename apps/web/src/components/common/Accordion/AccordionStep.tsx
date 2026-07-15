@@ -1,16 +1,6 @@
 import type { ReactNode } from 'react';
 
-import {
-  borderWidth,
-  colors,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-  spacing,
-  stepper,
-} from '@/design-tokens';
+import { borderWidth, colors, fontFamily, fontWeight, spacing, stepper } from '@/design-tokens';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 
@@ -64,7 +54,6 @@ export function AccordionStep({
   nextLabel,
   onNext,
 }: AccordionStepProps) {
-  // Permanent bottom border on every item; open state only tints the surface.
   const itemStyle = {
     backgroundColor: isOpen ? EXPANDED_BG : colors.background.default,
     borderColor: colors.base.black,
@@ -79,18 +68,9 @@ export function AccordionStep({
       <AccordionTrigger className={cn('flex w-full flex-col text-left', stepper.triggerPadding)}>
         {showEyebrow && (
           <span
-            className={cn(
-              'w-full pb-2 text-[10px] sm:text-xs',
-              stepper.divider,
-              stepper.eyebrowBleed,
-            )}
+            className={cn('text-eyebrow w-full pb-2', stepper.divider, stepper.eyebrowBleed)}
             style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.regular,
-              lineHeight: lineHeight['100'],
-              letterSpacing: '1.6px',
               verticalAlign: 'middle',
-              textTransform: 'uppercase',
               color: '#484848',
               borderColor: colors.base.black,
             }}
@@ -123,15 +103,8 @@ export function AccordionStep({
           >
             {selectedCount !== undefined && (
               <span
-                // On small screens the count is always visible (open or closed).
-                // On sm+ it keeps the original behaviour: shown only while open.
-                className={cn(!isOpen && 'sm:hidden')}
+                className={cn('text-selected-count', !isOpen && 'sm:hidden')}
                 style={{
-                  fontFamily: fontFamily.primary.join(', '),
-                  fontWeight: fontWeight.regular,
-                  fontSize: fontSize['14'],
-                  lineHeight: lineHeight['16'],
-                  letterSpacing: letterSpacing.none,
                   textAlign: 'center',
                   color: colors.primary.DEFAULT,
                 }}
@@ -152,13 +125,8 @@ export function AccordionStep({
           <button
             type="button"
             onClick={onNext}
-            className="inline-flex items-center justify-center self-center transition-colors hover:bg-white/60 active:opacity-90"
+            className="text-next-button inline-flex items-center justify-center self-center transition-colors hover:bg-white/60 active:opacity-90"
             style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.semiBold,
-              fontSize: fontSize['18'],
-              lineHeight: '24px',
-              letterSpacing: '0%',
               textAlign: 'center',
               verticalAlign: 'middle',
               color: colors.primary.DEFAULT,

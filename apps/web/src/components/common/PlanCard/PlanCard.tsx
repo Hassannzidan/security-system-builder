@@ -1,16 +1,6 @@
 import type { KeyboardEvent } from 'react';
 
-import {
-  borderWidth,
-  colors,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-  radius,
-  spacing,
-} from '@/design-tokens';
+import { borderWidth, colors, radius, spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
 import { LearnMoreLink } from '../ProductCard/LearnMoreLink';
@@ -53,8 +43,6 @@ export function PlanCard({
 }: PlanCardProps) {
   const showLearnMore = Boolean(learnMoreHref);
 
-  // Highlight the plan name (the last word, e.g. "Unlimited"/"Plus"/"Protect")
-  // in the brand primary, leaving the "Cam" lead in the default title colour.
   const lastSpace = title.lastIndexOf(' ');
   const titleLead = lastSpace >= 0 ? title.slice(0, lastSpace + 1) : '';
   const titleAccent = lastSpace >= 0 ? title.slice(lastSpace + 1) : title;
@@ -75,7 +63,6 @@ export function PlanCard({
       onClick={onSelect}
       onKeyDown={handleKeyDown}
       className={cn(
-        // mx-auto centers the (maxWidth-capped) card within its wider grid column.
         'mx-auto flex cursor-pointer flex-col overflow-hidden bg-white transition-colors',
         className,
       )}
@@ -97,29 +84,13 @@ export function PlanCard({
         style={{ gap: spacing['10'] }}
       >
         <div className="flex flex-col" style={{ gap: spacing.sm }}>
-          <h3
-            className="text-[#0B0D10]"
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.semiBold,
-              fontSize: fontSize['18'],
-              lineHeight: lineHeight['100'],
-              letterSpacing: letterSpacing['0.6'],
-            }}
-          >
+          <h3 className="text-plan-title text-[#0B0D10]">
             {titleLead}
             <span style={{ color: colors.primary.DEFAULT }}>{titleAccent}</span>
           </h3>
 
           {(description || showLearnMore) && (
-            <p
-              className="font-primary text-xs font-medium"
-              style={{
-                color: colors.text.description,
-                lineHeight: lineHeight['130'],
-                letterSpacing: letterSpacing['0.6'],
-              }}
-            >
+            <p className="text-card-description" style={{ color: colors.text.description }}>
               {description}
               {showLearnMore && (
                 <>

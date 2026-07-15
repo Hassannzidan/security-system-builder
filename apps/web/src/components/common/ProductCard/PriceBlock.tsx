@@ -1,4 +1,4 @@
-import { colors, letterSpacing, lineHeight } from '@/design-tokens';
+import { colors } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 import { formatPrice, isFreePrice, priceIntervalSuffix } from '@/utils/format';
 
@@ -18,10 +18,6 @@ export function PriceBlock({
   const discounted = compareAtPrice !== undefined && compareAtPrice > price;
   const isFree = isFreePrice(price, compareAtPrice);
   const suffix = priceIntervalSuffix(interval);
-  const typeStyle = {
-    lineHeight: lineHeight['100'],
-    letterSpacing: letterSpacing['0.6'],
-  } as const;
 
   return (
     <div
@@ -31,23 +27,17 @@ export function PriceBlock({
       )}
     >
       {discounted && (
-        <span
-          className="font-primary text-base font-normal text-[#D8392B] line-through"
-          style={typeStyle}
-        >
+        <span className="text-card-price text-[#D8392B] line-through">
           {formatPrice(compareAtPrice!, currency)}
           {suffix}
         </span>
       )}
       {isFree ? (
-        <span
-          className="font-primary text-base font-normal"
-          style={{ ...typeStyle, color: colors.primary.DEFAULT }}
-        >
+        <span className="text-card-price" style={{ color: colors.primary.DEFAULT }}>
           FREE
         </span>
       ) : (
-        <span className="font-primary text-base font-normal text-[#525963]" style={typeStyle}>
+        <span className="text-card-price text-[#525963]">
           {formatPrice(price, currency)}
           {suffix}
         </span>

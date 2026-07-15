@@ -1,5 +1,5 @@
 import FastShippingSvg from '@/assets/icons/fast-shipping.svg?react';
-import { colors, fontFamily, fontSize, letterSpacing, lineHeight } from '@/design-tokens';
+import { colors } from '@/design-tokens';
 
 import {
   FAST_SHIPPING,
@@ -32,25 +32,8 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex flex-col gap-2">
-        <h2
-          className="text-[22px] font-normal text-[#1F1F1F] sm:font-semibold min-[1440px]:text-[28px]"
-          style={{
-            fontFamily: fontFamily.primary.join(', '),
-            lineHeight: lineHeight['100'],
-            letterSpacing: letterSpacing['0.6'],
-          }}
-        >
-          Your security system
-        </h2>
-        <p
-          className="text-[12px] font-normal sm:text-[14px] sm:font-medium min-[1440px]:text-[16px]"
-          style={{
-            fontFamily: fontFamily.primary.join(', '),
-            lineHeight: lineHeight['130'],
-            letterSpacing: letterSpacing['0.6'],
-            color: colors.text.description,
-          }}
-        >
+        <h2 className="text-review-title text-[#1F1F1F]">Your security system</h2>
+        <p className="text-body-responsive" style={{ color: colors.text.description }}>
           Review your personalized protection system designed to keep what matters most safe.
         </p>
       </div>
@@ -58,16 +41,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
       {groups.map((group) => (
         <div key={group.category} className="flex flex-col gap-3">
           <Divider />
-          <span
-            className="uppercase font-normal sm:font-medium"
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontSize: fontSize['12'],
-              lineHeight: lineHeight['100'],
-              letterSpacing: letterSpacing['0.6'],
-              color: colors.gray[500],
-            }}
-          >
+          <span className="text-category-label" style={{ color: colors.gray[500] }}>
             <span className="sm:hidden">
               {group.category === PLAN_CATEGORY ? PLAN_CATEGORY_MOBILE_LABEL : group.category}
             </span>
@@ -95,14 +69,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white">
           <FastShippingSvg className="h-7 w-7" />
         </div>
-        <span
-          className="min-w-0 flex-1 truncate text-[12px] font-normal text-[#1F1F1F] sm:text-base sm:font-medium"
-          style={{
-            fontFamily: fontFamily.primary.join(', '),
-            lineHeight: lineHeight['130'],
-            letterSpacing: letterSpacing['0.6'],
-          }}
-        >
+        <span className="text-label-strong min-w-0 flex-1 truncate text-[#1F1F1F]">
           {FAST_SHIPPING.label}
         </span>
         <ReviewPrice

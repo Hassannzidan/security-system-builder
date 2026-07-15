@@ -1,15 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 
 import satisfactionBadge from '@/assets/satisfaction-badge.svg';
-import {
-  colors,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-  radius,
-} from '@/design-tokens';
+import { colors, radius } from '@/design-tokens';
 import { formatPrice } from '@/utils/format';
 
 import { FINANCING_ESTIMATE, RETURNS_BODY, RETURNS_HEADING } from './constants';
@@ -30,18 +22,12 @@ const SAVE_LABELS: Record<SaveStatus, string> = {
 function FinancingPill() {
   return (
     <span
-      className="inline-flex h-[27px] w-fit items-center gap-2.5 p-2 text-white"
+      className="text-financing-pill inline-flex h-[27px] w-fit items-center gap-2.5 p-2 text-white"
       style={{
         backgroundColor: colors.primary.DEFAULT,
         borderRadius: '3px',
-        fontFamily: fontFamily.primary.join(', '),
-        fontWeight: fontWeight.regular,
-        fontSize: fontSize['16'],
-        lineHeight: lineHeight['100'],
-        letterSpacing: '-0.05em',
       }}
     >
-      {/* Single allowed hard-coded money value — see FINANCING_ESTIMATE. */}
       as low as {formatPrice(FINANCING_ESTIMATE)}/mo
     </span>
   );
@@ -57,13 +43,8 @@ function CheckoutTotals({
   return (
     <div className="flex items-baseline gap-2">
       <span
-        className="line-through"
+        className="text-checkout-compare line-through"
         style={{
-          fontFamily: fontFamily.primary.join(', '),
-          fontWeight: fontWeight.medium,
-          fontSize: fontSize['22'],
-          lineHeight: lineHeight['20'],
-          letterSpacing: '0.25%',
           textAlign: 'center',
           color: colors.gray[600],
         }}
@@ -71,12 +52,8 @@ function CheckoutTotals({
         {formatPrice(compareAtSubtotal)}
       </span>
       <span
+        className="text-checkout-total"
         style={{
-          fontFamily: fontFamily.primary.join(', '),
-          fontWeight: fontWeight.bold,
-          fontSize: fontSize['28'],
-          lineHeight: '32px',
-          letterSpacing: '-0.13%',
           textAlign: 'right',
           verticalAlign: 'middle',
           color: colors.primary.DEFAULT,
@@ -90,13 +67,7 @@ function CheckoutTotals({
 
 /** Right column of the review panel: guarantee, financing + total, savings, CTA. */
 export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
-  // Placeholder confirmation — the task allows a prototype checkout with no order
-  // backend. Swaps the CTA for an inline confirmation on click.
   const [placed, setPlaced] = useState(false);
-
-  // Feedback for the "Save my system for later" link. On success it flips to
-  // "Saved ✓" (disabled) for ~2s then reverts; on failure it shows a persistent
-  // error in the same slot that the user can click to retry.
   const [saveStatus, setSaveStatus] = useState<SaveStatus>('idle');
   const revertTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -129,29 +100,12 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         />
 
         <div className="hidden min-w-0 flex-col gap-2.5 min-[1440px]:flex">
-          <h3
-            className="text-[#1F1F1F]"
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.semiBold,
-              fontSize: fontSize['18'],
-              lineHeight: lineHeight['110'],
-              letterSpacing: letterSpacing['0.6'],
-              verticalAlign: 'middle',
-            }}
-          >
+          <h3 className="text-returns-heading text-[#1F1F1F]" style={{ verticalAlign: 'middle' }}>
             {RETURNS_HEADING}
           </h3>
           <p
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.regular,
-              fontSize: fontSize['18'],
-              lineHeight: lineHeight['110'],
-              letterSpacing: letterSpacing['0.6'],
-              verticalAlign: 'middle',
-              color: colors.text.description,
-            }}
+            className="text-returns-body"
+            style={{ verticalAlign: 'middle', color: colors.text.description }}
           >
             {RETURNS_BODY}
           </p>
@@ -172,13 +126,8 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
       {/* Savings callout — only when the bundle actually saves money */}
       {totals.savings > 0 && (
         <p
-          className="text-center"
+          className="text-savings-note text-center"
           style={{
-            fontFamily: fontFamily.primary.join(', '),
-            fontWeight: fontWeight.semiBold,
-            fontSize: fontSize['14'],
-            lineHeight: lineHeight['100'],
-            letterSpacing: '-0.06px',
             verticalAlign: 'middle',
             color: colors.status.success,
           }}
@@ -192,16 +141,11 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         type="button"
         onClick={() => setPlaced(true)}
         disabled={placed}
-        className="flex h-12 w-full items-center justify-center gap-2 text-white transition-colors disabled:cursor-default"
+        className="text-checkout-cta flex h-12 w-full items-center justify-center gap-2 text-white transition-colors disabled:cursor-default"
         style={{
           backgroundColor: placed ? colors.status.success : colors.primary.DEFAULT,
           borderRadius: radius.sm,
           padding: '13px 16px',
-          fontFamily: fontFamily.secondary.join(', '),
-          fontWeight: fontWeight.bold,
-          fontSize: '17px',
-          lineHeight: lineHeight['100'],
-          letterSpacing: letterSpacing.none,
           verticalAlign: 'middle',
         }}
       >
@@ -215,13 +159,8 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         onClick={handleSave}
         disabled={saveStatus === 'saved'}
         aria-live="polite"
-        className="mx-auto underline disabled:cursor-default disabled:no-underline"
+        className="text-save-link mx-auto underline disabled:cursor-default disabled:no-underline"
         style={{
-          fontFamily: fontFamily.primary.join(', '),
-          fontWeight: fontWeight.medium,
-          fontSize: fontSize['14'],
-          lineHeight: lineHeight['130'],
-          letterSpacing: letterSpacing['0.6'],
           color: saveStatus === 'error' ? colors.status.error : colors.primary.DEFAULT,
         }}
       >

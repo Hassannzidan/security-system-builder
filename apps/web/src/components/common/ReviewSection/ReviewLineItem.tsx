@@ -1,5 +1,3 @@
-import { fontFamily, lineHeight } from '@/design-tokens';
-
 import { QuantityStepper } from '../ProductCard/QuantityStepper';
 import { ReviewPrice } from './ReviewPrice';
 import type { ReviewLineItemProps } from './types';
@@ -34,16 +32,7 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
         )}
       </div>
 
-      <span
-        className="min-w-0 flex-1 truncate text-[12px] font-normal text-[#1F1F1F] sm:text-[14px] sm:font-medium min-[1440px]:text-[18px]"
-        style={{
-          fontFamily: fontFamily.primary.join(', '),
-          lineHeight: lineHeight['16'],
-          letterSpacing: '0.5%',
-        }}
-      >
-        {label}
-      </span>
+      <span className="text-line-item-name min-w-0 flex-1 truncate text-[#1F1F1F]">{label}</span>
 
       <div className="flex shrink-0 items-center gap-4">
         <QuantityStepper
