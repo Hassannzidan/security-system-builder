@@ -1,4 +1,5 @@
 import { colors } from '@/design-tokens';
+import { splitTitleForTwoTone } from '@/utils/splitTitleForTwoTone';
 
 import { PlanIcon } from '../Accordion';
 import { ReviewPrice } from './ReviewPrice';
@@ -9,16 +10,13 @@ import type { ReviewPlanLineProps } from './types';
  * upstream): a small Wyze shield glyph, the plan name split two-tone, and the
  * recurring price — with NO quantity stepper (a plan is a single-select choice).
  *
- * Two-tone name: the first word is dark and the remainder brand-purple ("Cam"
- * dark, "Unlimited" purple), matching the design. Splitting on the FIRST space is
- * an assumption tied to the current "Cam <Tier>" naming; a plan named with more
- * than two words would keep only the first word dark, which reads correctly for
- * this catalog.
+ * Two-tone name: the lead is dark and the final word brand-purple ("Cam" dark,
+ * "Unlimited" purple), matching the design. The split (shared with PlanCard via
+ * `splitTitleForTwoTone`) breaks at the LAST space; for the current two-word
+ * "Cam <Tier>" naming that is the same single break either way.
  */
 export function ReviewPlanLine({ item }: ReviewPlanLineProps) {
-  const firstSpace = item.name.indexOf(' ');
-  const lead = firstSpace >= 0 ? item.name.slice(0, firstSpace) : item.name;
-  const accent = firstSpace >= 0 ? item.name.slice(firstSpace + 1) : '';
+  const { head: lead, tail: accent } = splitTitleForTwoTone(item.name);
 
   return (
     <div className="flex items-center gap-3">

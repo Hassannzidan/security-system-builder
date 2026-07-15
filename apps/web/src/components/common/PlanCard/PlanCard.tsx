@@ -2,6 +2,7 @@ import type { KeyboardEvent } from 'react';
 
 import { borderWidth, colors, radius, spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
+import { splitTitleForTwoTone } from '@/utils/splitTitleForTwoTone';
 
 import { LearnMoreLink } from '../ProductCard/LearnMoreLink';
 import { PriceBlock } from '../ProductCard/PriceBlock';
@@ -43,9 +44,7 @@ export function PlanCard({
 }: PlanCardProps) {
   const showLearnMore = Boolean(learnMoreHref);
 
-  const lastSpace = title.lastIndexOf(' ');
-  const titleLead = lastSpace >= 0 ? title.slice(0, lastSpace + 1) : '';
-  const titleAccent = lastSpace >= 0 ? title.slice(lastSpace + 1) : title;
+  const { head: titleLead, tail: titleAccent } = splitTitleForTwoTone(title);
 
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     if (event.key === 'Enter' || event.key === ' ') {
@@ -85,7 +84,7 @@ export function PlanCard({
       >
         <div className="flex flex-col" style={{ gap: spacing.sm }}>
           <h3 className="text-plan-title text-ink">
-            {titleLead}
+            {titleLead ? `${titleLead} ` : ''}
             <span style={{ color: colors.primary.DEFAULT }}>{titleAccent}</span>
           </h3>
 

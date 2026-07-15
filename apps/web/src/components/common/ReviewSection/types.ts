@@ -22,3 +22,13 @@ export interface ReviewCheckoutProps {
   /** Persist the current system. Returns whether the save succeeded. */
   onSave: () => boolean;
 }
+
+export interface OrderTotalsProps {
+  compareAtSubtotal: number;
+  subtotal: number;
+}
+
+export interface SaveForLaterProps {
+  /** Persist the current system. Returns whether the save succeeded. */
+  onSave: () => boolean;
+}
