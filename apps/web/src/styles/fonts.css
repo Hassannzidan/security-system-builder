@@ -1,0 +1,105 @@
+/**
+ * Font face declarations for the design system.
+ *
+ * Gilroy     — display / headings (woff2 → woff)
+ * TT Norms Pro — body / UI (ttf; convert to woff2 when available)
+ */
+
+/* -------------------------------------------------------------------------- */
+/* Gilroy                                                                     */
+/* -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'Gilroy';
+  src:
+    url('../assets/fonts/gilroy/Gilroy-Regular.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src:
+    url('../assets/fonts/gilroy/Gilroy-RegularItalic.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-RegularItalic.woff') format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src: url('../assets/fonts/gilroy/Gilroy-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src:
+    url('../assets/fonts/gilroy/Gilroy-SemiBold.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-SemiBold.woff') format('woff');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Figma exports the SemiBold cut as a named family with weight 400. */
+@font-face {
+  font-family: 'Gilroy-SemiBold';
+  src:
+    url('../assets/fonts/gilroy/Gilroy-SemiBold.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-SemiBold.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Gilroy';
+  src:
+    url('../assets/fonts/gilroy/Gilroy-Bold.woff2') format('woff2'),
+    url('../assets/fonts/gilroy/Gilroy-Bold.woff') format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* -------------------------------------------------------------------------- */
+/* TT Norms Pro                                                               */
+/* -------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('../assets/fonts/tt-norms-pro/TTNormsPro-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('../assets/fonts/tt-norms-pro/TTNormsPro-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('../assets/fonts/tt-norms-pro/TTNormsPro-DemiBold.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'TT Norms Pro';
+  src: url('../assets/fonts/tt-norms-pro/TTNormsPro-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

@@ -1,0 +1,75 @@
+import { Minus, Plus } from 'lucide-react';
+
+import { borderWidth, colors, spacing } from '@/design-tokens';
+import { cn } from '@/lib/utils';
+
+export function QuantityStepper({
+  value,
+  min,
+  max,
+  onChange,
+  title,
+  disabled = false,
+  variant = 'card',
+}: {
+  value: number;
+  min: number;
+  max: number;
+  onChange: (next: number) => void;
+  title: string;
+  disabled?: boolean;
+  variant?: 'card' | 'review';
+}) {
+  const btnBg =
+    variant === 'review' ? 'bg-white hover:bg-surface' : 'bg-surface hover:bg-surface-hover';
+  const btn =
+    `flex shrink-0 items-center justify-center rounded text-ink-secondary ${btnBg} ` +
+    'transition-colors disabled:cursor-not-allowed disabled:opacity-40 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2';
+  const decreaseDisabled = disabled || value <= min;
+
+  return (
+    <div className={cn('flex h-full items-center', variant === 'review' ? 'gap-2.5' : 'gap-2')}>
+      <button
+        type="button"
+        className={cn(btn, 'disabled:bg-transparent disabled:hover:bg-transparent')}
+        style={{
+          width: spacing.xl,
+          height: spacing.xl,
+          ...(decreaseDisabled
+            ? {
+                borderStyle: 'solid',
+                borderWidth: borderWidth.sm,
+                borderColor: colors.border.default,
+              }
+            : undefined),
+        }}
+        onClick={() => onChange(value - 1)}
+        disabled={decreaseDisabled}
+        aria-label={`Decrease ${title} quantity`}
+      >
+        <Minus className="h-3 w-3" strokeWidth={2.5} />
+      </button>
+      <span
+        className={cn(
+          'min-w-[1rem] text-center text-ink',
+          variant === 'review' ? 'text-quantity-review' : 'text-quantity-card',
+        )}
+        style={variant === 'review' ? { verticalAlign: 'bottom' } : undefined}
+        aria-live="polite"
+      >
+        {value}
+      </span>
+      <button
+        type="button"
+        className={btn}
+        style={{ width: spacing.xl, height: spacing.xl }}
+        onClick={() => onChange(value + 1)}
+        disabled={disabled || value >= max}
+        aria-label={`Increase ${title} quantity`}
+      >
+        <Plus className="h-3 w-3" strokeWidth={2.5} />
+      </button>
+    </div>
+  );
+}

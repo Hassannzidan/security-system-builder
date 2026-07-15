@@ -5,11 +5,9 @@
 import { Router } from 'express';
 import { API_ROUTES } from '@security-system-builder/shared';
 import { healthRouter } from './health.routes.js';
-import { productRouter } from './product.routes.js';
-import { categoryRouter } from './category.routes.js';
+import { stepsRouter } from './steps.routes.js';
 
 export const apiRouter: Router = Router();
 
 apiRouter.use(API_ROUTES.health, healthRouter);
-apiRouter.use(API_ROUTES.products, productRouter);
-apiRouter.use(API_ROUTES.categories, categoryRouter);
+apiRouter.use(API_ROUTES.steps, stepsRouter);

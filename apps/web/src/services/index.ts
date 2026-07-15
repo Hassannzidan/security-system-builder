@@ -1,3 +1,3 @@
-export { apiClient } from './apiClient';
-export { productService } from './product.service';
-export { categoryService } from './category.service';
+export { apiClient, api } from './apiClient';
+export { ApiClientError } from './ApiClientError';
+export { stepsService } from './steps.service';
