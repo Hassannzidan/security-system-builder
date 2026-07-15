@@ -189,15 +189,8 @@ function HomeContent() {
   }
 
   return (
-    // Below `lg`: single column (mobile stack). `lg`–1439px: a 10-col grid split
-    // into a 6-col accordion + a 4-col review sidebar. `1440px`+: single column
-    // again, so the review returns to a full-width panel beneath the accordion.
     <div className="grid grid-cols-1 items-start gap-4 lg:max-[1439px]:grid-cols-10 lg:max-[1439px]:gap-2">
       <div className="min-w-0 lg:max-[1439px]:col-span-6">
-        {/* The page's single <h1>. Visible above the stepper on mobile; the
-            design shows no title from `sm` up, so it becomes visually hidden
-            (sr-only) there rather than removed — the document keeps exactly one
-            h1 at every viewport with zero layout impact. */}
         <h1
           className="text-hero-mobile mb-4 block px-4 sm:sr-only"
           style={{

@@ -1,12 +1,12 @@
 import type { KeyboardEvent, MouseEvent } from 'react';
 
+import { LearnMoreLink } from '@/components/ui/LearnMoreLink';
+import { PriceBlock } from '@/components/ui/PriceBlock';
+import { ProductImage } from '@/components/ui/ProductImage';
+import { QuantityStepper } from '@/components/ui/QuantityStepper';
 import { borderWidth, colors, radius, spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 
-import { LearnMoreLink } from './LearnMoreLink';
-import { PriceBlock } from './PriceBlock';
-import { ProductImage } from './ProductImage';
-import { QuantityStepper } from './QuantityStepper';
 import { type ProductCardProps } from './types';
 import { VariantPill } from './VariantPill';
 

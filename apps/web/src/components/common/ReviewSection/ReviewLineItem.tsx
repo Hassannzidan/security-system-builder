@@ -1,4 +1,5 @@
-import { QuantityStepper } from '../ProductCard/QuantityStepper';
+import { QuantityStepper } from '@/components/ui/QuantityStepper';
+
 import { ReviewPrice } from './ReviewPrice';
 import type { ReviewLineItemProps } from './types';
 

@@ -1,10 +1,9 @@
 import type { ReactNode } from 'react';
 
-import { borderWidth, colors, fontFamily, fontWeight, spacing, stepper } from '@/design-tokens';
 import { AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { Chevron } from '@/components/common/icons';
+import { borderWidth, colors, fontFamily, fontWeight, spacing, stepper } from '@/design-tokens';
 import { cn } from '@/lib/utils';
-
-import { Chevron } from './icons';
 
 export interface AccordionStepProps {
   /** Radix item value — unique per step, used to drive open state. */
@@ -65,8 +64,6 @@ export function AccordionStep({
       <AccordionTrigger
         className={cn(
           'flex w-full flex-col text-left',
-          // Inset ring: the enclosing <AccordionItem> is `overflow-hidden` and the
-          // trigger sits flush to its edges, so an offset ring would be clipped.
           'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus',
           stepper.triggerPadding,
         )}
@@ -113,9 +110,6 @@ export function AccordionStep({
                   textAlign: 'center',
                   color: colors.primary.DEFAULT,
                 }}
-                // Announce the count as a complete phrase ("3 selected") when it
-                // changes. This is its own live region, distinct from the
-                // stepper value's live region inside the product card.
                 aria-live="polite"
                 aria-atomic="true"
               >

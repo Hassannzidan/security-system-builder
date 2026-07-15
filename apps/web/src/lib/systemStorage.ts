@@ -97,7 +97,6 @@ export function loadSystem(): BundleState | null {
   try {
     parsed = JSON.parse(raw);
   } catch {
-    // JSON.parse failed → corrupt blob. Remove it so we cleanly fall back to seeds.
     if (import.meta.env.DEV) {
       console.warn('[systemStorage] Discarding saved system: JSON.parse failed (corrupt blob).');
     }

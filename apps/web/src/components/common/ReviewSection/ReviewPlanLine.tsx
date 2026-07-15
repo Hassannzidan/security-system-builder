@@ -1,7 +1,7 @@
+import { PlanIcon } from '@/components/common/icons';
 import { colors } from '@/design-tokens';
 import { splitTitleForTwoTone } from '@/utils/splitTitleForTwoTone';
 
-import { PlanIcon } from '../Accordion';
 import { ReviewPrice } from './ReviewPrice';
 import type { ReviewPlanLineProps } from './types';
 

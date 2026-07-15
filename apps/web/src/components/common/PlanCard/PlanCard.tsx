@@ -1,12 +1,12 @@
 import type { KeyboardEvent } from 'react';
 
+import { LearnMoreLink } from '@/components/ui/LearnMoreLink';
+import { PriceBlock } from '@/components/ui/PriceBlock';
+import { ProductImage } from '@/components/ui/ProductImage';
 import { borderWidth, colors, radius, spacing } from '@/design-tokens';
 import { cn } from '@/lib/utils';
 import { splitTitleForTwoTone } from '@/utils/splitTitleForTwoTone';
 
-import { LearnMoreLink } from '../ProductCard/LearnMoreLink';
-import { PriceBlock } from '../ProductCard/PriceBlock';
-import { ProductImage } from '../ProductCard/ProductImage';
 import { type PlanCardProps } from './types';
 
 /**

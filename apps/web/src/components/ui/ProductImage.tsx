@@ -15,10 +15,6 @@ export function ProductImage({
   alt,
   badge,
   vertical,
-  /**
-   * How the image sits within its frame. "start" (default) top-left anchors it —
-   * ProductCard's original behaviour. "center" centers it, used by PlanCard.
-   */
   align = 'start',
 }: {
   src?: string;
