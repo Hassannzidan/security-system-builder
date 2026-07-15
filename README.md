@@ -175,3 +175,5 @@ packages/
   workflow that gates PRs is the obvious next step.
 - **Checkout is a placeholder**, per the brief — the review panel's checkout affordance is
   not wired to a real flow.
+- **No elevation/shadow tokens** — the Figma defines no shadow styles; they'd slot into the
+  design-token layer when they exist.

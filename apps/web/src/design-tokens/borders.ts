@@ -14,11 +14,10 @@ export const borderWidth = {
 } as const;
 
 export const borderColor = {
-  DEFAULT: colors.border.default, // gray.400
+  DEFAULT: colors.border.default,
   muted: colors.border.muted,
   strong: colors.border.strong,
   black: colors.border.black,
-  /** Focus ring / outline — see colors.border.focus TODO */
   focus: colors.border.focus,
 } as const;
 

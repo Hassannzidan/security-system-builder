@@ -86,8 +86,6 @@ const status = {
   success: '#0AA288',
   error: '#D8392B',
   link: '#0000EE',
-  // TODO: warning — awaiting Figma value
-  // TODO: info — awaiting Figma value
 } as const;
 
 /**
@@ -160,22 +158,16 @@ export const colors = {
   /** Surface / page backgrounds */
   background: {
     default: base.white,
-    /** App page canvas — the off-white builder background */
     canvas: neutral.canvas,
     surface: gray[300],
-    /** Hover fill for neutral surface buttons (one notch below `surface`) */
     surfaceHover: neutral.surfaceHover,
-    /** Expanded accordion-step surface tint */
     expandedStep: neutral.expandedStep,
-    // TODO: dedicated elevated surface from Figma (cards, popovers) — gray.300 for now
     surfaceElevated: gray[300],
     inverse: gray[900],
     overlay: withAlpha(base.black, opacity.overlay),
     tint: withAlpha(mint.DEFAULT, opacity.subtle),
     wash: withAlpha(base.white, opacity.subtle),
-    /** Review panel surface — soft indigo wash from Figma */
     reviewPanel: indigo[50],
-    /** Image-placeholder shimmer gradient stops */
     shimmerFrom: neutral.shimmerFrom,
     shimmerTo: neutral.shimmerTo,
   },
@@ -186,11 +178,8 @@ export const colors = {
     muted: gray[300],
     strong: gray[500],
     black: base.absoluteBlack,
-    /** Unselected variant-swatch hairline */
     swatch: neutral.swatchBorder,
-    /** Loader/spinner track ring */
     loaderTrack: neutral.loaderTrack,
-    // TODO: focus ring color from Figma / a11y spec — primary used as interim
     focus: primary.DEFAULT,
   },
 
@@ -201,8 +190,6 @@ export const colors = {
   status: {
     success: status.success,
     error: status.error,
-    // TODO: warning: '...'
-    // TODO: info: '...'
   },
 
   /** Absolute base colors when semantics don't fit */
