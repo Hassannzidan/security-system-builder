@@ -15,19 +15,19 @@ pixel-perfect UI recreation.
 
 ### Desktop
 
-![Desktop view](assets/previews/large-screens-view.gif)
+<img width="1914" height="1016" alt="large-screens-view" src="https://github.com/user-attachments/assets/a8422d64-4bfa-4710-9619-64df9c04e565" />
 
 ### Medium Screens
 
-![Medium screens view](assets/previews/medium-screens-view.gif)
+<img width="1914" height="1016" alt="medium-screens-view" src="https://github.com/user-attachments/assets/bb59c498-a2e3-47d8-9ca5-6f23dfe6a6e4" />
 
 ### Tablet
 
-![Tablet view](assets/previews/tablet-view.gif)
+<img width="1914" height="1016" alt="tablet-view" src="https://github.com/user-attachments/assets/3d1e459a-c9dd-4f9e-a94d-5c7667deffbd" />
 
 ### Mobile
 
-![Mobile view](assets/previews/mobile-view.gif)
+<img width="1914" height="976" alt="mobile view" src="https://github.com/user-attachments/assets/2be1aa87-3108-42bd-b4b9-9b68b2b67f47" />
 
 ## Features at a Glance
 
