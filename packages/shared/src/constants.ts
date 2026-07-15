@@ -15,8 +15,6 @@ export const DEFAULT_WEB_PORT = 5173;
 export const API_ROUTES = {
   health: '/health',
   steps: '/steps',
-  products: '/products',
-  categories: '/categories',
 } as const;
 
 export type ApiRouteKey = keyof typeof API_ROUTES;

@@ -1,30 +1,7 @@
 /**
  * Shared domain and transport types used across the web and api applications.
  */
-import type { ApiErrorCode, ProductCategory, ProductStatus } from './enums.js';
-
-/** A sellable security-system component. */
-export interface Product {
-  id: string;
-  name: string;
-  description: string;
-  category: ProductCategory;
-  status: ProductStatus;
-  price: number;
-  currency: string;
-  imageUrl?: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-/** A grouping of products. */
-export interface Category {
-  id: string;
-  slug: ProductCategory;
-  name: string;
-  description: string;
-  productCount: number;
-}
+import type { ApiErrorCode } from './enums.js';
 
 /** Whether a step allows selecting one or many of its products. */
 export type SelectionType = 'single' | 'multiple';

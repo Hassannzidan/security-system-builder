@@ -13,9 +13,4 @@ export const stepsService = {
   list(): Promise<Step[]> {
     return api.get<Step[]>(API_ROUTES.steps);
   },
-
-  /** Fetch a single step by id. */
-  getById(stepId: string): Promise<Step> {
-    return api.get<Step>(`${API_ROUTES.steps}/${stepId}`);
-  },
 };
