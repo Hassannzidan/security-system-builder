@@ -23,7 +23,7 @@ pnpm dev
 ```
 
 - Web app: http://localhost:5173
-- API: http://localhost:4000/api (health at `/api/health`, catalog at `/api/steps`)
+- API: http://localhost:4000/api/v1 (health at `/api/v1/health`, catalog at `/api/v1/steps`)
 
 The Vite dev server proxies `/api` to Express, so no CORS wiring is needed in dev.
 
@@ -158,7 +158,7 @@ apps/
       design-tokens/   # colors, spacing, typography, etc.
   api/                 # Express + TypeScript API
     src/
-      routes/ controllers/ services/ repositories/   # GET /api/health, /api/steps[/:id]
+      routes/ controllers/ services/ repositories/   # GET /api/v1/health, /api/v1/steps[/:id]
       data/steps.json  # the product catalog
 packages/
   shared/              # types, enums, constants (workspace:* dep of both apps)
