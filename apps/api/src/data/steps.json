@@ -37,7 +37,7 @@
               "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/black-camera-v4.png"
             }
           ],
-          "seed": null
+          "seed": { "variantId": "white", "qty": 1 }
         },
         {
           "id": "wyze-cam-pan-v3",
@@ -61,7 +61,7 @@
               "image": "https://my-react-home-task-images-2026.s3.amazonaws.com/black-camera-v3.png"
             }
           ],
-          "seed": null
+          "seed": { "variantId": "white", "qty": 2 }
         },
         {
           "id": "wyze-cam-floodlight-v2",
