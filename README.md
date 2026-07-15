@@ -177,3 +177,25 @@ packages/
   not wired to a real flow.
 - **No elevation/shadow tokens** — the Figma defines no shadow styles; they'd slot into the
   design-token layer when they exist.
+
+### Performance notes
+
+A Lighthouse mobile audit (production build via `vite preview`) scores **Performance 65 /
+Accessibility 92 / Best Practices 100**, with **CLS 0** and **TBT 120ms**. The score is
+dominated by image payload, not application code: catalog product photos are served from S3
+as full-resolution PNGs (~1MB each, ~10MB total), and variant swatches currently reuse the
+full-size card image. Production plan:
+
+- **Image pipeline** — resize + convert to WebP per display size (card ~800px, swatch thumbs
+  ~64px); the `steps.json` schema already separates image vs swatch URLs, so this is asset
+  generation + a URL swap, not a schema change.
+- **CDN + caching** — `Cache-Control` headers on the S3 objects and CloudFront in front of the
+  bucket for HTTP/2 and edge caching.
+- **Loading hints** — `fetchpriority="high"` on the LCP card image, `loading="lazy"` on
+  below-fold and swatch images.
+- **Fonts** — convert the remaining TTF font to woff2.
+- **Accessibility** — raise the two low-contrast text tokens to WCAG AA and enlarge stepper
+  tap targets to 24px.
+
+Application-level signals are already healthy (zero layout shift, 120ms blocking time, ~139KB
+gzip JS), so the remediation is an asset/CDN task rather than a rewrite.
