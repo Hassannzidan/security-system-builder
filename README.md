@@ -153,12 +153,12 @@ apps/
       components/      # Accordion, ProductCard, PlanCard, ReviewSection
       hooks/           # useBundleBuilder (+ tests), useStepsQuery, useMediaQuery
       lib/             # systemStorage (localStorage + Zod), queryClient, config
-      context/         # AppContext, BundleBuilderContext
+      context/         # BundleBuilderContext
       services/        # apiClient + steps.service
       design-tokens/   # colors, spacing, typography, etc.
   api/                 # Express + TypeScript API
     src/
-      routes/ controllers/ services/ repositories/   # GET /api/steps[/:id]
+      routes/ controllers/ services/ repositories/   # GET /api/health, /api/steps[/:id]
       data/steps.json  # the product catalog
 packages/
   shared/              # types, enums, constants (workspace:* dep of both apps)
@@ -175,5 +175,3 @@ packages/
   workflow that gates PRs is the obvious next step.
 - **Checkout is a placeholder**, per the brief — the review panel's checkout affordance is
   not wired to a real flow.
-- **The API still mounts legacy `/products` and `/categories` routes** alongside `/steps`;
-  they'd be removed once nothing depends on them.
