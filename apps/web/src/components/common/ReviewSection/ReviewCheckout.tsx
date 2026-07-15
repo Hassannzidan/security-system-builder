@@ -79,7 +79,7 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
         type="button"
         onClick={() => setPlaced(true)}
         disabled={placed}
-        className="text-checkout-cta flex h-12 w-full items-center justify-center gap-2 text-white transition-colors disabled:cursor-default"
+        className="text-checkout-cta flex h-12 w-full items-center justify-center gap-2 text-white transition-colors disabled:cursor-default focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
         style={{
           backgroundColor: placed ? colors.status.success : colors.primary.DEFAULT,
           borderRadius: radius.sm,

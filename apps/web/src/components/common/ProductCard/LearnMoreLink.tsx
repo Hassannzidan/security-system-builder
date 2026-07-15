@@ -10,7 +10,8 @@ export function LearnMoreLink({
   onClick?: () => void;
   label: string;
 }) {
-  const className = 'font-semibold underline underline-offset-2';
+  const className =
+    'font-semibold underline underline-offset-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:rounded-sm';
   const style = { color: colors.text.link };
   if (href) {
     return (

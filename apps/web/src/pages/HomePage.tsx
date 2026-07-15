@@ -194,9 +194,12 @@ function HomeContent() {
     // again, so the review returns to a full-width panel beneath the accordion.
     <div className="grid grid-cols-1 items-start gap-4 lg:max-[1439px]:grid-cols-10 lg:max-[1439px]:gap-2">
       <div className="min-w-0 lg:max-[1439px]:col-span-6">
-        {/* Mobile-only heading shown above the stepper. */}
+        {/* The page's single <h1>. Visible above the stepper on mobile; the
+            design shows no title from `sm` up, so it becomes visually hidden
+            (sr-only) there rather than removed — the document keeps exactly one
+            h1 at every viewport with zero layout impact. */}
         <h1
-          className="text-hero-mobile mb-4 block px-4 sm:hidden"
+          className="text-hero-mobile mb-4 block px-4 sm:sr-only"
           style={{
             textAlign: 'center',
             color: colors.base.black,

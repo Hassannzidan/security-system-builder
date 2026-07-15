@@ -20,7 +20,7 @@ export function VariantPill({
       type="button"
       onClick={onSelect}
       aria-pressed={selected}
-      className="inline-flex shrink-0 items-center overflow-hidden box-border transition-colors"
+      className="inline-flex shrink-0 items-center overflow-hidden box-border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
       style={{
         height: 26,
         borderRadius: radius.xs,

@@ -24,7 +24,8 @@ export function QuantityStepper({
     variant === 'review' ? 'bg-white hover:bg-surface' : 'bg-surface hover:bg-surface-hover';
   const btn =
     `flex shrink-0 items-center justify-center rounded text-ink-secondary ${btnBg} ` +
-    'transition-colors disabled:cursor-not-allowed disabled:opacity-40';
+    'transition-colors disabled:cursor-not-allowed disabled:opacity-40 ' +
+    'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2';
   const decreaseDisabled = disabled || value <= min;
 
   return (

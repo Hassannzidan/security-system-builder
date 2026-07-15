@@ -49,7 +49,7 @@ export function SaveForLater({ onSave }: SaveForLaterProps) {
       onClick={handleSave}
       disabled={saveStatus === 'saved'}
       aria-live="polite"
-      className="text-save-link mx-auto underline disabled:cursor-default disabled:no-underline"
+      className="text-save-link mx-auto underline disabled:cursor-default disabled:no-underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2 focus-visible:rounded-sm"
       style={{
         color: saveStatus === 'error' ? colors.status.error : colors.primary.DEFAULT,
       }}

@@ -63,6 +63,7 @@ export function PlanCard({
       onKeyDown={handleKeyDown}
       className={cn(
         'mx-auto flex cursor-pointer flex-col overflow-hidden bg-white transition-colors',
+        'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
         className,
       )}
       style={{

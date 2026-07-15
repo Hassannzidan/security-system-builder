@@ -26,10 +26,17 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger>
 >(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex">
-    <AccordionPrimitive.Trigger ref={ref} className={cn(className)} {...props}>
-      {children}
-    </AccordionPrimitive.Trigger>
+  // Radix's <Header> defaults to an <h3>; the app's heading outline needs the
+  // step titles at <h2> (directly under the page <h1>, no skipped level). Render
+  // the header as an <h2> via `asChild`. Purely a semantic/level change — with
+  // Tailwind Preflight resetting heading margins/size to inherit, h2 vs h3 render
+  // identically, so there is no visual effect.
+  <AccordionPrimitive.Header asChild>
+    <h2 className="flex">
+      <AccordionPrimitive.Trigger ref={ref} className={cn(className)} {...props}>
+        {children}
+      </AccordionPrimitive.Trigger>
+    </h2>
   </AccordionPrimitive.Header>
 ));
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;

@@ -156,7 +156,8 @@ export function ProductCard({
       onKeyDown={selectable ? handleKeyDown : undefined}
       className={cn(
         'flex overflow-hidden bg-white transition-colors',
-        selectable && 'cursor-pointer',
+        selectable &&
+          'cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2',
         isVertical ? 'flex-col' : 'flex-col sm:flex-row sm:items-stretch',
         className,
       )}

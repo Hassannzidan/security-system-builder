@@ -89,6 +89,9 @@ export default {
         sale: tokens.status.error,
         swatch: tokens.border.swatch,
         track: tokens.border.loaderTrack,
+        // Keyboard focus ring colour (e.g. `focus-visible:ring-focus`),
+        // single-sourced from the design token; mirrors globals.css `--ring`.
+        focus: tokens.border.focus,
         shimmer: {
           from: tokens.background.shimmerFrom,
           to: tokens.background.shimmerTo,

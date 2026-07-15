@@ -62,7 +62,15 @@ export function AccordionStep({
       className={cn('overflow-hidden transition-colors', stepper.divider)}
       style={itemStyle}
     >
-      <AccordionTrigger className={cn('flex w-full flex-col text-left', stepper.triggerPadding)}>
+      <AccordionTrigger
+        className={cn(
+          'flex w-full flex-col text-left',
+          // Inset ring: the enclosing <AccordionItem> is `overflow-hidden` and the
+          // trigger sits flush to its edges, so an offset ring would be clipped.
+          'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-focus',
+          stepper.triggerPadding,
+        )}
+      >
         {showEyebrow && (
           <span
             className={cn('text-eyebrow w-full pb-2', stepper.divider, stepper.eyebrowBleed)}
@@ -105,6 +113,11 @@ export function AccordionStep({
                   textAlign: 'center',
                   color: colors.primary.DEFAULT,
                 }}
+                // Announce the count as a complete phrase ("3 selected") when it
+                // changes. This is its own live region, distinct from the
+                // stepper value's live region inside the product card.
+                aria-live="polite"
+                aria-atomic="true"
               >
                 {selectedCount} selected
               </span>
@@ -122,7 +135,7 @@ export function AccordionStep({
           <button
             type="button"
             onClick={onNext}
-            className="text-next-button inline-flex items-center justify-center self-center transition-colors hover:bg-white/60 active:opacity-90"
+            className="text-next-button inline-flex items-center justify-center self-center transition-colors hover:bg-white/60 active:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus focus-visible:ring-offset-2"
             style={{
               textAlign: 'center',
               verticalAlign: 'middle',

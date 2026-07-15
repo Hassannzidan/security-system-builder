@@ -24,7 +24,8 @@
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    /* Focus ring — equals the brand primary (#4E2FD2 = colors.border.focus). */
+    --ring: 251.4 64.4% 50.4%;
     --radius: 0.5rem;
   }
 

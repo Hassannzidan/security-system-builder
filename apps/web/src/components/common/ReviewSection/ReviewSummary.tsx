@@ -67,7 +67,7 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
       {/* Bundle-level fulfillment row per design — static, not a product line. */}
       <div className="flex items-center gap-3">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-lg bg-white">
-          <FastShippingSvg className="h-7 w-7" />
+          <FastShippingSvg className="h-7 w-7" aria-hidden="true" focusable="false" />
         </div>
         <span className="text-label-strong min-w-0 flex-1 truncate text-ink-black">
           {FAST_SHIPPING.label}

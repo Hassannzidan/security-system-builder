@@ -180,6 +180,11 @@ export const colors = {
     black: base.absoluteBlack,
     swatch: neutral.swatchBorder,
     loaderTrack: neutral.loaderTrack,
+    /**
+     * Keyboard focus ring. Single-sourced from the brand primary (#4E2FD2);
+     * globals.css `--ring` is set to the same HSL so shadcn's `ring-ring` and
+     * the token bridge's `ring-focus` resolve to one colour.
+     */
     focus: primary.DEFAULT,
   },
 
