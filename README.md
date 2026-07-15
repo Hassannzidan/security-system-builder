@@ -1,5 +1,7 @@
 # Security System Builder
 
+[![CI](https://github.com/Hassannzidan/security-system-builder/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/Hassannzidan/security-system-builder/actions/workflows/ci.yml)
+
 A multi-step bundle builder for a home-security kit, with a live review panel that
 stays in sync with the configuration as you build it. Built as a take-home. The
 repo is a pnpm-workspaces monorepo: a React + Vite web app (`apps/web`), a small
@@ -171,8 +173,6 @@ packages/
   smoke test of the full build → save → reload flow.
 - **Design-token adoption is partial** — a `design-tokens/` layer exists and most surfaces
   use it, but some components still carry ad-hoc values that should be migrated onto tokens.
-- **No CI pipeline is configured.** Lint/typecheck/test run locally; wiring them into a CI
-  workflow that gates PRs is the obvious next step.
 - **Checkout is a placeholder**, per the brief — the review panel's checkout affordance is
   not wired to a real flow.
 - **No elevation/shadow tokens** — the Figma defines no shadow styles; they'd slot into the

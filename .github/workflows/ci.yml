@@ -1,0 +1,44 @@
+name: CI
+
+on: [push, pull_request]
+
+# Cancel superseded runs for the same ref so only the latest commit is verified.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # pnpm must be on PATH before setup-node so its pnpm cache can resolve.
+      # No version here on purpose: action-setup reads `packageManager` from
+      # package.json (pnpm@10.33.2), keeping a single source of truth.
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm -r typecheck
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Test
+        run: pnpm --filter @security-system-builder/web test -- --run
+
+      - name: Build
+        run: pnpm -r build
