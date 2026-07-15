@@ -3,10 +3,56 @@
 [![CI](https://github.com/Hassannzidan/security-system-builder/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/Hassannzidan/security-system-builder/actions/workflows/ci.yml)
 
 A multi-step bundle builder for a home-security kit, with a live review panel that
-stays in sync with the configuration as you build it. Built as a take-home. The
+stays in sync with the configuration as you build it. The
 repo is a pnpm-workspaces monorepo: a React + Vite web app (`apps/web`), a small
 Express + TypeScript API that serves the product catalog as JSON (`apps/api`), and
 a shared types/enums/constants package consumed by both (`packages/shared`).
+
+Built as a production-oriented frontend architecture exercise rather than only a
+pixel-perfect UI recreation.
+
+## Preview
+
+### Desktop
+
+![Desktop view](assets/previews/large-screens-view.gif)
+
+### Medium Screens
+
+![Medium screens view](assets/previews/medium-screens-view.gif)
+
+### Tablet
+
+![Tablet view](assets/previews/tablet-view.gif)
+
+### Mobile
+
+![Mobile view](assets/previews/mobile-view.gif)
+
+## Features at a Glance
+
+- Multi-step accordion bundle builder
+- Live synchronized review panel
+- Variant-specific quantities
+- Per-step selection counters
+- Save & Restore with localStorage
+- Data-driven catalog served by Express API
+- Shared TypeScript package
+- Responsive across desktop, tablet and mobile
+- Runtime validation with Zod
+- Comprehensive business-logic tests
+
+## Architecture Highlights
+
+- React + TypeScript + Vite
+- Express + TypeScript API
+- pnpm workspaces monorepo
+- React Query
+- Radix UI
+- Context API
+- Zod validation
+- Vitest
+- Shared package between frontend/backend
 
 ## Quick start
 
