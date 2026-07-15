@@ -1,11 +1,4 @@
-import {
-  colors,
-  fontFamily,
-  fontSize,
-  fontWeight,
-  letterSpacing,
-  lineHeight,
-} from '@/design-tokens';
+import { colors, fontFamily, letterSpacing, lineHeight } from '@/design-tokens';
 
 import { PlanIcon } from '../Accordion';
 import { ReviewPrice } from './ReviewPrice';
@@ -48,11 +41,9 @@ export function ReviewPlanLine({ item }: ReviewPlanLineProps) {
       </span>
 
       <span
-        className="min-w-0 flex-1 truncate"
+        className="min-w-0 flex-1 truncate text-[12px] font-normal sm:text-[16px] sm:font-bold"
         style={{
           fontFamily: fontFamily.primary.join(', '),
-          fontWeight: fontWeight.bold,
-          fontSize: fontSize['16'],
           lineHeight: lineHeight['130'],
           letterSpacing: letterSpacing['0.6'],
         }}

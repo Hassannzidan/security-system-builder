@@ -21,10 +21,15 @@ export const stepper = {
     letterSpacing: '1px',
   },
 
+  /** Hairline dividers — 0.5px on mobile, 1px from sm up */
+  divider: 'border-b-[0.5px] sm:border-b',
+
   /** Step title ("Choose your cameras") */
   title: {
-    fontSize: { base: '20px', sm: '24px', lg: fontSize['28'] },
+    fontSize: { base: '18px', sm: '24px', lg: fontSize['28'] },
   },
+  titleClass:
+    'truncate font-["Gilroy-SemiBold","Gilroy",sans-serif] text-[18px] font-normal leading-none tracking-[0px] sm:font-primary sm:text-2xl sm:font-semibold lg:text-[28px]',
 
   /** Leading step icon box */
   icon: {

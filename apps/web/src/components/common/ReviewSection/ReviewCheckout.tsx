@@ -27,6 +27,67 @@ const SAVE_LABELS: Record<SaveStatus, string> = {
   error: "Couldn't save — check browser storage settings",
 };
 
+function FinancingPill() {
+  return (
+    <span
+      className="inline-flex h-[27px] w-fit items-center gap-2.5 p-2 text-white"
+      style={{
+        backgroundColor: colors.primary.DEFAULT,
+        borderRadius: '3px',
+        fontFamily: fontFamily.primary.join(', '),
+        fontWeight: fontWeight.regular,
+        fontSize: fontSize['16'],
+        lineHeight: lineHeight['100'],
+        letterSpacing: '-0.05em',
+      }}
+    >
+      {/* Single allowed hard-coded money value — see FINANCING_ESTIMATE. */}
+      as low as {formatPrice(FINANCING_ESTIMATE)}/mo
+    </span>
+  );
+}
+
+function CheckoutTotals({
+  compareAtSubtotal,
+  subtotal,
+}: {
+  compareAtSubtotal: number;
+  subtotal: number;
+}) {
+  return (
+    <div className="flex items-baseline gap-2">
+      <span
+        className="line-through"
+        style={{
+          fontFamily: fontFamily.primary.join(', '),
+          fontWeight: fontWeight.medium,
+          fontSize: fontSize['22'],
+          lineHeight: lineHeight['20'],
+          letterSpacing: '0.25%',
+          textAlign: 'center',
+          color: colors.gray[600],
+        }}
+      >
+        {formatPrice(compareAtSubtotal)}
+      </span>
+      <span
+        style={{
+          fontFamily: fontFamily.primary.join(', '),
+          fontWeight: fontWeight.bold,
+          fontSize: fontSize['28'],
+          lineHeight: '32px',
+          letterSpacing: '-0.13%',
+          textAlign: 'right',
+          verticalAlign: 'middle',
+          color: colors.primary.DEFAULT,
+        }}
+      >
+        {formatPrice(subtotal)}
+      </span>
+    </div>
+  );
+}
+
 /** Right column of the review panel: guarantee, financing + total, savings, CTA. */
 export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
   // Placeholder confirmation — the task allows a prototype checkout with no order
@@ -59,14 +120,15 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
 
   return (
     <div className="flex flex-col gap-5">
-      {/* Guarantee */}
-      <div className="flex items-center gap-[25px]">
+      {/* Badge + returns (wide) or badge + compact pricing stack (narrow). */}
+      <div className="flex items-center gap-3 min-[1440px]:gap-[25px]">
         <img
           src={satisfactionBadge}
           alt="100% Wyze satisfaction guarantee"
-          className="h-[131px] w-[131px] shrink-0"
+          className="h-[78px] w-[78px] shrink-0 min-[1440px]:h-[131px] min-[1440px]:w-[131px]"
         />
-        <div className="flex min-w-0 flex-col gap-2.5">
+
+        <div className="hidden min-w-0 flex-col gap-2.5 min-[1440px]:flex">
           <h3
             className="text-[#1F1F1F]"
             style={{
@@ -94,55 +156,17 @@ export function ReviewCheckout({ totals, onSave }: ReviewCheckoutProps) {
             {RETURNS_BODY}
           </p>
         </div>
+
+        <div className="flex min-w-0 flex-1 flex-col items-end gap-2 min-[1440px]:hidden">
+          <FinancingPill />
+          <CheckoutTotals compareAtSubtotal={totals.compareAtSubtotal} subtotal={totals.subtotal} />
+        </div>
       </div>
 
-      {/* Financing pill + total */}
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <span
-          className="inline-flex h-[27px] w-fit items-center gap-2.5 p-2 text-white"
-          style={{
-            backgroundColor: colors.primary.DEFAULT,
-            borderRadius: '3px',
-            fontFamily: fontFamily.primary.join(', '),
-            fontWeight: fontWeight.regular,
-            fontSize: fontSize['16'],
-            lineHeight: lineHeight['100'],
-            letterSpacing: '-0.05em',
-          }}
-        >
-          {/* Single allowed hard-coded money value — see FINANCING_ESTIMATE. */}
-          as low as {formatPrice(FINANCING_ESTIMATE)}/mo
-        </span>
-        <div className="flex items-baseline gap-2">
-          <span
-            className="line-through"
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.medium,
-              fontSize: fontSize['22'],
-              lineHeight: lineHeight['20'],
-              letterSpacing: '0.25%',
-              textAlign: 'center',
-              color: colors.gray[600],
-            }}
-          >
-            {formatPrice(totals.compareAtSubtotal)}
-          </span>
-          <span
-            style={{
-              fontFamily: fontFamily.primary.join(', '),
-              fontWeight: fontWeight.bold,
-              fontSize: fontSize['28'],
-              lineHeight: '32px',
-              letterSpacing: '-0.13%',
-              textAlign: 'right',
-              verticalAlign: 'middle',
-              color: colors.primary.DEFAULT,
-            }}
-          >
-            {formatPrice(totals.subtotal)}
-          </span>
-        </div>
+      {/* Financing pill + total — wide layout only. */}
+      <div className="hidden flex-wrap items-center justify-between gap-3 min-[1440px]:flex">
+        <FinancingPill />
+        <CheckoutTotals compareAtSubtotal={totals.compareAtSubtotal} subtotal={totals.subtotal} />
       </div>
 
       {/* Savings callout — only when the bundle actually saves money */}

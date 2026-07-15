@@ -1,4 +1,4 @@
-import { fontFamily, fontWeight, lineHeight } from '@/design-tokens';
+import { fontFamily, lineHeight } from '@/design-tokens';
 
 import { QuantityStepper } from '../ProductCard/QuantityStepper';
 import { ReviewPrice } from './ReviewPrice';
@@ -35,10 +35,9 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
       </div>
 
       <span
-        className="min-w-0 flex-1 truncate text-[14px] text-[#1F1F1F] min-[1440px]:text-[18px]"
+        className="min-w-0 flex-1 truncate text-[12px] font-normal text-[#1F1F1F] sm:text-[14px] sm:font-medium min-[1440px]:text-[18px]"
         style={{
           fontFamily: fontFamily.primary.join(', '),
-          fontWeight: fontWeight.medium,
           lineHeight: lineHeight['16'],
           letterSpacing: '0.5%',
         }}

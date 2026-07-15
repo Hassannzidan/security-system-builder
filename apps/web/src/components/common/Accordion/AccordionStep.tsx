@@ -67,19 +67,26 @@ export function AccordionStep({
   // Permanent bottom border on every item; open state only tints the surface.
   const itemStyle = {
     backgroundColor: isOpen ? EXPANDED_BG : colors.background.default,
-    borderBottom: `${borderWidth.sm} solid ${colors.base.black}`,
+    borderColor: colors.base.black,
   };
 
   return (
-    <AccordionItem value={value} className="overflow-hidden transition-colors" style={itemStyle}>
+    <AccordionItem
+      value={value}
+      className={cn('overflow-hidden transition-colors', stepper.divider)}
+      style={itemStyle}
+    >
       <AccordionTrigger className={cn('flex w-full flex-col text-left', stepper.triggerPadding)}>
         {showEyebrow && (
           <span
-            className={cn('w-full border-b pb-2', stepper.eyebrowBleed)}
+            className={cn(
+              'w-full pb-2 text-[10px] sm:text-xs',
+              stepper.divider,
+              stepper.eyebrowBleed,
+            )}
             style={{
               fontFamily: fontFamily.primary.join(', '),
               fontWeight: fontWeight.regular,
-              fontSize: fontSize['12'],
               lineHeight: lineHeight['100'],
               letterSpacing: '1.6px',
               verticalAlign: 'middle',
@@ -102,10 +109,7 @@ export function AccordionStep({
             </span>
           )}
 
-          <span
-            className="truncate font-primary text-[20px] font-semibold leading-none sm:text-2xl lg:text-[28px]"
-            style={{ color: colors.text.primary }}
-          >
+          <span className={cn(stepper.titleClass)} style={{ color: colors.text.primary }}>
             {title}
           </span>
 

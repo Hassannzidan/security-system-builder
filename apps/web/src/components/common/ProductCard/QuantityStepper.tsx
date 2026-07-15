@@ -4,8 +4,6 @@ import {
   borderWidth,
   colors,
   fontFamily,
-  fontSize,
-  fontWeight,
   letterSpacing,
   lineHeight,
   spacing,
@@ -60,15 +58,13 @@ export function QuantityStepper({
       </button>
       <span
         className={cn(
-          'min-w-[1rem] text-center tabular-nums text-[#0B0D10]',
-          variant === 'review' ? '' : 'text-base font-semibold',
+          'min-w-[1rem] text-center tabular-nums text-[#0B0D10] font-normal sm:font-semibold',
+          variant === 'review' ? 'text-sm' : 'text-base',
         )}
         style={
           variant === 'review'
             ? {
                 fontFamily: fontFamily.primary.join(', '),
-                fontWeight: fontWeight.semiBold,
-                fontSize: fontSize['14'],
                 lineHeight: lineHeight['16'],
                 letterSpacing: letterSpacing.none,
                 verticalAlign: 'bottom',

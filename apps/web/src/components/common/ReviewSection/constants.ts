@@ -10,6 +10,9 @@ export const REVIEW_CATEGORY_ORDER = ['Cameras', 'Sensors', 'Accessories', 'Plan
 /** The plan group is rendered specially (two-tone name, no stepper). */
 export const PLAN_CATEGORY = 'Plan';
 
+/** Mobile review heading for the plan group — desktop keeps "Plan". */
+export const PLAN_CATEGORY_MOBILE_LABEL = 'Home monitoring plan';
+
 /**
  * Bundle-level fulfillment row shown at the bottom of the summary. It is NOT a
  * product from `lineItems`, so it is hard-coded here per the design. Priced like

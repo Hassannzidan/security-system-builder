@@ -1,7 +1,8 @@
-import { colors, radius } from '@/design-tokens';
 import { useBundleBuilderContext } from '@/context/BundleBuilderContext';
 
 import { ReviewCheckout } from './ReviewCheckout';
+import { ReviewEyebrow } from './ReviewEyebrow';
+import { ReviewPanel } from './ReviewPanel';
 import { ReviewSummary } from './ReviewSummary';
 
 /**
@@ -22,13 +23,15 @@ export function ReviewSection() {
   const { lineItems, totals, setQuantity, saveSystem } = useBundleBuilderContext();
 
   return (
-    <section
-      aria-label="Your security system"
-      style={{ backgroundColor: colors.background.reviewPanel, borderRadius: radius.xl }}
-      className="grid grid-cols-1 gap-8 p-5 sm:p-6 min-[1440px]:grid-cols-[11fr_9fr] min-[1440px]:gap-10 min-[1440px]:p-8"
-    >
-      <ReviewSummary items={lineItems} onSetQuantity={setQuantity} />
-      <ReviewCheckout totals={totals} onSave={saveSystem} />
-    </section>
+    <ReviewPanel>
+      <ReviewEyebrow />
+      <section
+        aria-label="Your security system"
+        className="grid grid-cols-1 gap-8 p-5 sm:p-6 min-[1440px]:grid-cols-[11fr_9fr] min-[1440px]:gap-10 min-[1440px]:p-8"
+      >
+        <ReviewSummary items={lineItems} onSetQuantity={setQuantity} />
+        <ReviewCheckout totals={totals} onSave={saveSystem} />
+      </section>
+    </ReviewPanel>
   );
 }
