@@ -1,6 +1,6 @@
+import { PriceBlock } from '@/components/ui/PriceBlock';
 import { QuantityStepper } from '@/components/ui/QuantityStepper';
 
-import { ReviewPrice } from './ReviewPrice';
 import type { ReviewLineItemProps } from './types';
 
 /**
@@ -45,7 +45,8 @@ export function ReviewLineItem({ item, onSetQuantity }: ReviewLineItemProps) {
           disabled={item.locked}
           variant="review"
         />
-        <ReviewPrice
+        <PriceBlock
+          tone="review"
           price={item.lineTotal}
           compareAtPrice={item.lineCompareAtTotal}
           interval={item.interval}

@@ -26,21 +26,9 @@ import { breakpoints } from './breakpoints';
 /** System fallbacks shared by every stack */
 export const fontFamilyFallback = ['system-ui', 'sans-serif'] as const;
 
-/**
- * NOTE: `tailwind.config.js` → theme.extend.fontFamily.{primary,secondary} MUST
- * mirror these stacks exactly. The `font-primary` / `font-secondary` utility
- * classes are generated from that config; keep the two in sync so class-based and
- * inline (`fontFamily.primary.join(', ')`) usage resolve to identical stacks.
- */
 export const fontFamily = {
-  /** Gilroy — headings, CTAs, brand moments */
   primary: ['Gilroy', ...fontFamilyFallback],
-  /**
-   * Figma named face for Gilroy SemiBold (exported as its own family at weight 400).
-   * Requires the matching @font-face in `styles/fonts.css`.
-   */
   primarySemiBold: ['Gilroy-SemiBold', 'Gilroy', ...fontFamilyFallback],
-  /** TT Norms Pro — body text, forms, dense UI */
   secondary: ['"TT Norms Pro"', ...fontFamilyFallback],
 } as const;
 
@@ -159,12 +147,6 @@ export interface TextStyleRole {
   wide?: Partial<TextStyleVariant>;
 }
 
-/**
- * Semantic text roles. Each value is the AS-RENDERED style today (see
- * TYPOGRAPHY-AUDIT.md §2/§4). Invalid CSS from the source (percentage
- * letter-spacing, `line-height: auto`) is encoded as `normal` because that is
- * what the browser computes — see DEVIATIONS.md.
- */
 export const textStyles = {
   /** "REVIEW" / "STEP X OF N" eyebrow. ReviewEyebrow L6, AccordionStep L81. */
   eyebrow: {
@@ -179,12 +161,6 @@ export const textStyles = {
     sm: { fontSize: '12px' },
   },
 
-  /**
-   * Accordion step title. AccordionStep L112 (replaces stepper.titleClass).
-   * NOTE: not wired — the current render's line-height at sm/lg is 32px (from
-   * `text-2xl`), which this role (lh 1 → 24/28px) does not reproduce. See
-   * DEVIATIONS.md; MIGRATION-REPORT.md marks it skipped.
-   */
   stepTitle: {
     base: {
       fontFamily: PRIMARY,
@@ -350,12 +326,6 @@ export const textStyles = {
     },
   },
 
-  /**
-   * Review-row price. ReviewPrice L44/L52.
-   * NOTE: not wired — the current render's line-height at sm+ is 24px (from
-   * `text-base`), which this role (lh 16px) does not reproduce. See
-   * DEVIATIONS.md; MIGRATION-REPORT.md marks it skipped.
-   */
   reviewPrice: {
     base: {
       fontFamily: PRIMARY,
@@ -495,7 +465,6 @@ export const textStyles = {
     },
   },
 
-  /** "Next: …" advance button. AccordionStep L151 ('0%' ls → normal). */
   nextButton: {
     base: {
       fontFamily: PRIMARY,
@@ -506,12 +475,6 @@ export const textStyles = {
     },
   },
 
-  /**
-   * Mobile hero heading. HomePage L198.
-   * Renders REGULAR (400) today: the source names 'Gilroy-Bold', which is not a
-   * registered @font-face family, so it falls back to plain Gilroy and the
-   * inline weight 400 wins. This role encodes that reality. F2.
-   */
   heroMobile: {
     base: {
       fontFamily: PRIMARY,
@@ -526,16 +489,10 @@ export const textStyles = {
 export type TextStyles = typeof textStyles;
 export type TextStyleRoleName = keyof typeof textStyles;
 
-/** Kebab-case suffixes for generated `.text-<role>` classes (for tailwind-merge config). */
 export const typographyRoleNames = Object.keys(textStyles).map((role) =>
   role.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`),
 );
 
-/**
- * Flatten a role's `base` + the overrides that apply at `screen` into one style
- * object. Escape hatch for the rare inline case; prefer the generated
- * `.text-<role>` class. `screen` is inclusive and cumulative: 'lg' folds in sm+lg.
- */
 export function getTextStyle(
   role: TextStyleRoleName,
   screen: TypographyScreen | 'base' = 'base',

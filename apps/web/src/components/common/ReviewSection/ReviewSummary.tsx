@@ -1,4 +1,5 @@
 import FastShippingSvg from '@/assets/icons/fast-shipping.svg?react';
+import { PriceBlock } from '@/components/ui/PriceBlock';
 import { colors } from '@/design-tokens';
 
 import {
@@ -10,7 +11,6 @@ import {
 } from './constants';
 import { ReviewLineItem } from './ReviewLineItem';
 import { ReviewPlanLine } from './ReviewPlanLine';
-import { ReviewPrice } from './ReviewPrice';
 import type { ReviewSummaryProps } from './types';
 
 /** Hairline divider matching the design's faint rule; reads on the indigo panel. */
@@ -72,7 +72,8 @@ export function ReviewSummary({ items, onSetQuantity }: ReviewSummaryProps) {
         <span className="text-label-strong min-w-0 flex-1 truncate text-ink-black">
           {FAST_SHIPPING.label}
         </span>
-        <ReviewPrice
+        <PriceBlock
+          tone="review"
           className="shrink-0"
           price={FAST_SHIPPING.price}
           compareAtPrice={FAST_SHIPPING.compareAtPrice}

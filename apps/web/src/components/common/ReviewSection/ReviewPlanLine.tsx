@@ -1,8 +1,8 @@
 import { PlanIcon } from '@/components/common/icons';
+import { PriceBlock } from '@/components/ui/PriceBlock';
 import { colors } from '@/design-tokens';
 import { splitTitleForTwoTone } from '@/utils/splitTitleForTwoTone';
 
-import { ReviewPrice } from './ReviewPrice';
 import type { ReviewPlanLineProps } from './types';
 
 /**
@@ -43,7 +43,8 @@ export function ReviewPlanLine({ item }: ReviewPlanLineProps) {
         {accent && <span style={{ color: colors.primary.DEFAULT }}> {accent}</span>}
       </span>
 
-      <ReviewPrice
+      <PriceBlock
+        tone="review"
         className="shrink-0"
         price={item.lineTotal}
         compareAtPrice={item.lineCompareAtTotal}
