@@ -8,6 +8,7 @@ import type { Step } from '@security-system-builder/shared';
 
 import stepsJson from '../../../api/src/data/steps.json';
 import { BundleBuilderProvider, useBundleBuilderContext } from '@/context/BundleBuilderContext';
+import { DEFAULT_VARIANT_KEY } from './useBundleBuilder';
 
 /**
  * End-to-end hydration regression under REAL react-dom `<StrictMode>`.
@@ -24,6 +25,22 @@ import { BundleBuilderProvider, useBundleBuilderContext } from '@/context/Bundle
 
 const steps = (stepsJson as { steps: Step[] }).steps;
 const STORAGE_KEY = 'security-system-builder:saved-system:v1';
+
+/**
+ * The `data-testid="cam"` text (`<variant|none>:<qty>`) that `CamProbe` must
+ * render for a product seeded from the catalog — derived from the product's own
+ * `seed` so the assertion tracks steps.json instead of hardcoding a quantity.
+ * Mirrors seedSelections + getCardState over the raw seed inputs, so it still
+ * fails loudly if seeding breaks.
+ */
+function seededCamText(productId: string): string {
+  const product = steps.flatMap((step) => step.products).find((p) => p.id === productId);
+  if (!product) throw new Error(`No product "${productId}" in the catalog`);
+  const activeVariantId = product.seed?.variantId ?? product.variants?.[0]?.id ?? null;
+  const key = activeVariantId ?? DEFAULT_VARIANT_KEY;
+  const quantities = product.seed != null ? { [key]: product.seed.qty } : {};
+  return `${activeVariantId ?? 'none'}:${quantities[key] ?? 0}`;
+}
 
 // The real steps query resolves through the service; mock it to the catalog.
 vi.mock('@/services', () => ({
@@ -90,10 +107,13 @@ describe('useBundleBuilder hydration under react-dom StrictMode', () => {
     await waitFor(() => expect(screen.getByTestId('cam').textContent).toBe('black:5'));
   });
 
-  it('seeds Cam v4 unselected when nothing is saved', async () => {
+  it('seeds Cam v4 from its API seed when nothing is saved', async () => {
     mountApp();
-    // Cam v4 has no seed → quantity 0, first variant ("white") highlighted.
-    await waitFor(() => expect(screen.getByTestId('cam').textContent).toBe('white:0'));
+    // With nothing saved, Cam v4 hydrates to its catalog seed (white ×1 today);
+    // the expected text is derived from that seed rather than hardcoded.
+    await waitFor(() =>
+      expect(screen.getByTestId('cam').textContent).toBe(seededCamText('wyze-cam-v4')),
+    );
   });
 
   it('keeps the restored selection after an unrelated interaction', async () => {

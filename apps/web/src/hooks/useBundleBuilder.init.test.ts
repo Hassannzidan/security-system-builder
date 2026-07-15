@@ -2,7 +2,7 @@ import { createElement, StrictMode, useState } from 'react';
 import TestRenderer, { act } from 'react-test-renderer';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 
-import type { Step } from '@security-system-builder/shared';
+import type { Step, StepProduct } from '@security-system-builder/shared';
 
 import stepsJson from '../../../api/src/data/steps.json';
 import {
@@ -21,6 +21,46 @@ import {
 
 const steps = (stepsJson as { steps: Step[] }).steps;
 const STORAGE_KEY = 'security-system-builder:saved-system:v1';
+
+// --- Seed-derived expectations ---------------------------------------------
+// These hydration tests assert "the seed is applied correctly" — a property that
+// must hold for ANY seed values, not the specific numbers that ship today. So we
+// DERIVE the expected hydrated state from each product's own `seed` in the live
+// catalog rather than hardcoding steps.json's quantities (which drift and then
+// silently lie). The derivation still fails loudly if seeding logic breaks: it
+// reads only the raw `seed.variantId` / `seed.qty` inputs and compares them to
+// the hydrated output.
+
+/** Every product across all steps, flattened. */
+function allProducts(): StepProduct[] {
+  return steps.flatMap((step) => step.products);
+}
+
+/** Find a product by id, throwing if the catalog no longer contains it. */
+function findProduct(id: string): StepProduct {
+  const product = allProducts().find((p) => p.id === id);
+  if (!product) throw new Error(`No product "${id}" in the catalog`);
+  return product;
+}
+
+/**
+ * The quantity map `seedSelections` must produce for a product, derived purely
+ * from its seed: seeded products carry `seed.qty` under the seed's variant id
+ * (or the default key), seedless products come up with an empty map (unselected).
+ */
+function expectedSeededQuantities(id: string): Record<string, number> {
+  const { seed } = findProduct(id);
+  if (seed == null) return {};
+  return { [seed.variantId ?? DEFAULT_VARIANT_KEY]: seed.qty };
+}
+
+/** The card state (`getCardState` shape) a freshly-seeded product must show. */
+function expectedSeededCard(id: string): { activeVariantId: string | null; quantity: number } {
+  const product = findProduct(id);
+  const activeVariantId = product.seed?.variantId ?? product.variants?.[0]?.id ?? null;
+  const key = activeVariantId ?? DEFAULT_VARIANT_KEY;
+  return { activeVariantId, quantity: expectedSeededQuantities(id)[key] ?? 0 };
+}
 
 /** The exact bug-report payload: Cam v4 Black ×10, hub 1, cam-unlimited 1. */
 function bugReportSaved(): BundleState {
@@ -48,16 +88,32 @@ describe('resolveInitialState', () => {
     expect(state.selections['wyze-sense-hub']?.quantities[DEFAULT_VARIANT_KEY]).toBe(1);
   });
 
-  it('applies the API seeds when nothing is saved', () => {
+  it('applies each product API seed when nothing is saved', () => {
     const state = resolveInitialState(steps, null);
 
-    // Cam v4 has no seed → starts unselected.
-    expect(state.selections['wyze-cam-v4']?.quantities).toEqual({});
-    // Seeded products come up at their seed quantities.
-    expect(state.selections['cam-unlimited']?.quantities[DEFAULT_VARIANT_KEY]).toBe(1);
-    expect(state.selections['wyze-sense-motion-sensor']?.quantities[DEFAULT_VARIANT_KEY]).toBe(2);
-    expect(state.selections['wyze-microsd-card-256gb']?.quantities[DEFAULT_VARIANT_KEY]).toBe(2);
-    expect(state.selections['wyze-sense-hub']?.quantities[DEFAULT_VARIANT_KEY]).toBe(1);
+    // Property: for EVERY product the hydrated quantity map equals exactly what
+    // its own seed prescribes. Seeded products come up at seed.qty (under the
+    // seed's variant, or the default key); seedless products stay unselected with
+    // an empty map. Derived from the catalog, so it holds for any seed values.
+    for (const product of allProducts()) {
+      expect(state.selections[product.id]?.quantities).toEqual(
+        expectedSeededQuantities(product.id),
+      );
+    }
+
+    // The catalog must genuinely exercise both branches — otherwise the loop
+    // above could pass on a degenerate (all-seeded or all-seedless) catalog.
+    expect(allProducts().some((p) => p.seed != null)).toBe(true);
+    expect(allProducts().some((p) => p.seed == null)).toBe(true);
+
+    // Named products still hydrate to their own seed, asserted against the exact
+    // seed input (variant + qty) rather than a hardcoded literal.
+    for (const id of ['wyze-cam-v4', 'cam-unlimited', 'wyze-sense-hub']) {
+      const { seed } = findProduct(id);
+      expect(seed).not.toBeNull(); // these ship seeded
+      const key = seed!.variantId ?? DEFAULT_VARIANT_KEY;
+      expect(state.selections[id]?.quantities[key]).toBe(seed!.qty);
+    }
   });
 });
 
@@ -150,11 +206,12 @@ describe('useBundleBuilder hydration', () => {
     act(() => renderer.unmount());
   });
 
-  it('seeds when storage is empty (Cam v4 unselected — qty 0, default variant highlighted)', () => {
+  it('seeds Cam v4 from its API seed when storage is empty', () => {
     const renderer = mountAndDeliver();
-    // No seed on Cam v4 → quantity 0 (unselected); the active chip defaults to
-    // the first variant ("white"), exactly as seedSelections produces.
-    expect(captured.cam).toEqual({ activeVariantId: 'white', quantity: 0 });
+    // Nothing saved → the card shows exactly Cam v4's seed: whatever variant and
+    // quantity steps.json prescribes (white ×1 today), derived here so the test
+    // tracks the seed instead of a hardcoded number.
+    expect(captured.cam).toEqual(expectedSeededCard('wyze-cam-v4'));
     act(() => renderer.unmount());
   });
 
